@@ -13,7 +13,12 @@
             </select>
             <button class="pagination-page first" data-page="first">First</button>
             <button class="pagination-page prev" data-page="prev">Prev</button>
-            <span class="pagination-pages"></span>
+            <span class="pagination-pages">
+                <button class="pagination-page active">1</button>
+                <button class="pagination-page">2</button>
+                <button class="pagination-page">3</button>
+                
+            </span>
             <button class="pagination-page next" data-page="next">Next</button>
             <button class="pagination-page last" data-page="last">Last</button>
         </span>
@@ -88,7 +93,7 @@ export default {
             margin-left: 0.25rem;
             background-color: #fff;
             
-            &:hover {
+            &.active, &:hover {
                 background-color: rgb(241 245 249);
             }
 

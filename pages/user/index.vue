@@ -10,14 +10,14 @@
         </div>
 
         <div class="table-content box p-3 mt-3">
-            <table-component :headers="headers" :items="items" :actionEdit="true" :actionDelete="true" />
+            <table-component 
+                :headers="headers" :items="items" 
+                :actionEdit="true" :actionDelete="true" />
+                
             <pagination 
-                :size="'10'"
-                :currentPage="10"
-                :totalElements="3"
-                :pageNumber="1"
-                :maxPages="1"
-            />
+                :size="'10'" :currentPage="10"
+                :totalElements="3" :pageNumber="1"
+                :maxPages="1" />
         </div>
     </div>
 </template>
