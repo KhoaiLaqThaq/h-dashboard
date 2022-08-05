@@ -1,6 +1,6 @@
 <template>
     <div class="mb-3">
-        <label class="form-label" :class="textSize">{{ name }} <span :class="{'text-danger': required}">*</span></label>
+        <label class="form-label" :class="textSize">{{ name }} <span v-if="name" :class="{'text-danger': required}">*</span></label>
         <input class="form-control"
             :type="type"
             :placeholder="placeholder"

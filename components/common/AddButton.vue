@@ -1,7 +1,7 @@
 <template>
-    <button type="button" class="btn btn-primary shadow-md text-small" v-on:click="navigate">
+    <button type="button" class="btn btn-primary shadow-md" v-on:click="navigate">
         <IconPlus />
-        {{title}}
+        <span class="mx-2" :class="textSize">{{title}}</span>
     </button>
 </template>
 <script>
@@ -11,7 +11,7 @@ import IconPlus from '~~/assets/images/icons/IconPlus.vue';
 
 export default {
     components: { IconPlus },
-    props: ['title', 'routerPush'],
+    props: ['title', 'routerPush', 'textSize'],
     setup(props) {
         const router = useRouter();
 

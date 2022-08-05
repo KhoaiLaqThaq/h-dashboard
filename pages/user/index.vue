@@ -2,60 +2,67 @@
     <div>
         <div class="d-flex">
             <TitleHeader :title="title" />
-            <AddButton 
-                class="ms-auto"
-                :title="btnTitle"
-                :routerPush="routerPush"
-            />
         </div>
+        
+        <div class="d-flex mt-3">
+            <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
+            <div class="ms-auto"><input type="text" class="form-control" placeholder="Tìm kiếm..." /></div>
+        </div>
+
         <div class="table-content box p-3 mt-3">
-            <!-- <h2 class="font-medium text-base me-auto">
-                Quản lý danh sách người dùng hệ thống
-            </h2> -->
-            <Vue3EasyDataTable 
-                :headers="headers" 
-                :items="items"
-                v-model:items-selected="itemsSelected"
-                :theme-color="themeColor"
+            <table-component :headers="headers" :items="items" :actionEdit="true" :actionDelete="true" />
+            <pagination 
+                :size="'10'"
+                :currentPage="10"
+                :totalElements="3"
+                :pageNumber="1"
+                :maxPages="1"
             />
         </div>
     </div>
 </template>
 
 <script>
-import Vue3EasyDataTable from 'vue3-easy-data-table';
+// import Vue3EasyDataTable from 'vue3-easy-data-table';
+
 import TitleHeader from '~~/components/common/TitleHeader.vue';
 import AddButton from '~~/components/common/AddButton.vue'
+import BaseInput from '~~/components/common/BaseInput.vue';
+import TableComponent from '~~/components/common/table/TableComponent.vue';
+import Pagination from '~~/components/common/table/Pagination.vue';
 
 export default {
     components: {
-        Vue3EasyDataTable,
         TitleHeader,
-        AddButton
+        AddButton,
+        BaseInput,
+        TableComponent,
+        Pagination
     },
     setup() {
         const title = ref('Danh sách người dùng');
         const itemsSelected = ref([]);
         const themeColor = ref("#1e40af");
-        const btnTitle = ref('Thêm mới');
         const routerPush = ref('/user/form');
 
         const headers = [
-            { text: "Name", value: "name" },
-            { text: "Height (cm)", value: "height", sortable: true },
-            { text: "Weight (kg)", value: "weight", sortable: true },
-            { text: "Age", value: "age", sortable: true }
+            { text: "No", value: "no" },
+            { text: "Fullname", value: "name" },
+            { text: "Email", value: "email" },
+            { text: "Firstname", value: "first_name"},
+            { text: "Lastname", value: "last_name"},
+            { text: "Age", value: "age" },
+            { text: "Role", value: "role" },
         ];
 
         const items = [
-            { "name": "Curry", "height": 178, "weight": 77, "age": 20 },
-            { "name": "James", "height": 180, "weight": 75, "age": 21 },
-            { "name": "Jordan", "height": 181, "weight": 73, "age": 22 }
+            { "no": 1, "name": "Curry", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"},
+            { "no": 2, "name": "James", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"},
+            { "no": 3, "name": "Jordan", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"}
         ];
         
         return {
             title,
-            btnTitle: btnTitle,
             routerPush: routerPush,
 
             headers,

@@ -31,7 +31,7 @@
             <div class="col-4">
                 <div class="box p-3">
                     <!-- type -->
-                    <base-select class="input-field" :selectOfferTitle="'Chọn loại tin tức'" :required="true" :options="options" :placeholder="'Loại tin tức'" />
+                    <base-select class="input-field mb-3" :selectOfferTitle="'Chọn loại tin tức'" :required="true" :options="options" :placeholder="'Loại tin tức'" />
 
                     <!-- ngay viet -->
                     <base-input :type="'text'" 

@@ -1,6 +1,6 @@
 <template>
-    <div class="mb-3">
-        <label class="form-label" for="">{{ placeholder }} <span :class="{'text-danger': required}">*</span></label>
+    <div>
+        <label class="form-label" v-if="placeholder">{{ placeholder }} <span v-if="placeholder" :class="{'text-danger': required}">*</span></label>
         <select class="form-select"
             :value="value"
             :required="required">
