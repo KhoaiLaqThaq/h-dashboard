@@ -2173,6 +2173,11 @@
   "resolved" "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   "version" "0.4.0"
 
+"attr-accept@^2.2.2":
+  "integrity" "sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg=="
+  "resolved" "https://registry.npmjs.org/attr-accept/-/attr-accept-2.2.2.tgz"
+  "version" "2.2.2"
+
 "autoprefixer@^10.2.5", "autoprefixer@^10.4.7", "autoprefixer@^10.4.8":
   "integrity" "sha512-75Jr6Q/XpTqEf6D2ltS5uMewJIx5irCU1oBYJrWjFenq/m12WRRrz6g15L1EIoYvPLXTbEry7rDOwrcYNj77xw=="
   "resolved" "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.8.tgz"
@@ -3316,6 +3321,13 @@
   "version" "3.2.0"
   dependencies:
     "escape-string-regexp" "^1.0.5"
+
+"file-selector@^0.2.4":
+  "integrity" "sha512-ZDsQNbrv6qRi1YTDOEWzf5J2KjZ9KMI1Q2SGeTkCJmNNW25Jg4TW4UMcmoqcg4WrAyKRcpBXdbWRxkfrOzVRbA=="
+  "resolved" "https://registry.npmjs.org/file-selector/-/file-selector-0.2.4.tgz"
+  "version" "0.2.4"
+  dependencies:
+    "tslib" "^2.0.3"
 
 "file-uri-to-path@1.0.0":
   "integrity" "sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw=="
@@ -6628,7 +6640,7 @@
   dependencies:
     "glob" "^7.1.2"
 
-"tslib@^2.1.0":
+"tslib@^2.0.3", "tslib@^2.1.0":
   "integrity" "sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   "version" "2.4.0"
@@ -6966,6 +6978,26 @@
     "@vue/runtime-dom" "3.2.37"
     "@vue/server-renderer" "3.2.37"
     "@vue/shared" "3.2.37"
+
+"vue3-carousel@^0.1.40":
+  "integrity" "sha512-rPIfBxFhsY6W6qKNGsjgzPJdngt07ov06/Ql1lKsTr8gBx73gUxCIIQo/7M3QCx3KU94CDGBbLugF5YGdEPefg=="
+  "resolved" "https://registry.npmjs.org/vue3-carousel/-/vue3-carousel-0.1.40.tgz"
+  "version" "0.1.40"
+
+"vue3-datepicker-lite@^1.9.6":
+  "integrity" "sha512-GtEJ7GwWh7OpMSFxQncMgMuVOHyEUxR2eB4sxOCMq/+/geIHFYICLkXA68gzDtkiYn8qbAndqd+pU9jcOCwwEA=="
+  "resolved" "https://registry.npmjs.org/vue3-datepicker-lite/-/vue3-datepicker-lite-1.9.6.tgz"
+  "version" "1.9.6"
+  dependencies:
+    "vue" "^3.0.0"
+
+"vue3-dropzone@^0.0.7":
+  "integrity" "sha512-aNUCEWcq/umC1rPLkpXBMcA8OIn17OKRKZxqIhVSBBhqt0F6ObAacKMC8noOTfHutVWzXhQU1qk8ynqCRfsEWA=="
+  "resolved" "https://registry.npmjs.org/vue3-dropzone/-/vue3-dropzone-0.0.7.tgz"
+  "version" "0.0.7"
+  dependencies:
+    "attr-accept" "^2.2.2"
+    "file-selector" "^0.2.4"
 
 "vue3-easy-data-table@^1.4.5":
   "integrity" "sha512-SuNc7FzhltL+sw/raZTzK5w/oNIf0YVHY+fpAbSvTUr5Oas75eYW/WiJzD/+8rTGlX3N5VKfoxcjWgWfxrHjnw=="

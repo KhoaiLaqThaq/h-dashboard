@@ -1,5 +1,5 @@
 <template>
-    <div class="content-news">
+    <div class="content-news mt-3">
         <div class="d-flex">
             <TitleHeader :title="title" />
             <AddButton 

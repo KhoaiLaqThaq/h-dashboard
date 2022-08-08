@@ -21,7 +21,8 @@ export default {
         '@/assets/scss/custom.scss'
     ],
     plugins: [
-        { src: '~/plugins/editor-vue.js' }
+        { src: '~/plugins/editor-vue.js' },
+        // { src: '~/plugins/carousel-vue.js', mode: 'client' },
     ],
     components: true,
     buildModules: [],

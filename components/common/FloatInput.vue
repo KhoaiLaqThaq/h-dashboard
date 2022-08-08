@@ -4,6 +4,7 @@
             :type="type"
             :value="value"
             :required="required"
+            :v-model="v-model"
             autocomplete="false"
             @change="typeInputPress != '' ? inputPressReplace($event) : inputPress($event)"
         >
@@ -17,7 +18,8 @@ export default {
         'value',
         'required',
         'typeInputPress',
-        'placeholder'
+        'placeholder',
+        'v-model'
     ],
     emits: ['update:value'],
     setup(props) {

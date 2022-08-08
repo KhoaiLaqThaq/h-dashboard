@@ -5,7 +5,7 @@
         </div>
         <div class="col-10 content">
             <TheTopbar />
-            <div class="row py-4">
+            <div class="row pb-4">
                 <NuxtPage />
             </div>
             <!-- <TheFooter /> -->
