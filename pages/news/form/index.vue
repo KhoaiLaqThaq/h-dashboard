@@ -4,18 +4,20 @@
             <TitleHeader :title="titleForm" />
             <PreviewButton class="btn-light box ms-auto d-flex items-center" :btnType="'button'" :name="'Preview'" :textSize="'text-small'" />
             <BaseButton class="btn-primary ms-2" :btnType="'button'" :name="'Save'" :textSize="'text-small'" @click="onSubmit" />
+            
+            <NewsPreview />
         </div>
 
         <div class="row mt-3">
             <div class="col-8">
                 <!-- title -->
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" required="required" autocomplete="false" v-model="title" >
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="title" >
                     <label for="">Tiêu đề <span class="text-danger">*</span></label>
                 </div>
                 <!-- brief -->
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" required="required" autocomplete="false" v-model="brief" >
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="brief" >
                     <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
                 </div>
 
@@ -39,7 +41,6 @@
                             </div>
                         </TabItem>
                     </TabsWrapper>
-                    
                 </div>
                 
                 
@@ -121,6 +122,7 @@ import UseDropZone from '~~/components/common/UseDropZone.vue';
 import { getNowDate } from '~~/constants/format-date.js';
 import TabsWrapper from '~~/components/common/tab/TabsWrapper.vue';
 import TabItem from '../../../components/common/tab/TabItem.vue';
+import NewsPreview from '~~/components/NewsPreview.vue';
 
 export default {
     components: {
@@ -135,7 +137,8 @@ export default {
     DatepickerLite,
     UseDropZone,
     TabsWrapper,
-    TabItem
+    TabItem,
+    NewsPreview
 },
     data() {
         return {

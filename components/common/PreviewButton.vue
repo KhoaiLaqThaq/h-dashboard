@@ -1,6 +1,8 @@
 <template>
     <button class="btn"
         :type="btnType"
+        data-bs-toggle="modal"
+        data-bs-target="#newsPreview"
     >
         <PreviewIcon class="lucide w-4 h-4" />
         <span class="ms-2" :class="textSize">{{ name }}</span>

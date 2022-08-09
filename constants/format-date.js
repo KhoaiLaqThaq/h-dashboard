@@ -5,7 +5,7 @@ export const getNowDate = () => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    return year + '/' + (month < 9 ? '0' + month : month) + '/' + (day < 9 ? '0' + day : day);
+    return year + '/' + (month < 9 ? '0' + month : month) + '/' + (day <= 9 ? '0' + day : day);
 }
 
 export default {

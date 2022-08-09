@@ -69,14 +69,13 @@ export default {
     }
     .previews {
         position: relative;
-        svg {
-            width: 2rem;
-            height: 2rem;
-            transform: rotate(45deg);
-            border: 2px solid rgb(0 0 0 / 80%);
-        }
-
         .remove {
+            svg {
+                width: 2rem;
+                height: 2rem;
+                transform: rotate(45deg);
+                border: 2px solid rgb(0 0 0 / 80%);
+            }
             position: absolute;
             top: 10px;
             right: 10px;

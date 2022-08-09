@@ -7,5 +7,6 @@
 </template>
 
 <script setup>
+import "bootstrap";
 const layout = 'admin';
 </script>

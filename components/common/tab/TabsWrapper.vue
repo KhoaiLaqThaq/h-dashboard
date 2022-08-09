@@ -56,7 +56,8 @@ provide('selectedTitle', selectedTitle)
 }
 
 .tabs__item.selected {
-    background-color: #bfbfbf;
+    background-color: #1e40af;
+    color: #FFFFFF;
 }
 
 .tabs__content {
@@ -64,6 +65,5 @@ provide('selectedTitle', selectedTitle)
     min-height: 300px;
     display: grid;
     border-radius: 0 0 5px 5px;
-    padding: 10px;
 }
 </style>

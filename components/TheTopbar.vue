@@ -3,10 +3,10 @@
         <nav class="me-auto hidden">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <NuxtLink to="#">Application</NuxtLink>
+                    <NuxtLink to="/">Application</NuxtLink>
                 </li>
                 <li class="breadcrumb-item active">
-                    <NuxtLink to="/">Dashboard</NuxtLink>
+                    <NuxtLink :to="routeNameState">{{ routeNameState == 'index' ? 'Dashboard' : routeNameState }}</NuxtLink>
                 </li>
             </ol>
         </nav>
@@ -25,10 +25,18 @@
     </div>
 </template>
 <script>
+import { ref, watch } from 'vue';
 import RingIcon from '~~/assets/images/icons/RingIcon.vue'
 export default {
     components: {
         RingIcon
+    },
+    setup() {
+        const routeNameState = useRouteActive();
+
+        return {
+            routeNameState
+        }
     }
     
 }

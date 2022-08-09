@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-3">
         <div class="d-flex">
             <TitleHeader :title="title" />
         </div>
@@ -18,6 +18,11 @@
                 :size="'10'" :currentPage="10"
                 :totalElements="3" :pageNumber="1"
                 :maxPages="1" />
+        </div>
+        <div>
+            {{ counter }}
+            <button @click="counter--">-</button>
+            <button @click="counter++">+</button>
         </div>
     </div>
 </template>
@@ -44,6 +49,7 @@ export default {
         const itemsSelected = ref([]);
         const themeColor = ref("#1e40af");
         const routerPush = ref('/user/form');
+        const counter = useCounter();
 
         const headers = [
             { text: "No", value: "no" },
@@ -64,6 +70,7 @@ export default {
         return {
             title,
             routerPush: routerPush,
+            counter,
 
             headers,
             items,

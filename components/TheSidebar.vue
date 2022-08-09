@@ -20,8 +20,8 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/new" class="side-menu" aria-label="new" 
-                    :class="{active: routeNameActive == 'new'}">
+                <NuxtLink to="/news" class="side-menu" aria-label="news" 
+                    :class="{active: routeNameActive == 'news'}">
                     <div class="side-menu__icon"><PostIcon /></div>
                     <span class="side-menu__title pl-1"> News</span>
                 </NuxtLink>
@@ -47,9 +47,15 @@ export default {
     setup() {
         const routeNameActive = ref();
         const route = useRoute();
+        const routeNameState = useRouteActive();
+
+        function setRouteNameState() {
+            routeNameState.value = null;
+        } 
 
         function setRouteNameActive(to) {
             routeNameActive.value = to;
+            routeNameState.value = to;
         }
 
         function onLoadRouteNameCurrent() {
@@ -60,6 +66,7 @@ export default {
         return {
             routeNameActive,
 
+            setRouteNameState,
             setRouteNameActive,
             onLoadRouteNameCurrent
         }
@@ -69,12 +76,14 @@ export default {
             deep: true,
             handler(to, from) {
                 let pageGroup = to.name.split('-')[0];
+                this.setRouteNameState();
                 this.setRouteNameActive(pageGroup);
                 this.show = false;
             }
         }
     },
     mounted() {
+        this.setRouteNameState();
         this.onLoadRouteNameCurrent();
     }
 }

@@ -20,6 +20,7 @@
     "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27639120.e7a7f9b",
     "@tinymce/tinymce-vue": "^4.0.7",
     "autoprefixer": "^10.4.8",
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "sass": "^1.54.0",
     "vue": "^3.2.37",
