@@ -26,6 +26,13 @@
                     <span class="side-menu__title pl-1"> News</span>
                 </NuxtLink>
             </li>
+            <li>
+                <NuxtLink to="/topic" class="side-menu" aria-label="topic" 
+                    :class="{active: routeNameActive == 'topic'}">
+                    <div class="side-menu__icon"><PostIcon /></div>
+                    <span class="side-menu__title pl-1"> Topics</span>
+                </NuxtLink>
+            </li>
             <li class="mt-5"></li>
         </ul>
     </nav>
