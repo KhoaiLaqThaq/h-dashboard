@@ -19,21 +19,15 @@
                 :totalElements="3" :pageNumber="1"
                 :maxPages="1" />
         </div>
-        <div>
-            {{ counter }}
-            <button @click="counter--">-</button>
-            <button @click="counter++">+</button>
-        </div>
     </div>
 </template>
 
 <script>
-// import Vue3EasyDataTable from 'vue3-easy-data-table';
-
+import {ref } from 'vue'
 import TitleHeader from '~~/components/common/TitleHeader.vue';
 import AddButton from '~~/components/common/AddButton.vue'
 import BaseInput from '~~/components/common/BaseInput.vue';
-import TableComponent from '~~/components/common/table/TableComponent.vue';
+import TableComponent from '~~/components/common/table/TableNewsComponent.vue';
 import Pagination from '~~/components/common/table/Pagination.vue';
 
 export default {
@@ -44,12 +38,15 @@ export default {
         TableComponent,
         Pagination
     },
+    data() {
+        return {
+            title: 'Danh sách người dùng',
+            itemsSelected: [],
+            themeColor: '#1e40af',
+            routerPush: '/user/form'
+        }
+    },
     setup() {
-        const title = ref('Danh sách người dùng');
-        const itemsSelected = ref([]);
-        const themeColor = ref("#1e40af");
-        const routerPush = ref('/user/form');
-        const counter = useCounter();
 
         const headers = [
             { text: "No", value: "no" },
@@ -68,14 +65,8 @@ export default {
         ];
         
         return {
-            title,
-            routerPush: routerPush,
-            counter,
-
             headers,
-            items,
-            itemsSelected,
-            themeColor
+            items
         }
     },
 }

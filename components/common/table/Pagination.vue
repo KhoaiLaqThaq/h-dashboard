@@ -3,45 +3,66 @@
         <span class="table-pagination">
             <label>Page Size</label>
             <select class="pagination-size"
-                :value="size ? size : defaultSize"
+                :value="size"
+                @change="setSize($event)"
             >
-                <option v-for="(option, index) in pigeSizeOptions"
-                    :value="option"
-                    :key="index">
-                    {{ option }}
+                <option v-for="(item, index) in pigeSizeOptions"
+                    :value="item" :key="index">
+                    {{ item }}
                 </option>
             </select>
-            <button class="pagination-page first" data-page="first">First</button>
-            <button class="pagination-page prev" data-page="prev">Prev</button>
+            <button class="pagination-page first" data-page="first" 
+                @click="setPagination(0)" :disabled="currentPage == 1">First</button>
+            <button class="pagination-page prev" data-page="prev" 
+                @click="setPagination(currentPage-2)" :disabled="currentPage == 1">Prev</button>
             <span class="pagination-pages">
-                <button class="pagination-page active">1</button>
-                <button class="pagination-page">2</button>
-                <button class="pagination-page">3</button>
-                
+                <button class="pagination-page" v-for="(item, index) in totalPages" 
+                    :key="index" :class="{active: currentPage == item}"
+                    @click="setPagination(index)">
+                    {{ item }}
+                </button>
             </span>
-            <button class="pagination-page next" data-page="next">Next</button>
-            <button class="pagination-page last" data-page="last">Last</button>
+            <button class="pagination-page next" data-page="next"
+                @click="setPagination(currentPage++)" :disabled="currentPage == totalPages">Next</button>
+            <button class="pagination-page last" data-page="last"
+                @click="setPagination(totalPages - 1)" :disabled="currentPage == totalPages">Last</button>
         </span>
     </div>
 </template>
 <script>
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 export default {
     props: [
-        'currentPage',
-        'size',
-        'totalElements',
-        'pageNumber',
-        'maxPages'
+        'page', 'size', 
+        'number', 'numberOfElements',
+        'totalPages', 'totalElements',
+        'first', 'last'
     ],
-    setup(props) {
+    setup(props ,{emit}) {
+        const page = ref(props.page);
         const defaultSize = ref(props.size ? props.size : '10');
+        const currentPage = ref(props.page + 1);
+
+        // click page
+        function setPagination(numPage) {
+            emit('change-page', numPage)
+        }
+
+        function setSize(event) {
+            emit('change-size', event.target.value);
+        }
 
         return {
             pigeSizeOptions: ['10', '50', '100'],
             defaultSize: defaultSize,       // default
+            currentPage,
+
+            setPagination, setSize
         }
+    },
+    beforeUpdate() {
+        this.currentPage = this.page + 1;
     }
 }
 </script>

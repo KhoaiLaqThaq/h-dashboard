@@ -9,22 +9,26 @@
             />
         </div>
         <div class="table-content box p-3 mt-3">
-            <table-component 
-                :headers="headers" :items="items" 
+            <table-news-component 
+                :headers="headers" :items="content"
                 :actionEdit="true" :actionDelete="true" />
                 
             <pagination 
-                :size="'10'" :currentPage="10"
-                :totalElements="3" :pageNumber="1"
-                :maxPages="1" />
+                :page="page" :size="size"
+                :number="number" :numberOfElements="numberOfElements"
+                :totalElements="totalElements" :totalPages="totalPages"
+                :first="first" :last="last"
+                @change-page="page = $event"
+                @change-size="size = $event"
+                />
         </div>
     </div>
 </template>
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import TitleHeader from '~~/components/common/TitleHeader.vue';
 import AddButton from '~~/components/common/AddButton.vue'
-import TableComponent from '~~/components/common/table/TableComponent.vue';
+import TableNewsComponent from '~~/components/common/table/TableNewsComponent.vue';
 import Pagination from '~~/components/common/table/Pagination.vue';
 
 import CONFIG from '~~/config';
@@ -34,7 +38,7 @@ export default {
     components: {
         TitleHeader,
         AddButton,
-        TableComponent,
+        TableNewsComponent,
         Pagination
     },
     data() {
@@ -47,43 +51,72 @@ export default {
         }
     },
     setup() {
+        const page = ref(0);
+        const size = ref(10);
+        const number = ref(0);
+        const numberOfElements = ref(10);
+        const totalPages = ref(0);
+        const totalElements = ref(0);
+        const first = ref(false);
+        const last = ref(false);
+        const content = ref([]);
+
+        const itemsSelected = ref([]);
+        const themeColor = ref("#1e40af");
 
         const headers = [
             { text: "STT", value: "no" },
             { text: "Tiêu đề", value: "title" },
             { text: "Mô tả ngắn", value: "sub_desc" },
-            { text: "Tác giả", value: "author" },
-            { text: "Ngày tạo", value: "created_date" }
+            { text: "Ngày tạo", value: "created_date" },
+            { text: "Trạng thái", value: "status" }
         ];
 
-        const items = [
-            { "no": 1, "title": "Curry", "sub_desc": "Là diễn viên hạng A?", "author": "VIP_MEMBER", "created_date": "2022-08-01" },
-            { "no": 2, "title": "James", "sub_desc": "Có phải đã kết hôn?", "author": "VIP_MEMBER", "created_date": "2022-08-01" },
-            { "no": 3, "title": "Jordan", "sub_desc": "Là vđv bóng rổ..", "author": "VIP_MEMBER", "created_date": "2022-08-01" }
-        ];
-        
-        const itemsSelected = ref([]);
-        const themeColor = ref("#1e40af");
+        function setPagination(news) {
+            content.value = news.content;
+            page.value = news.page;
+            size.value = news.size;
+            number.value = news.number;
+            numberOfElements.value = news.numberOfElements;
+            totalPages.value = news.totalPages;
+            totalElements.value = news.totalElements;
+        }
+
+        // call api
+        function searchCallApi() {
+            let criteria = {
+                page: page.value,
+                size: size.value
+            };
+
+            // TODO: Call api
+            axios.post(`${CONFIG.BASE_URL}/api/news/list`, criteria)
+                .then(response => {
+                    // console.log(response.data);
+                    const data = response.data;
+                    setPagination(data);
+                }).catch(e => {
+                    this.errors.push(e);
+                });
+        }
+
+        watch([page, size], () => {
+            searchCallApi();
+        });
 
         return {
             headers,
-            items,
             itemsSelected,
             themeColor,
-            
+            page, size, number, numberOfElements, totalPages, totalElements, first, last,
+            content,
+
+            searchCallApi
         }
     },
     created() {
-        console.log("enter created()...");
-
-        // TODO: Call api
-        axios.get(`${CONFIG.BASE_URL}/api/news/list`)
-            .then(response => {
-                console.log(response.data);
-            }).catch(e => {
-                this.errors.push(e);
-            });
-
+        // console.log("enter created()...");
+        this.searchCallApi();
     }
 }
 </script>

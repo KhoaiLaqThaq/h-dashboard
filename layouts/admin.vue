@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid d-flex pt-2" :id="colorTheme">
-        <div class="col-2">
+        <div class="sidebar">
             <TheSidebar />
         </div>
         <div class="col-10 content">
@@ -31,6 +31,8 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style lang="scss">
+    .sidebar {
+        width: 220px;
+    }
 </style>
