@@ -1,77 +1,107 @@
 <template>
-    <div class="mt-3">
-        <div class="d-flex">
-            <TitleHeader :title="title" />
-        </div>
-        
-        <div class="d-flex mt-3">
-            <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
-            <div class="ms-auto"><input type="text" class="form-control" placeholder="Tìm kiếm..." /></div>
-        </div>
+  <div class="mt-3">
+    <div class="d-flex">
+      <TitleHeader :title="title" />
+    </div>
 
-        <div class="table-content box p-3 mt-3">
-            <table-component 
+    <div class="d-flex mt-3">
+      <AddButton
+        :textSize="'text-small'"
+        :title="'Thêm mới'"
+        :routerPush="routerPush"
+      />
+      <div class="ms-auto">
+        <input type="text" class="form-control" placeholder="Tìm kiếm..." />
+      </div>
+    </div>
+
+    <div class="table-content box p-3 mt-3">
+      <!-- <table-component 
                 :headers="headers" :items="items" 
                 :actionEdit="true" :actionDelete="true" />
-                
-            <pagination 
-                :size="'10'" :currentPage="10"
-                :totalElements="3" :pageNumber="1"
-                :maxPages="1" />
-        </div>
+                 -->
+      <pagination
+        :size="'10'"
+        :currentPage="10"
+        :totalElements="3"
+        :pageNumber="1"
+        :maxPages="1"
+      />
     </div>
+  </div>
 </template>
 
 <script>
-import {ref } from 'vue'
-import TitleHeader from '~~/components/common/TitleHeader.vue';
-import AddButton from '~~/components/common/AddButton.vue'
-import BaseInput from '~~/components/common/BaseInput.vue';
-import TableComponent from '~~/components/common/table/TableNewsComponent.vue';
-import Pagination from '~~/components/common/table/Pagination.vue';
+import { ref } from "vue";
+import TitleHeader from "~~/components/common/TitleHeader.vue";
+import AddButton from "~~/components/common/AddButton.vue";
+import BaseInput from "~~/components/common/BaseInput.vue";
+// import TableComponent from '~~/components/common/table/TableNewsComponent.vue';
+import Pagination from "~~/components/common/table/Pagination.vue";
 
 export default {
-    components: {
-        TitleHeader,
-        AddButton,
-        BaseInput,
-        TableComponent,
-        Pagination
-    },
-    data() {
-        return {
-            title: 'Danh sách người dùng',
-            itemsSelected: [],
-            themeColor: '#1e40af',
-            routerPush: '/user/form'
-        }
-    },
-    setup() {
+  components: {
+    TitleHeader,
+    AddButton,
+    BaseInput,
+    // TableComponent,
+    Pagination,
+  },
+  data() {
+    return {
+      title: "Danh sách người dùng",
+      itemsSelected: [],
+      themeColor: "#1e40af",
+      routerPush: "/user/form",
+    };
+  },
+  setup() {
+    const headers = [
+      { text: "No", value: "no" },
+      { text: "Fullname", value: "name" },
+      { text: "Email", value: "email" },
+      { text: "Firstname", value: "first_name" },
+      { text: "Lastname", value: "last_name" },
+      { text: "Age", value: "age" },
+      { text: "Role", value: "role" },
+    ];
 
-        const headers = [
-            { text: "No", value: "no" },
-            { text: "Fullname", value: "name" },
-            { text: "Email", value: "email" },
-            { text: "Firstname", value: "first_name"},
-            { text: "Lastname", value: "last_name"},
-            { text: "Age", value: "age" },
-            { text: "Role", value: "role" },
-        ];
+    const items = [
+      {
+        no: 1,
+        name: "Curry",
+        email: "acc-test@gmail.com",
+        first_name: "First name",
+        last_name: "Last name",
+        age: 20,
+        role: "Administrator",
+      },
+      {
+        no: 2,
+        name: "James",
+        email: "acc-test@gmail.com",
+        first_name: "First name",
+        last_name: "Last name",
+        age: 20,
+        role: "Administrator",
+      },
+      {
+        no: 3,
+        name: "Jordan",
+        email: "acc-test@gmail.com",
+        first_name: "First name",
+        last_name: "Last name",
+        age: 20,
+        role: "Administrator",
+      },
+    ];
 
-        const items = [
-            { "no": 1, "name": "Curry", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"},
-            { "no": 2, "name": "James", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"},
-            { "no": 3, "name": "Jordan", "email": "acc-test@gmail.com", "first_name": "First name", "last_name": "Last name", "age": 20, "role": "Administrator"}
-        ];
-        
-        return {
-            headers,
-            items
-        }
-    },
-}
+    return {
+      headers,
+      items,
+    };
+  },
+};
 </script>
 
-<style lang="">
-    
-</style>
+<style lang=""></style>
