@@ -1,3 +1,5 @@
+import CONFIG from '~~/config';
+
 export default class UploadAdapter {
     constructor( loader ) {
         this.loader = loader;
@@ -40,7 +42,7 @@ export default class UploadAdapter {
         // integration to choose the right communication channel. This example uses
         // a POST request with JSON as a data structure but your configuration
         // could be different.
-        xhr.open( 'POST', 'http://localhost:3000/image/upload/path', true );
+        xhr.open( 'POST', `${CONFIG.BASE_URL}/api/image/upload/path`, true );
         xhr.responseType = 'json';
     }
 
@@ -48,29 +50,14 @@ export default class UploadAdapter {
     _initListeners( resolve, reject, file ) {
         const xhr = this.xhr;
         const loader = this.loader;
-        const genericErrorText = `Couldn't upload file: ${ file.name }.`;
+        // const genericErrorText = `Couldn't upload file: ${ file.name }.`;
 
         xhr.addEventListener( 'error', () => reject( genericErrorText ) );
         xhr.addEventListener( 'abort', () => reject() );
         xhr.addEventListener( 'load', () => {
             const response = xhr.response;
-
-            // This example assumes the XHR server's "response" object will come with
-            // an "error" which has its own "message" that can be passed to reject()
-            // in the upload promise.
-            //
-            // Your integration may handle upload errors in a different way so make sure
-            // it is done properly. The reject() function must be called when the upload fails.
-            if ( !response || response.error ) {
-                return reject( response && response.error ? response.error.message : genericErrorText );
-            }
-
-            // If the upload is successful, resolve the upload promise with an object containing
-            // at least the "default" URL, pointing to the image on the server.
-            // This URL will be used to display the image in the content. Learn more in the
-            // UploadAdapter#upload documentation.
             resolve( {
-                default: response.url
+                default: response
             } );
         } );
 

@@ -11,14 +11,12 @@
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "node-sass": "^7.0.1",
     "nuxt": "3.0.0-rc.6",
-    "sass-loader": "^13.0.2",
-    "vue3-easy-data-table": "^1.4.5"
+    "sass-loader": "^13.0.2"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.0.1",
     "@ckeditor/ckeditor5-vue": "^4.0.1",
     "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27639120.e7a7f9b",
-    "@tinymce/tinymce-vue": "^4.0.7",
     "autoprefixer": "^10.4.8",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",

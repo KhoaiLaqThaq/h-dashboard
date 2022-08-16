@@ -16,7 +16,8 @@
                 </div>
                 <!-- brief -->
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="brief" >
+                    <!-- <input type="text" class="form-control box" required="required" autocomplete="false" v-model="brief" > -->
+                    <textarea class="form-control" id="floatingTextarea2" style="height: 100px" v-model="brief"></textarea>
                     <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
                 </div>
 
@@ -34,7 +35,10 @@
                             <div class="form-group box pb-3">
                                 <div class="card m-3">
                                     <div class="card-body">
-                                        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+                                        <ckeditor 
+                                            :editor="editor" 
+                                            :config="editorConfig" 
+                                            v-model="content"></ckeditor>
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +141,6 @@ export default {
             topics: [],
             title: "",
             brief: "",
-            content: "",
             type: "",
             topic: ""
         }
@@ -146,6 +149,7 @@ export default {
         const createdDate = ref(getNowDate());
         const tag = ref('');
         const tags = ref([]);
+        const content = ref('<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>');
 
 
         const locale = {
@@ -183,7 +187,7 @@ export default {
             // config editor
             locale,
             editor: ClassicEditor,
-            editorData: '<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>',
+            content: content,
             editorConfig: {
                 // The configuration of the editor.
                 extraPlugins: [uploader],
