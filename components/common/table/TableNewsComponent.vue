@@ -10,7 +10,7 @@
         </thead>
         <tbody>
             <tr v-for="(item, index) in items" :key="index">
-                <td class="text-center">{{ index + 1 }}</td>
+                <td class="text-center">{{ (index + 1) + page*size }}</td>
                 <td>{{ item.title }}</td>
                 <td>{{ displayBrief(item.brief) }}</td>
                 <td>{{ displayDate(item.createdDate) }}</td>
@@ -47,7 +47,8 @@ export default {
         'headers',
         'items',
         'actionEdit',
-        'actionDelete'
+        'actionDelete',
+        'page', 'size'
     ],
     setup() {
 

@@ -11,7 +11,9 @@
         <div class="table-content box p-3 mt-3">
             <table-news-component 
                 :headers="headers" :items="content"
-                :actionEdit="true" :actionDelete="true" />
+                :actionEdit="true" :actionDelete="true"
+                :page="page" :size="size"
+                />
                 
             <pagination 
                 :page="page" :size="size"
