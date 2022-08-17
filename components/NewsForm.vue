@@ -151,7 +151,6 @@ export default {
         const tags = ref([]);
         const content = ref('<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>');
 
-
         const locale = {
             format: "YYYY/MM/DD",
             weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -169,15 +168,12 @@ export default {
         }
 
         function addTags() {
-            console.log("event key enter: ", tag.value);
             tags.value.push(tag.value);
             tag.value = '';
         }
 
-        function removeTag(index) {
-            console.log('Remove tag: ', index);
-            tags.value.splice(index, 1);
-        }
+        const removeTag = (index) => tags.value.splice(index, 1);
+        
 
         function onSubmit() {
             console.log('onSubmit');
