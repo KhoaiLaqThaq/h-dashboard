@@ -1,4 +1,5 @@
 <template>
+  <form @submit.prevent="onSubmit()" enctype="multipart/form-data">
   <div class="d-flex">
     <TitleHeader :title="titleForm" />
     <PreviewButton
@@ -12,12 +13,9 @@
       :btnType="'submit'"
       :name="'Save'"
       :textSize="'text-small'"
-      @click="onSubmit"
     />
-
     <NewsPreview />
   </div>
-  <form @submit.prevent="onSubmit()">
     <div class="row mt-3">
       <div class="col-8">
         <!-- title -->
@@ -33,7 +31,6 @@
         </div>
         <!-- brief -->
         <div class="form-floating mb-3">
-          <!-- <input type="text" class="form-control box" required="required" autocomplete="false" v-model="brief" > -->
           <textarea
             class="form-control"
             id="floatingTextarea2"
@@ -48,7 +45,7 @@
             <TabItem title="Ảnh đại diện">
               <div class="card">
                 <div class="card-body">
-                  <UseDropZone />
+                  <UseDropZone @changeImage="avatar = $event" />
                 </div>
               </div>
             </TabItem>
@@ -134,7 +131,6 @@
             <input
               type="text"
               class="form-control"
-              required="required"
               autocomplete="false"
               v-model="tag"
               @keyup.space="addTags()"
@@ -155,7 +151,7 @@
   </form>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
@@ -210,7 +206,7 @@ export default {
   },
   setup(props) {
     const createdDate = ref(getNowDate());
-    const avatar = ref(null);
+    const avatar = ref(undefined);
     const title = ref("");
     const brief = ref("");
     const status = ref(0);
@@ -222,6 +218,9 @@ export default {
     const topics = ref([]);
     const topic = ref(null);
     const option = ref("Loại tin 1");
+    const type = ref("");
+    let success = false;
+
     const locale = {
       format: "YYYY/MM/DD",
       weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -231,8 +230,6 @@ export default {
       clearBtn: "Clear",
       closeBtn: "Close",
     };
-    let success = false;
-    let error = false;
 
     function uploader(editor) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
@@ -251,10 +248,6 @@ export default {
       tags.value.splice(index, 1);
     }
 
-    function onSubmit(news) {
-      console.log("onSubmit" + news);
-    }
-
     //call API get lisTopics
     function getListTopic() {
       axios
@@ -265,14 +258,15 @@ export default {
           topic.value = data[0] && data[0].id;
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e.toString());
         });
     }
 
     //Call post API news
     function addNews() {
+      console.log('avatar.value', avatar.value);
       const news = {
-        avatar: avatar.value,
+        avatar: avatar.value ? avatar.value : null,
         type: option.value,
         title: title.value,
         brief: brief.value,
@@ -288,8 +282,7 @@ export default {
           success = true;
         })
         .catch((error) => {
-          console.log(news.value);
-          error = error.data.message;
+          console.log(error);
         });
     }
 
@@ -307,6 +300,7 @@ export default {
         language: "en",
       },
       // variables
+      type,
       tag,
       tags,
       createdDate,
@@ -314,7 +308,6 @@ export default {
       topic,
       option,
       success,
-      error,
       brief,
       content,
       title,
@@ -326,13 +319,12 @@ export default {
       onSubmit,
       getListTopic,
       addNews,
-      onSubmit,
     };
   },
   created() {
     this.getListTopic();
-  },
-};
+  }
+}
 </script>
 <style lang="scss">
 .tags {
