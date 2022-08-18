@@ -1,21 +1,21 @@
 <template>
   <form @submit.prevent="onSubmit()" enctype="multipart/form-data">
-  <div class="d-flex">
-    <TitleHeader :title="titleForm" />
-    <PreviewButton
-      class="btn-light box ms-auto d-flex items-center"
-      :btnType="'button'"
-      :name="'Preview'"
-      :textSize="'text-small'"
-    />
-    <BaseButton
-      class="btn-primary ms-2"
-      :btnType="'submit'"
-      :name="'Save'"
-      :textSize="'text-small'"
-    />
-    <NewsPreview />
-  </div>
+    <div class="d-flex">
+      <TitleHeader :title="titleForm" />
+      <PreviewButton
+        class="btn-light box ms-auto d-flex items-center"
+        :btnType="'button'"
+        :name="'Preview'"
+        :textSize="'text-small'"
+      />
+      <BaseButton
+        class="btn-primary ms-2"
+        :btnType="'submit'"
+        :name="'Save'"
+        :textSize="'text-small'"
+      />
+      <NewsPreview />
+    </div>
     <div class="row mt-3">
       <div class="col-8">
         <!-- title -->
@@ -138,7 +138,7 @@
             <label for="">Thêm tag <span class="text-danger">*</span></label>
             <div class="tags mt-2">
               <span
-                class="tag-item badge-primary"
+                class="tag-item bg-primary"
                 v-for="(tag, index) in tags"
                 :key="index"
                 >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
@@ -330,8 +330,9 @@ export default {
 
   .tag-item {
     margin-left: 0.2rem;
+    margin-bottom: 0.2rem;
     border-radius: 10px;
-    padding: 2px 25px 2px 5px;
+    padding: 4px 25px 4px 5px;
     display: inline-block;
     font-size: 14px;
     font-weight: 500;
@@ -340,6 +341,7 @@ export default {
     white-space: nowrap;
     vertical-align: baseline;
     position: relative;
+    color: #FFFFFF;
 
     svg {
       position: absolute;

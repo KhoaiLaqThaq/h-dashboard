@@ -12,7 +12,6 @@
                 <IconPlus class="rounded-full" />
             </div>
             <img id="preview" src="#" alt="" />
-            <input type="file">
         </div>
     </div>
 </template>
