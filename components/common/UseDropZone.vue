@@ -12,16 +12,20 @@
                 <IconPlus class="rounded-full" />
             </div>
             <img id="preview" src="#" alt="" />
+            <input type="file">
         </div>
     </div>
 </template>
 <script>
+import {ref} from 'vue';
 import { useDropzone } from 'vue3-dropzone';
 import IconPlus from '~~/assets/images/icons/IconPlus.vue';
 
 export default {
     components: { IconPlus },
-    setup() {
+    setup(props, {emit}) {
+
+        const currentImage = ref();
 
         function removePreview() {
             console.log('remove preview');
@@ -31,7 +35,10 @@ export default {
             console.log(acceptFiles)
             console.log(rejectReasons)
             if (acceptFiles) {
-                document.getElementById('preview').src = URL.createObjectURL(acceptFiles[0]);
+                let previewImage = URL.createObjectURL(acceptFiles[0]);
+                document.getElementById('preview').src = previewImage;
+
+                emit('changeImage', acceptFiles[0]);
                 document.getElementsByClassName('drag-box')[0].classList.add('d-none');
                 document.getElementsByClassName('previews')[0].classList.add('d-block');
                 document.getElementsByClassName('previews')[0].classList.remove('d-none');

@@ -26,7 +26,7 @@
           <div class="d-flex">
             <div class="ms-auto cursor-pointer" v-if="actionEdit">
               <NuxtLink :to="'/news/form/' + item.id" class="d-flex"
-                ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
+                ><edit-icon /><span class="ms-1">Edit</span></NuxtLink
               >
             </div>
             <div
@@ -34,7 +34,7 @@
               v-if="actionDelete"
             >
               <delete-icon @click="disabledNews(item.id)" />
-              <span class="ms-1">Xóa</span>
+              <span class="ms-1">Hide</span>
             </div>
           </div>
         </td>

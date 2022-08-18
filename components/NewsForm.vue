@@ -1,4 +1,5 @@
 <template>
+  <form @submit.prevent="onSubmit()" enctype="multipart/form-data">
   <div class="d-flex">
     <TitleHeader :title="titleForm" />
     <PreviewButton
@@ -12,149 +13,145 @@
       :btnType="'submit'"
       :name="'Save'"
       :textSize="'text-small'"
-      @click="onSubmit"
     />
-
     <NewsPreview />
   </div>
-
-  <div class="row mt-3">
-    <div class="col-8">
-      <!-- title -->
-      <div class="form-floating mb-3">
-        <input
-          type="text"
-          class="form-control box"
-          required="required"
-          autocomplete="false"
-          v-model="title"
-        />
-        <label for="">Tiêu đề <span class="text-danger">*</span></label>
-      </div>
-      <!-- brief -->
-      <div class="form-floating mb-3">
-        <!-- <input type="text" class="form-control box" required="required" autocomplete="false" v-model="brief" > -->
-        <textarea
-          class="form-control"
-          id="floatingTextarea2"
-          style="height: 100px"
-          v-model="brief"
-        ></textarea>
-        <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
-      </div>
-
-      <div class="form-group">
-        <TabsWrapper>
-          <TabItem title="Ảnh đại diện">
-            <div class="card">
-              <div class="card-body">
-                <UseDropZone />
-              </div>
-            </div>
-          </TabItem>
-          <TabItem title="Nội dung">
-            <!-- content -->
-            <div class="form-group box pb-3">
-              <div class="card m-3">
-                <div class="card-body">
-                  <ckeditor
-                    :editor="editor"
-                    :config="editorConfig"
-                    v-model="content"
-                  ></ckeditor>
-                </div>
-              </div>
-            </div>
-          </TabItem>
-        </TabsWrapper>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="box p-3">
-        <!-- type -->
-        <div class="mb-3">
-          <label for="" class="form-label"
-            >Loại tin tức <span class="text-danger">*</span></label
-          >
-          <select
-            v-model="option"
-            id=""
-            class="form-select"
-            required="required"
-            :value="option"
-          >
-            <option
-              v-for="(option, index) in options"
-              :key="index"
-              :value="option"
-            >
-              {{ option }}
-            </option>
-          </select>
-        </div>
-
-        <!-- ngay viet -->
-        <div class="mb-3">
-          <label for="" class="form-label"
-            >Ngày viết <span class="text-danger">*</span></label
-          >
-          <datepicker-lite
-            :class-attr="'form-control'"
-            :name-attr="'createdDate'"
-            :show-bottom-button="true"
-            :value-attr="createdDate"
-            :locale="locale"
-          />
-        </div>
-
-        <!-- topic -->
-        <div class="mb-3">
-          <label for="" class="form-label"
-            >Chủ đề <span class="text-danger">*</span></label
-          >
-          <select
-            v-model="topic"
-            id=""
-            class="form-select"
-            required="required"
-            :value="topic"
-          >
-            <option
-              v-for="(option, index) in topics"
-              :key="index"
-              :value="option.id"
-            >
-              {{ option.name }}
-            </option>
-          </select>
-        </div>
-
-        <!-- tag -->
+    <div class="row mt-3">
+      <div class="col-8">
+        <!-- title -->
         <div class="form-floating mb-3">
           <input
             type="text"
-            class="form-control"
+            class="form-control box"
             required="required"
             autocomplete="false"
-            v-model="tag"
-            @keyup.space="addTags()"
+            v-model="title"
           />
-          <label for="">Thêm tag <span class="text-danger">*</span></label>
-          <div class="tags mt-2">
-            <span
-              class="tag-item badge-primary"
-              v-for="(tag, index) in tags"
-              :key="index"
-              >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
-            /></span>
+          <label for="">Tiêu đề <span class="text-danger">*</span></label>
+        </div>
+        <!-- brief -->
+        <div class="form-floating mb-3">
+          <textarea
+            class="form-control"
+            id="floatingTextarea2"
+            style="height: 100px"
+            v-model="brief"
+          ></textarea>
+          <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
+        </div>
+
+        <div class="form-group">
+          <TabsWrapper>
+            <TabItem title="Ảnh đại diện">
+              <div class="card">
+                <div class="card-body">
+                  <UseDropZone @changeImage="avatar = $event" />
+                </div>
+              </div>
+            </TabItem>
+            <TabItem title="Nội dung">
+              <!-- content -->
+              <div class="form-group box pb-3">
+                <div class="card m-3">
+                  <div class="card-body">
+                    <ckeditor
+                      :editor="editor"
+                      :config="editorConfig"
+                      v-model="content"
+                    ></ckeditor>
+                  </div>
+                </div>
+              </div>
+            </TabItem>
+          </TabsWrapper>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="box p-3">
+          <!-- type -->
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Loại tin tức <span class="text-danger">*</span></label
+            >
+            <select
+              v-model="type"
+              id=""
+              class="form-select"
+              required="required"
+              :value="option"
+            >
+              <option
+                v-for="(option, index) in options"
+                :key="index"
+                :value="option"
+              >
+                {{ option }}
+              </option>
+            </select>
+          </div>
+
+          <!-- ngay viet -->
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Ngày viết <span class="text-danger">*</span></label
+            >
+            <datepicker-lite
+              :class-attr="'form-control'"
+              :name-attr="'createdDate'"
+              :show-bottom-button="true"
+              :value-attr="createdDate"
+              :locale="locale"
+            />
+          </div>
+
+          <!-- topic -->
+          <div class="mb-3">
+            <label for="" class="form-label"
+              >Chủ đề <span class="text-danger">*</span></label
+            >
+            <select
+              v-model="topic"
+              id=""
+              class="form-select"
+              required="required"
+              :value="topic"
+            >
+              <option
+                v-for="(option, index) in topics"
+                :key="index"
+                :value="option.id"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- tag -->
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              autocomplete="false"
+              v-model="tag"
+              @keyup.space="addTags()"
+            />
+            <label for="">Thêm tag <span class="text-danger">*</span></label>
+            <div class="tags mt-2">
+              <span
+                class="tag-item badge-primary"
+                v-for="(tag, index) in tags"
+                :key="index"
+                >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
+              /></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
@@ -205,21 +202,25 @@ export default {
     return {
       titleForm: "Giao diện thêm mới tin tức",
       options: ["Loại tin 1", "Loại tin 2", "Loại tin 3"],
-      title: "",
-      brief: "",
-      type: "",
     };
   },
   setup(props) {
     const createdDate = ref(getNowDate());
-    const tag = ref("");
-    const tags = ref([]);
+    const avatar = ref(undefined);
+    const title = ref("");
+    const brief = ref("");
+    const status = ref(0);
     const content = ref(
       "<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>"
     );
+    const tag = ref("");
+    const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
     const option = ref("Loại tin 1");
+    const type = ref("");
+    let success = false;
+
     const locale = {
       format: "YYYY/MM/DD",
       weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -231,25 +232,17 @@ export default {
     };
 
     function uploader(editor) {
-      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
         return new UploadAdapter(loader);
-      };
+      }
     }
 
     function addTags() {
-      console.log("event key enter: ", tag.value);
       tags.value.push(tag.value);
       tag.value = "";
     }
 
-    function removeTag(index) {
-      console.log("Remove tag: ", index);
-      tags.value.splice(index, 1);
-    }
-
-    function onSubmit() {
-      console.log("onSubmit");
-    }
+    const removeTag = (index) => tags.value.splice(index, 1);
 
     //call API get lisTopics
     function getListTopic() {
@@ -261,38 +254,73 @@ export default {
           topic.value = data[0] && data[0].id;
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e.toString());
         });
+    }
+
+    //Call post API news
+    function addNews() {
+      console.log('avatar.value', avatar.value);
+      const news = {
+        avatar: avatar.value ? avatar.value : null,
+        type: option.value,
+        title: title.value,
+        brief: brief.value,
+        content: content.value,
+        status: 2,
+        topicId: topic.value,
+      };
+      const headers = { "Content-Type": "multipart/form-data" };
+      axios
+        .post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
+        .then((res) => {
+          console.log(res.data);
+          success = true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function onSubmit() {
+      addNews();
     }
 
     return {
       // config editor
       locale,
       editor: ClassicEditor,
-      content: content,
       editorConfig: {
         // The configuration of the editor.
         extraPlugins: [uploader],
         language: "en",
       },
       // variables
+      type,
       tag,
       tags,
       createdDate,
       topics,
       topic,
       option,
+      success,
+      brief,
+      content,
+      title,
+      avatar,
+      status,
       // function
       addTags,
       removeTag,
       onSubmit,
       getListTopic,
+      addNews,
     };
   },
   created() {
     this.getListTopic();
-  },
-};
+  }
+}
 </script>
 <style lang="scss">
 .tags {

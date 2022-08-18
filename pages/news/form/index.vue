@@ -1,34 +1,24 @@
 <template>
-    <form @submit="onSubmit" class="mt-3">
-        <NewsForm />
-    </form>
+  <NewsForm />
 </template>
 <script>
-import { ref } from 'vue';
-import NewsForm from '~~/components/NewsForm.vue';
+import axios from "axios";
+import { ref } from "vue";
+import NewsForm from "~~/components/NewsForm.vue";
+import config from "~~/config";
 
 export default {
-    components: {
-    NewsForm
-},
-    setup() {
-        // define variables
-        const news = ref({});
+  components: {
+    NewsForm,
+  },
+  setup() {
+    // define variables
 
-        function onSubmit(data) {
-            console.log('Submit data: ', data);
-        }
-
-        return {
-            news,
-
-            onSubmit
-        }
-    },
-    mounted() {
-
-    }
-}
+    return {
+      //   addNews,
+    };
+  },
+  mounted() {},
+};
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>
