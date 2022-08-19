@@ -11,9 +11,7 @@
             name="name"
             :rules="validateName"
           />
-          <div class="mt-1 p-1">
-            <ErrorMessage name="name" class="text-danger" />
-          </div>
+          <ErrorMessage name="name" class="text-danger" />
           <label for="">Tên chủ đề <span class="text-danger">*</span></label>
         </div>
         <BaseButton
