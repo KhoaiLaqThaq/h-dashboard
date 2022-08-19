@@ -33,6 +33,9 @@
           />
           <label for="">Họ và tên <span class="text-danger">*</span></label>
         </div>
+        <div class="form-floating mb-3 row">
+          <MultiCheckboxVue v-model:value="priority" :options="options" />
+        </div>
       </div>
     </div>
   </form>
@@ -48,7 +51,7 @@ import FormCheck from "~~/components/common/FormCheck.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
-
+import MultiCheckboxVue from "./common/MultiCheckbox.vue";
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
 // icons
@@ -68,6 +71,7 @@ export default {
     UseDropZone,
     DatepickerLite,
     XIcon,
+    MultiCheckboxVue,
   },
   props: ["user"],
   data() {
@@ -77,49 +81,42 @@ export default {
     };
   },
   setup(props) {
-    const birthday = ref(getNowDate());
-    const avatar = ref(undefined);
     const email = ref("");
     const fullname = ref("");
-    const status = ref(0);
-    const topics = ref([]);
-    const topic = ref(null);
-    const option = ref("Loại tin 1");
-    const unit = ref("");
-    let success = false;
-
-    const locale = {
-      format: "YYYY/MM/DD",
-      weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-      startsWeeks: 0,
-      todayBtn: "Today",
-      clearBtn: "Clear",
-      closeBtn: "Close",
-    };
+    const priority = ref([]);
+    const options = ref([]);
 
     function onSubmit() {
-      addNews();
+      console.log("Form Submmitted");
     }
 
+    const getOptions = () => {
+      options.value = [
+        { name: "Thêm", id: 1 },
+        { name: "Sửa", id: 2 },
+        { name: "Xoá", id: 3 },
+        { name: "Thêm 2", id: 4 },
+        { name: "Sửa 2", id: 5 },
+        { name: "Xoá 2", id: 6 },
+        { name: "Phê duyệt", id: 7 },
+        { name: "Phê duyệt 2", id: 8 },
+      ];
+    };
+
+    onMounted(() => {
+      getOptions();
+    });
+
     return {
-      locale,
-      unit,
-      birthday,
-      topics,
-      topic,
-      option,
-      success,
       fullname,
       email,
-      avatar,
-      status,
+      priority,
+      options,
+
       // function
-      onSubmit
+      onSubmit,
     };
-  }
+  },
 };
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
