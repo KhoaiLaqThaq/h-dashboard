@@ -16,6 +16,7 @@ export default {
     TopicForm,
     TitleHeader,
   },
+
   data() {
     return {
       titleForm: "Thêm mới chủ đề bài viết",
@@ -23,6 +24,7 @@ export default {
   },
   setup() {
     // define variables
+
     return {
       //   addNews,
     };

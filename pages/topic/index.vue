@@ -34,6 +34,7 @@ import axios from "axios";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
+
   data() {
     return {
       titleForm: "Danh sách chủ đề",
@@ -46,6 +47,7 @@ export default {
       { text: "No", value: "no" },
       { text: "Name", value: "name" },
     ];
+
     const topics = ref([]);
     const page = ref(0);
     const size = ref(10);

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit()" enctype="multipart/form-data">
+  <Form @submit.prevent="onSubmit()" enctype="multipart/form-data">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
       <PreviewButton
@@ -20,23 +20,30 @@
       <div class="col-8">
         <!-- title -->
         <div class="form-floating mb-3">
-          <input
+          <Field
+            name="title"
+            v-model="title"
             type="text"
             class="form-control box"
             required="required"
             autocomplete="false"
-            v-model="title"
+            :rules="validateField"
           />
+          <ErrorMessage name="title" class="text-danger" />
           <label for="">Tiêu đề <span class="text-danger">*</span></label>
         </div>
         <!-- brief -->
         <div class="form-floating mb-3">
-          <textarea
+          <Field
+            as="textarea"
+            name="brief"
+            v-model="brief"
             class="form-control"
             id="floatingTextarea2"
             style="height: 100px"
-            v-model="brief"
-          ></textarea>
+            :rules="validateField"
+          />
+          <ErrorMessage name="brief" class="text-danger" />
           <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
         </div>
 
@@ -54,12 +61,16 @@
               <div class="form-group box pb-3">
                 <div class="card m-3">
                   <div class="card-body">
-                    <ckeditor
+                    <Field
+                      as="ckeditor"
+                      name="content"
                       :editor="editor"
                       :config="editorConfig"
                       v-model="content"
-                    ></ckeditor>
+                      :rules="validateField"
+                    />
                   </div>
+                  <ErrorMessage name="content" class="text-danger" />
                 </div>
               </div>
             </TabItem>
@@ -73,12 +84,15 @@
             <label for="" class="form-label"
               >Loại tin tức <span class="text-danger">*</span></label
             >
-            <select
+            <Field
+              as="select"
+              name="type"
               v-model="type"
               id=""
               class="form-select"
               required="required"
               :value="option"
+              :rules="validateField"
             >
               <option
                 v-for="(option, index) in options"
@@ -87,7 +101,8 @@
               >
                 {{ option }}
               </option>
-            </select>
+              <ErrorMessage name="type" class="text-danger" />
+            </Field>
           </div>
 
           <!-- ngay viet -->
@@ -109,12 +124,15 @@
             <label for="" class="form-label"
               >Chủ đề <span class="text-danger">*</span></label
             >
-            <select
+            <Field
+              as="select"
+              name="topic"
               v-model="topic"
               id=""
               class="form-select"
               required="required"
               :value="topic"
+              :rules="validateField"
             >
               <option
                 v-for="(option, index) in topics"
@@ -123,18 +141,22 @@
               >
                 {{ option.name }}
               </option>
-            </select>
+              <ErrorMessage name="topic" class="text-danger" />
+            </Field>
           </div>
 
           <!-- tag -->
           <div class="form-floating mb-3">
-            <input
+            <Field
+              name="tag"
               type="text"
               class="form-control"
               autocomplete="false"
               v-model="tag"
               @keyup.space="addTags()"
+              :rules="validateField"
             />
+            <ErrorMessage name="tag" class="text-danger" />
             <label for="">Thêm tag <span class="text-danger">*</span></label>
             <div class="tags mt-2">
               <span
@@ -148,7 +170,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </Form>
 </template>
 <script>
 import { ref, watch } from "vue";
@@ -177,6 +199,7 @@ import { getNowDate } from "~~/constants/format-date.js";
 // icons
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
+import { Form, Field, ErrorMessage } from "vee-validate";
 import axios from "axios";
 import CONFIG from "~~/config";
 
@@ -196,6 +219,9 @@ export default {
     DatepickerLite,
     TabsWrapper,
     XIcon,
+    Form,
+    Field,
+    ErrorMessage,
   },
   props: ["news"],
   data() {
@@ -282,6 +308,20 @@ export default {
         });
     }
 
+    function validateField(value) {
+      // if the field is empty
+      if (!value) {
+        return "Trường này là bắt buộc";
+      }
+      // if the field is not a valid email
+      if (value.length < 3)
+        // if (valu < 3) {
+        return "Trường này phải có hơn 3 ký tự";
+      // }
+      // All is good
+      return true;
+    }
+
     function onSubmit() {
       addNews();
     }
@@ -315,6 +355,7 @@ export default {
       onSubmit,
       getListTopic,
       addNews,
+      validateField,
     };
   },
   created() {
@@ -341,7 +382,7 @@ export default {
     white-space: nowrap;
     vertical-align: baseline;
     position: relative;
-    color: #FFFFFF;
+    color: #ffffff;
 
     svg {
       position: absolute;
