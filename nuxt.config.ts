@@ -1,37 +1,37 @@
 export default {
-    ssr: false,
-    head: {
-        title: 'H-Dashboard',
-        htmlAttrs: {
-            lang: 'en'
-        },
-        meta: [
-            { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' },
-            { name: 'format-detection', content: 'telephone=no' }
-        ],
-        link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-            { rel: 'stylesheet', type: 'text/css', href: 'http://fonts.googleapis.com/css?family=Roboto' }
-        ],
-        script: []
+  ssr: false,
+  head: {
+    title: "H-Dashboard",
+    htmlAttrs: {
+      lang: "en",
     },
-    css: [
-        '@/assets/scss/custom.scss'
+    meta: [
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
+      { name: "format-detection", content: "telephone=no" },
     ],
-    plugins: [
-        { src: '~/plugins/editor-vue.js' }
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "stylesheet",
+        type: "text/css",
+        href: "http://fonts.googleapis.com/css?family=Roboto",
+      },
     ],
-    components: true,
-    buildModules: [],
-    modules: [],
-    module: {
-        rules: [
-            { 
-                test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
-            },
-        ],
-    },
-}
+    script: [],
+  },
+  css: ["@/assets/scss/custom.scss"],
+  plugins: [{ src: "~/plugins/editor-vue.js" }],
+  components: true,
+  buildModules: [],
+  modules: [],
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+    ],
+  },
+};
