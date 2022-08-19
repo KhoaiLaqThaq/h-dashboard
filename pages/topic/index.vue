@@ -26,9 +26,6 @@
 import { ref, watch } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
-import TableComponent from "~~/components/common/table/TableNewsComponent.vue";
-import TitleHeader from "~~/components/common/TitleHeader.vue";
-import AddButton from "~~/components/common/AddButton.vue";
 import TableComponent from "~~/components/common/table/TableTopicsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
