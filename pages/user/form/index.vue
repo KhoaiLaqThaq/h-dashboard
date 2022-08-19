@@ -1,21 +1,24 @@
 <template>
-    <div class="content-user">
-        <div class="d-flex">
-            <TitleHeader :title="'Giao diện thêm mới người dùng'" />
-        </div>
-
-        <div class="col-12 px-3 py-4 mt-3 box">
-
-        </div>
-    </div>
+  <UserForm />
 </template>
 <script>
-import TitleHeader from '~~/components/common/TitleHeader.vue';
+import axios from "axios";
+import { ref } from "vue";
+import UserForm from "~~/components/UserForm.vue";
+import config from "~~/config";
 
 export default {
-    components: { TitleHeader }
-}
+  components: {
+    UserForm,
+  },
+  setup() {
+    // define variables
+
+    return {
+      //   addNews,
+    };
+  },
+  mounted() {},
+};
 </script>
-<style lang="scss">
-    
-</style>
+<style lang="scss"></style>
