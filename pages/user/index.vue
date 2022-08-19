@@ -16,16 +16,24 @@
     </div>
 
     <div class="table-content box p-3 mt-3">
-      <!-- <table-component 
-                :headers="headers" :items="items" 
-                :actionEdit="true" :actionDelete="true" />
-                 -->
+      <table-component
+        :headers="headers"
+        :items="items"
+        :actionEdit="true"
+        :actionDelete="true"
+      />
+
       <pagination
-        :size="'10'"
-        :currentPage="10"
-        :totalElements="3"
-        :pageNumber="1"
-        :maxPages="1"
+        :page="page"
+        :size="size"
+        :number="number"
+        :numberOfElements="numberOfElements"
+        :totalElements="totalElements"
+        :totalPages="totalPages"
+        :first="first"
+        :last="last"
+        @change-page="page = $event"
+        @change-size="size = $event"
       />
     </div>
   </div>
@@ -36,15 +44,18 @@ import { ref } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import BaseInput from "~~/components/common/BaseInput.vue";
-// import TableComponent from '~~/components/common/table/TableNewsComponent.vue';
+import TableComponent from "~~/components/common/table/TableUsersComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
+import { usersData } from "./data";
+import { usersData1 } from "./data1";
+import { usersData2 } from "./data2";
 
 export default {
   components: {
     TitleHeader,
     AddButton,
     BaseInput,
-    // TableComponent,
+    TableComponent,
     Pagination,
   },
   data() {
@@ -56,6 +67,15 @@ export default {
     };
   },
   setup() {
+    const page = ref(0);
+    const size = ref(10);
+    const number = ref(0);
+    const numberOfElements = ref(10);
+    const totalPages = ref(3);
+    const totalElements = ref(30);
+    const first = ref(false);
+    const last = ref(false);
+    //const currentPage = ref(0);
     const headers = [
       { text: "No", value: "no" },
       { text: "Fullname", value: "name" },
@@ -65,41 +85,34 @@ export default {
       { text: "Age", value: "age" },
       { text: "Role", value: "role" },
     ];
-
-    const items = [
-      {
-        no: 1,
-        name: "Curry",
-        email: "acc-test@gmail.com",
-        first_name: "First name",
-        last_name: "Last name",
-        age: 20,
-        role: "Administrator",
-      },
-      {
-        no: 2,
-        name: "James",
-        email: "acc-test@gmail.com",
-        first_name: "First name",
-        last_name: "Last name",
-        age: 20,
-        role: "Administrator",
-      },
-      {
-        no: 3,
-        name: "Jordan",
-        email: "acc-test@gmail.com",
-        first_name: "First name",
-        last_name: "Last name",
-        age: 20,
-        role: "Administrator",
-      },
-    ];
-
+    const items = ref([]);
+    const tempItems = [usersData, usersData1, usersData2];
+    function setPagination(news) {
+      items.value = news.items;
+    }
+    function getListUsers() {
+      items.value = tempItems[page.value];
+      number.value = page.value;
+    }
+    watch([page, size], () => {
+      getListUsers();
+    });
     return {
       headers,
       items,
+      page,
+      size,
+      numberOfElements,
+      number,
+      totalPages,
+      totalElements,
+      first,
+      last,
+      getListUsers,
     };
+  },
+  created() {
+    this.getListUsers();
   },
 };
 </script>

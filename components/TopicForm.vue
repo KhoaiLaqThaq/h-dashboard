@@ -11,7 +11,9 @@
             name="name"
             :rules="validateName"
           />
-          <ErrorMessage name="name" class="text-danger" />
+          <div class="mt-1 p-1">
+            <ErrorMessage name="name" class="text-danger" />
+          </div>
           <label for="">Tên chủ đề <span class="text-danger">*</span></label>
         </div>
         <BaseButton
@@ -39,7 +41,6 @@ export default {
   },
   setup(props) {
     const name = ref("");
-
     function validateName(value) {
       // if the field is empty
       if (!value) {
@@ -59,7 +60,6 @@ export default {
     }
     return {
       name,
-
       onSubmit,
       validateName,
     };
