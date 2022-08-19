@@ -2,52 +2,84 @@
   <Form @submit.prevent="onSubmit()" enctype="multipart/form-data">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
-      <PreviewButton
-        class="btn-light box ms-auto d-flex items-center"
-        :btnType="'button'"
-        :name="'Preview'"
-        :textSize="'text-small'"
-      />
-      <BaseButton
-        class="btn-primary ms-2"
-        :btnType="'submit'"
-        :name="'Save'"
-        :textSize="'text-small'"
-      />
+      <PreviewButton class="btn-light box ms-auto d-flex items-center" :btnType="'button'" :name="'Preview'" :textSize="'text-small'" />
+      <BaseButton class="btn-primary ms-2" :btnType="'submit'" :name="'Save'" :textSize="'text-small'"/>
       <NewsPreview />
     </div>
-    <div class="row mt-3">
-      <div class="col-8">
-        <!-- title -->
-        <div class="form-floating mb-3">
-          <Field
-            name="title"
-            v-model="title"
-            type="text"
-            class="form-control box"
-            required="required"
-            autocomplete="false"
+
+    <div class="row mt-3 py-3">
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <Field name="title" v-model="title" type="text" class="form-control box" required="required" autocomplete="false"
             :rules="validateField"
           />
           <ErrorMessage name="title" class="text-danger" />
           <label for="">Tiêu đề <span class="text-danger">*</span></label>
         </div>
-        <!-- brief -->
-        <div class="form-floating mb-3">
-          <Field
-            as="textarea"
-            name="brief"
-            v-model="brief"
-            class="form-control"
-            id="floatingTextarea2"
-            style="height: 100px"
-            :rules="validateField"
-          />
-          <ErrorMessage name="brief" class="text-danger" />
-          <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
+      </div>
+
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+            <Field as="select" name="type" v-model="type" id="" class="form-select box" required="required" :value="option" :rules="validateField">
+              <option v-for="(option, index) in options" :key="index" :value="option">{{ option }}</option>
+              <ErrorMessage name="type" class="text-danger" />
+            </Field>
+            <label>Loại tin tức <span class="text-danger">*</span></label>
+          </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <Field as="select" name="topic" v-model="topic" id="" class="form-select box" required="required" :value="topic" :rules="validateField">
+            <option v-for="(option, index) in topics" :key="index" :value="option.id">{{ option.name }}</option>
+            <ErrorMessage name="topic" class="text-danger" />
+          </Field>
+          <label>Chủ đề <span class="text-danger">*</span></label>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+            <datepicker-lite
+              class="form-control box"
+              :class-attr="'border-none'" :name-attr="'createdDate'"
+             :show-bottom-button="true" :value-attr="createdDate"
+             :locale="locale"
+            />
+            <label>Ngày viết <span class="text-danger">*</span></label>
+          </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+          <!-- brief -->
+          <div class="form-floating mb-3">
+            <Field as="textarea" name="brief" v-model="brief" class="form-control box" id="floatingTextarea2" style="min-height: 150px"
+              :rules="validateField"
+            />
+            <ErrorMessage name="brief" class="text-danger" />
+            <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
+          </div>
         </div>
 
-        <div class="form-group">
+        <div class="col-lg-3 col-sm-12">
+          <div class="form-floating mb-3">
+            <Field name="tag" type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"
+              :rules="validateField"
+            />
+            <ErrorMessage name="tag" class="text-danger" />
+            <label for="">Thêm tag <span class="text-danger">*</span></label>
+            <div class="tags mt-2">
+              <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index" >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="row mx-0">
+      <div class="col-12 form-group box py-3">
           <TabsWrapper>
             <TabItem title="Ảnh đại diện">
               <div class="card">
@@ -58,7 +90,7 @@
             </TabItem>
             <TabItem title="Nội dung">
               <!-- content -->
-              <div class="form-group box pb-3">
+              <div class="form-group bg-white pb-3">
                 <div class="card m-3">
                   <div class="card-body">
                     <Field
@@ -76,99 +108,6 @@
             </TabItem>
           </TabsWrapper>
         </div>
-      </div>
-      <div class="col-4">
-        <div class="box p-3">
-          <!-- type -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Loại tin tức <span class="text-danger">*</span></label
-            >
-            <Field
-              as="select"
-              name="type"
-              v-model="type"
-              id=""
-              class="form-select"
-              required="required"
-              :value="option"
-              :rules="validateField"
-            >
-              <option
-                v-for="(option, index) in options"
-                :key="index"
-                :value="option"
-              >
-                {{ option }}
-              </option>
-              <ErrorMessage name="type" class="text-danger" />
-            </Field>
-          </div>
-
-          <!-- ngay viet -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Ngày viết <span class="text-danger">*</span></label
-            >
-            <datepicker-lite
-              :class-attr="'form-control'"
-              :name-attr="'createdDate'"
-              :show-bottom-button="true"
-              :value-attr="createdDate"
-              :locale="locale"
-            />
-          </div>
-
-          <!-- topic -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Chủ đề <span class="text-danger">*</span></label
-            >
-            <Field
-              as="select"
-              name="topic"
-              v-model="topic"
-              id=""
-              class="form-select"
-              required="required"
-              :value="topic"
-              :rules="validateField"
-            >
-              <option
-                v-for="(option, index) in topics"
-                :key="index"
-                :value="option.id"
-              >
-                {{ option.name }}
-              </option>
-              <ErrorMessage name="topic" class="text-danger" />
-            </Field>
-          </div>
-
-          <!-- tag -->
-          <div class="form-floating mb-3">
-            <Field
-              name="tag"
-              type="text"
-              class="form-control"
-              autocomplete="false"
-              v-model="tag"
-              @keyup.space="addTags()"
-              :rules="validateField"
-            />
-            <ErrorMessage name="tag" class="text-danger" />
-            <label for="">Thêm tag <span class="text-danger">*</span></label>
-            <div class="tags mt-2">
-              <span
-                class="tag-item bg-primary"
-                v-for="(tag, index) in tags"
-                :key="index"
-                >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
-              /></span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </Form>
 </template>
