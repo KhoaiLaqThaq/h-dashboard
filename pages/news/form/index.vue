@@ -1,5 +1,5 @@
 <template>
-  <NewsForm />
+  <NewsForm class="mt-3" />
 </template>
 <script>
 import axios from "axios";

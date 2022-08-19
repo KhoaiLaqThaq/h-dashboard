@@ -38,12 +38,7 @@ export default class UploadAdapter {
     _initRequest() {
         const xhr = this.xhr = new XMLHttpRequest();
 
-        // Note that your request may look different. It is up to you and your editor
-        // integration to choose the right communication channel. This example uses
-        // a POST request with JSON as a data structure but your configuration
-        // could be different.
         xhr.open( 'POST', `${CONFIG.BASE_URL}/api/image/upload/path`, true );
-        xhr.responseType = 'json';
     }
 
     // Initializes XMLHttpRequest listeners.
@@ -60,7 +55,6 @@ export default class UploadAdapter {
                 default: response
             } );
         } );
-
         // Upload progress when it is supported. The file loader has the #uploadTotal and #uploaded
         // properties which are used e.g. to display the upload progress bar in the editor
         // user interface.
