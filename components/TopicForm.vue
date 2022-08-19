@@ -31,6 +31,9 @@ import { ref } from "vue";
 import TitleHeader from "./common/TitleHeader.vue";
 import BaseButton from "./common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
+
+import axios from "axios";
+import CONFIG from "~~/config";
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {
@@ -41,6 +44,7 @@ export default {
   },
   setup(props) {
     const name = ref("");
+    let success = false;
     function validateName(value) {
       // if the field is empty
       if (!value) {
@@ -58,10 +62,34 @@ export default {
     function onSubmit(values) {
       console.log(values);
     }
+    //Call post API topic
+    function addTopic() {
+      const topic = {
+        name: name.value,
+      };
+      console.log(topic);
+      const headers = { "Content-Type": "application/json" };
+      axios
+        .post(`${CONFIG.BASE_URL}/api/topic`, topic, { headers })
+        .then((res) => {
+          console.log(res.data);
+          success = true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function onSubmit() {
+      addTopic();
+      //redirect("/topic");
+    }
     return {
       name,
       onSubmit,
       validateName,
+      addTopic,
+      success,
     };
   },
 };
