@@ -1,11 +1,13 @@
 <template>
-    <div>
-        chi tiet tin tuc
-    </div>
+    <NewsForm class="mt-3" />
 </template>
 <script>
+import NewsForm from '~~/components/NewsForm.vue';
+
 export default {
-    
+    components() {
+        NewsForm
+    },
 }
 </script>
 <style lang="">

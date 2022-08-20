@@ -1,5 +1,5 @@
 <template>
-  <Form @submit.prevent="onSubmit()" enctype="multipart/form-data">
+  <Form @submit="onSubmit()" enctype="multipart/form-data">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
       <PreviewButton class="btn-light box ms-auto d-flex items-center" :btnType="'button'" :name="'Preview'" :textSize="'text-small'" />
@@ -66,13 +66,10 @@
 
         <div class="col-lg-3 col-sm-12">
           <div class="form-floating mb-3">
-            <Field name="tag" type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"
-              :rules="validateField"
-            />
-            <ErrorMessage name="tag" class="text-danger" />
+            <input type="text" class="form-control" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
             <label for="">Thêm tag <span class="text-danger">*</span></label>
             <div class="tags mt-2">
-              <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index" >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
+              <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
             </div>
           </div>
         </div>
@@ -93,14 +90,11 @@
               <div class="form-group bg-white pb-3">
                 <div class="card m-3">
                   <div class="card-body">
-                    <Field
-                      as="ckeditor"
-                      name="content"
+                    <ckeditor
                       :editor="editor"
                       :config="editorConfig"
                       v-model="content"
-                      :rules="validateField"
-                    />
+                    ></ckeditor>
                   </div>
                   <ErrorMessage name="content" class="text-danger" />
                 </div>
@@ -112,7 +106,8 @@
   </Form>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, reactive } from "vue";
+import { useRoute } from 'vue-router';
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
@@ -162,14 +157,17 @@ export default {
     Field,
     ErrorMessage,
   },
-  props: ["news"],
   data() {
     return {
-      titleForm: "Giao diện thêm mới tin tức",
       options: ["Loại tin 1", "Loại tin 2", "Loại tin 3"],
-    };
+    }
   },
-  setup(props) {
+  setup() {
+    const route = useRoute();
+    const newsId = ref(route.params.id);
+    const newsExist = ref({});
+
+    const titleForm = ref("");
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
     const title = ref("");
@@ -179,12 +177,37 @@ export default {
       "<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>"
     );
     const tag = ref("");
+    const tagNames = ref("");
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
     const option = ref("Loại tin 1");
     const type = ref("");
     let success = false;
+
+    // call api getById
+    function callApiGetById() {
+      if (newsId.value) {
+        console.log('entering callApiGetById()...', newsId.value);
+        axios.get(`${CONFIG.BASE_URL}/api/news/${newsId.value}`)
+        .then((response) => {
+          if (response) {
+            newsExist.value = response.data;
+          }
+        }).catch(error => console.log(error));
+      }
+    }
+
+    watch(newsExist, () => {
+      if (newsExist.value) {
+        title.value = newsExist.value.title;
+        type.value = newsExist.value.type;
+        topic.value = newsExist.value.topic.id;
+        createdDate.value = newsExist.value.createdDate;
+        brief.value = newsExist.value.brief
+      }
+
+    });
 
     const locale = {
       format: "YYYY/MM/DD",
@@ -202,14 +225,21 @@ export default {
       };
     }
 
+    // TODO: thêm tag
     function addTags() {
+      tagNames.value += ("," + tag.value);
       tags.value.push(tag.value);
       tag.value = "";
     }
 
-    const removeTag = (index) => tags.value.splice(index, 1);
+    // TODO: Remove tag
+    const removeTag = (index) => {
+      let tagName = tags[index].value;
+      console.log(tagName);
+      tags.value.splice(index, 1)
+    };
 
-    //call API get lisTopics
+    // TODO: call API get lisTopics
     function getListTopic() {
       axios
         .get(`${CONFIG.BASE_URL}/api/topics`)
@@ -223,9 +253,19 @@ export default {
         });
     }
 
-    //Call post API news
-    function addNews() {
-      console.log("avatar.value", avatar.value);
+    // TODO: Define rules for validate
+    function validateField(value) {
+      // if the field is empty
+      if (!value)
+        return "Trường này là bắt buộc";
+      // if the field is not a valid email
+      if (value.length < 3)
+        return "Trường này phải có hơn 3 ký tự";
+      return true;
+    }
+
+    function onSubmit() {
+      console.log('entering onSubmit()...');
       const news = {
         avatar: avatar.value ? avatar.value : null,
         type: option.value,
@@ -234,7 +274,9 @@ export default {
         content: content.value,
         status: 2,
         topicId: topic.value,
+        tagNames: tagNames.value
       };
+
       const headers = { "Content-Type": "multipart/form-data" };
       axios
         .post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
@@ -247,25 +289,8 @@ export default {
         });
     }
 
-    function validateField(value) {
-      // if the field is empty
-      if (!value) {
-        return "Trường này là bắt buộc";
-      }
-      // if the field is not a valid email
-      if (value.length < 3)
-        // if (valu < 3) {
-        return "Trường này phải có hơn 3 ký tự";
-      // }
-      // All is good
-      return true;
-    }
-
-    function onSubmit() {
-      addNews();
-    }
-
     return {
+      titleForm,
       // config editor
       locale,
       editor: ClassicEditor,
@@ -293,12 +318,13 @@ export default {
       removeTag,
       onSubmit,
       getListTopic,
-      addNews,
       validateField,
+      callApiGetById
     };
   },
   created() {
     this.getListTopic();
+    this.callApiGetById();
   },
 };
 </script>
