@@ -14,7 +14,12 @@
         :name="'Save'"
         :textSize="'text-small'"
       />
-      <NewsPreview />
+      <NewsPreview
+        :title="title"
+        :avatar="avatar"
+        :content="content"
+        :createdDate="createdDate"
+      />
     </div>
     <div class="row mt-3">
       <div class="col-8">
