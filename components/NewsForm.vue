@@ -204,7 +204,8 @@ export default {
         type.value = newsExist.value.type;
         topic.value = newsExist.value.topic.id;
         createdDate.value = newsExist.value.createdDate;
-        brief.value = newsExist.value.brief
+        brief.value = newsExist.value.brief;
+        content.value = newsExist.value.content;
       }
 
     });

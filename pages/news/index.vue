@@ -2,7 +2,18 @@
   <div class="content-news mt-3">
     <div class="d-flex">
       <TitleHeader :title="title" />
-      <AddButton class="ms-auto" :title="btnTitle" :routerPush="routerPush" />
+      <!-- <AddButton class="ms-auto" :title="btnTitle" :routerPush="routerPush" /> -->
+    </div>
+    <div class="d-flex mt-3">
+      <AddButton
+        :textSize="'text-small'"
+        :title="btnTitle"
+        :routerPush="routerPush"
+      />
+      <div class="ms-auto" id="searchBox">
+        <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
+        <span class="btn-suggest">Enter</span>
+      </div>
     </div>
     <div class="table-content box p-3 mt-3">
       <table-news-component
@@ -65,6 +76,7 @@ export default {
     const first = ref(false);
     const last = ref(false);
     const content = ref([]);
+    const keyword = ref('');
 
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
@@ -92,6 +104,7 @@ export default {
       let criteria = {
         page: page.value,
         size: size.value,
+        keyword: keyword.value
       };
 
       // TODO: Call api
@@ -124,8 +137,9 @@ export default {
       first,
       last,
       content,
+      keyword,
 
-      searchCallApi,
+      searchCallApi
     };
   },
   created() {
@@ -134,4 +148,22 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style lang="scss">
+#searchBox {
+  position: relative;
+  
+  .btn-suggest {
+    position: absolute;
+    top: 0.25rem;
+    right: 10px;
+    border: 3px solid rgb(141, 141, 141);
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: rgb(168, 167, 167);
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+
+}
+
+</style>
