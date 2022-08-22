@@ -11,30 +11,65 @@
     </div>
     <div class="row mt-3">
       <div class="col-12">
-        <!-- email -->
-        <div class="form-floating mb-3">
-          <input
-            type="email"
-            class="form-control box"
-            required="required"
-            autocomplete="false"
-            v-model="email"
-          />
-          <label for="">Email <span class="text-danger">*</span></label>
-        </div>
-        <!-- fullname -->
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control box"
-            required="required"
-            autocomplete="false"
-            v-model="fullname"
-          />
-          <label for="">Họ và tên <span class="text-danger">*</span></label>
-        </div>
-        <div class="form-floating mb-3 row">
-          <MultiCheckboxVue v-model:value="priority" :options="options" />
+        <!-- Họ -->
+        <div class="row gx-2">
+          <div class="form-floating mb-3 col-6">
+            <input
+              type="text"
+              class="form-control box"
+              required="required"
+              autocomplete="false"
+              v-model="last_name"
+            />
+            <label for="">Họ <span class="text-danger">*</span></label>
+          </div>
+          <!-- Tên  -->
+          <div class="form-floating mb-3 col-6">
+            <input
+              type="text"
+              class="form-control box"
+              required="required"
+              autocomplete="false"
+              v-model="first_name"
+            />
+            <label for="">Tên <span class="text-danger">*</span></label>
+          </div>
+          <!-- Tên đăng nhập -->
+          <div class="form-floating mb-3 col-6">
+            <input
+              type="text"
+              class="form-control box"
+              required="required"
+              autocomplete="false"
+              v-model="username"
+            />
+            <label for=""
+              >Tên đăng nhập <span class="text-danger">*</span></label
+            >
+          </div>
+          <!-- Email  -->
+          <div class="form-floating mb-3 col-6">
+            <input
+              type="email"
+              class="form-control box"
+              required="required"
+              autocomplete="false"
+              v-model="email"
+            />
+            <label for="">Email <span class="text-danger">*</span></label>
+          </div>
+
+          <label for=""
+            >Phân nhóm quyền <span class="text-danger">*</span></label
+          >
+          <div class="form-floating mb-3 row">
+            <MultiCheckboxVue v-model:value="priority" :options="options" />
+          </div>
+
+          <label for="">Phân quyền <span class="text-danger">*</span></label>
+          <div class="form-floating mb-3 row">
+            <MultiCheckboxVue v-model:value="priority" :options="options" />
+          </div>
         </div>
       </div>
     </div>
