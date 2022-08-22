@@ -246,7 +246,6 @@ export default {
     const topic = ref(null);
     const option = ref("Loại tin tập đoàn");
     const type = ref("");
-    let success = false;
 
     // call api getById
     function callApiGetById() {
@@ -300,7 +299,7 @@ export default {
 
     // TODO: Remove tag
     const removeTag = (index) => {
-      let tagName = tags[index].value;
+      let tagName = tags.value[index];
       console.log(tagName);
       tags.value.splice(index, 1);
     };
@@ -345,8 +344,9 @@ export default {
       axios
         .post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
         .then((res) => {
+          let responseData = res.data;
           console.log(res.data);
-          success = true;
+          alert(responseData.code + ' ' + responseData.message);
         })
         .catch((error) => {
           console.log(error);
@@ -371,7 +371,6 @@ export default {
       topics,
       topic,
       option,
-      success,
       brief,
       content,
       title,
