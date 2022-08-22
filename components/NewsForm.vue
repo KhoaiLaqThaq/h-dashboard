@@ -66,7 +66,7 @@
 
         <div class="col-lg-3 col-sm-12">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
+            <input type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
             <label for="">Thêm tag <span class="text-danger">*</span></label>
             <div class="tags mt-2">
               <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
@@ -81,7 +81,7 @@
             <TabItem title="Ảnh đại diện">
               <div class="card">
                 <div class="card-body">
-                  <UseDropZone @changeImage="avatar = $event" />
+                  <UseDropZone @changeImage="avatar = $event" :avatar="avatarUrl" />
                 </div>
               </div>
             </TabItem>
@@ -170,6 +170,7 @@ export default {
     const titleForm = ref("");
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
+    const avatarUrl = ref("");
     const title = ref("");
     const brief = ref("");
     const status = ref(0);
@@ -206,6 +207,7 @@ export default {
         createdDate.value = newsExist.value.createdDate;
         brief.value = newsExist.value.brief;
         content.value = newsExist.value.content;
+        avatarUrl.value = newsExist.value.avatarUrl;
       }
 
     });
@@ -312,7 +314,7 @@ export default {
       brief,
       content,
       title,
-      avatar,
+      avatar, avatarUrl,
       status,
       // function
       addTags,
