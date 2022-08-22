@@ -63,7 +63,7 @@ export default {
     }
 
     function displayDate(date) {
-      return moment(date).format("YYYY-MM-DD HH:mm:ss");
+      return moment(date).month(date[1] - 1).format('YYYY-MM-DD HH:mm:ss');
     }
 
     return {
