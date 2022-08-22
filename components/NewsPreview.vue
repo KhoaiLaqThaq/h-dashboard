@@ -40,7 +40,7 @@
                 {{ title ? title : newsDefault.title }}
               </div>
               <div class="info d-flex mb-3 px-3">
-                <div class="created-date">{{ createdDate }}</div>
+                <div class="created-date">{{ displayDate(createdDate) }}</div>
                 <div class="reaction ms-auto">
                   <HeartIcon />
                 </div>
@@ -81,7 +81,7 @@ import NewsRelated from "~~/components/NewsRelated.vue";
 
 // icon
 import HeartIcon from "../assets/images/icons/HeartIcon.vue";
-
+import moment from "moment";
 import { getNowDate } from "~~/constants/format-date";
 import SquareIcon from "../assets/images/icons/SquareIcon.vue";
 import BackIcon from "../assets/images/icons/BackIcon.vue";
@@ -116,6 +116,14 @@ export default {
       },
     };
   },
+  setup(props) {
+
+    function displayDate(createdDate) {
+      return moment(createdDate).month(createdDate[1] - 1).format('YYYY-MM-DD HH:mm:ss');
+    }
+
+    return {displayDate}
+  }
 };
 </script>
 <style lang="scss"></style>
