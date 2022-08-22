@@ -39,7 +39,6 @@ export default {
             console.log(rejectReasons)
             if (acceptFiles) {
                 let previewImage = URL.createObjectURL(acceptFiles[0]);
-                console.log('preview image: ' + previewImage);
                 document.getElementById('preview').src = previewImage;
 
                 emit('changeImage', acceptFiles[0]);
