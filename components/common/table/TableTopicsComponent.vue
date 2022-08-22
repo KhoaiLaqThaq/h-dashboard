@@ -20,10 +20,10 @@
               >
             </div>
             <div
-              class="d-flex me-0 cursor-pointer ms-0 text-danger"
+              class="d-flex me-3 cursor-pointer ms-3 text-danger"
               v-if="actionDelete"
             >
-              <delete-icon @click="disabledNews(item.id)" />
+              <delete-icon @click="disabledTopics(item.id)" />
               <span class="ms-1">Xóa</span>
             </div>
           </div>

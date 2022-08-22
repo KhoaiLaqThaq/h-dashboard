@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      titleForm: "Thêm mới chủ đề bài viết",
+      titleForm: "Chỉnh sửa chủ đề bài viết",
     };
   },
   setup() {

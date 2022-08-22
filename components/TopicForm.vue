@@ -33,6 +33,7 @@ import { ref } from "vue";
 import TitleHeader from "./common/TitleHeader.vue";
 import BaseButton from "./common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { useRoute } from "vue-router";
 
 import axios from "axios";
 import CONFIG from "~~/config";
@@ -45,8 +46,32 @@ export default {
     };
   },
   setup(props) {
+    const route = useRoute();
     const name = ref("");
+    const topicId = ref(route.params.id);
+    const topicExist = ref({});
     let success = false;
+
+    // call api getById
+    function callApiGetById() {
+      if (topicId.value) {
+        console.log("entering callApiGetById()...", topicId.value);
+        axios
+          .get(`${CONFIG.BASE_URL}/api/topic/${topicId.value}`)
+          .then((response) => {
+            if (response) {
+              topicExist.value = response.data;
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    }
+
+    watch(topicExist, () => {
+      if (topicExist.value) {
+        name.value = topicExist.value.name;
+      }
+    });
 
     function validateName(value) {
       // if the field is empty
@@ -62,9 +87,6 @@ export default {
       return true;
     }
 
-    function onSubmit(values) {
-      console.log(values);
-    }
     //Call post API topic
     function addTopic() {
       const topic = {
@@ -83,8 +105,33 @@ export default {
         });
     }
 
+    //Call put API topic
+    function editTopic() {
+      const topic = {
+        id: topicId.value,
+        name: name.value,
+      };
+      console.log(topic);
+      const headers = { "Content-Type": "application/json" };
+      axios
+        .put(`${CONFIG.BASE_URL}/api/topic/` + topicId.value, topic, {
+          headers,
+        })
+        .then((res) => {
+          console.log(res.data);
+          success = true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
     function onSubmit() {
-      addTopic();
+      if (topicId.value) {
+        editTopic();
+      } else {
+        addTopic();
+      }
       //redirect("/topic");
     }
     return {
@@ -93,7 +140,12 @@ export default {
       validateName,
       addTopic,
       success,
+      editTopic,
+      callApiGetById,
     };
+  },
+  created() {
+    this.callApiGetById();
   },
 };
 </script>
