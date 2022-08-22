@@ -142,7 +142,7 @@
               <div class="card-body">
                 <UseDropZone
                   @changeImage="avatar = $event"
-                  :avatar="avatarUrl"
+                  :avatarUrl="avatarUrl"
                 />
               </div>
             </div>
