@@ -1,5 +1,5 @@
 <template>
-  <Form @submit.prevent="onSubmit()" enctype="multipart/form-data">
+  <Form @submit="onSubmit()" enctype="multipart/form-data">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
       <PreviewButton
@@ -114,7 +114,6 @@
             v-model="brief"
             class="form-control box"
             id="floatingTextarea2"
-            style="min-height: 150px"
             :rules="validateField"
           />
           <ErrorMessage name="brief" class="text-danger" />
@@ -135,10 +134,10 @@
     </div>
 
     <div class="row mx-0">
-      <div class="col-12 form-group box py-3">
+      <div class="col-12 form-group box px-0">
         <TabsWrapper>
           <TabItem title="Ảnh đại diện">
-            <div class="card">
+            <div class="card radius-unset box">
               <div class="card-body">
                 <UseDropZone
                   @changeImage="avatar = $event"
@@ -149,9 +148,9 @@
           </TabItem>
           <TabItem title="Nội dung">
             <!-- content -->
-            <div class="form-group bg-white pb-3">
+            <div class="form-group bg-white">
               <div class="card m-3">
-                <div class="card-body">
+                <div class="card-body p-0">
                   <ckeditor
                     :editor="editor"
                     :config="editorConfig"

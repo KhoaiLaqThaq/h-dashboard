@@ -10,9 +10,7 @@ provide('selectedTitle', selectedTitle)
 
 <template>
     <div class="tabs">
-
-        <ul class="tabs__header">
-
+        <ul class="tabs__header bg-slate-200">
             <li 
                 v-for="title in tabTitles" 
                 :key="title"
@@ -22,43 +20,50 @@ provide('selectedTitle', selectedTitle)
             >
                 {{ title }}
             </li>
-
         </ul>
 
         <slot />
     </div>
 </template>
 
-<style>
+<style lang="scss">
 .tabs__header {
     list-style: none;
+    width: 100%;
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: space-between;
     gap: 5px;
-    width: 50%;
+    width: 100%;
+    &.bg-slate-200 {
+        --tw-bg-opacity: 1;
+    background-color: rgb(226,232,240);
+    }
 }
 
 .tabs__item {
     flex: 1;
-    background-color: #FFFFFF;
+    background-color: rgb(226,232,240);
     padding: 0.75rem 10px;
-    border-radius: 5px 5px 0 0;
+    // border-radius: 5px 5px 0 0;
     transition: .4s all ease-out;
     cursor: pointer;
     user-select: none;
+    max-width: 150px;
 }
 
 .tabs__item.selected {
-    background-color: #1e40af;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #1e40af;
+    font-weight: 600;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .tabs__content {
     background-color: #bfbfbf;
     min-height: 300px;
     display: grid;
-    border-radius: 0 0 5px 5px;
+    border-radius: unset;
 }
 </style>
