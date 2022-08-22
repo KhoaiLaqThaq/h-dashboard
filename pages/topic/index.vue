@@ -36,7 +36,7 @@ export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
   data() {
     return {
-      titleForm: "Danh sách chủ đề",
+      titleForm: "Danh sách chuyên mục",
       btnTitle: "Thêm mới",
       routerPush: "/topic/form",
     };

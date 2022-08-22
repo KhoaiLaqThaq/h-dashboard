@@ -2,6 +2,7 @@
   <table class="table table-striped table-hover">
     <thead>
       <tr>
+        <th>#</th>
         <th v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
@@ -10,6 +11,7 @@
     </thead>
     <tbody>
       <tr v-for="(item, index) in items" :key="index">
+        <td><input type="checkbox"></td>
         <td class="text-center">{{ index + 1 + page * size }}</td>
         <td>{{ item.title }}</td>
         <td>{{ displayBrief(item.brief) }}</td>
