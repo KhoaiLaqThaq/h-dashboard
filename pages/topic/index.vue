@@ -46,6 +46,7 @@ export default {
       { text: "No", value: "no" },
       { text: "Name", value: "name" },
     ];
+
     const topics = ref([]);
     const page = ref(0);
     const size = ref(10);
@@ -92,7 +93,7 @@ export default {
   },
   created() {
     this.searchCallApi();
-  }
+  },
 };
 </script>
 <style lang=""></style>
