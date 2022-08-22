@@ -65,8 +65,9 @@
         </div>
 
         <div class="col-lg-3 col-sm-12">
-          <div class="form-floating mb-3">
+          <div class="form-floating mb-3 input-suggest__event">
             <input type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
+            <span class="title-suggest__event">Space</span>
             <label for="">Thêm tag <span class="text-danger">*</span></label>
             <div class="tags mt-2">
               <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
@@ -159,7 +160,7 @@ export default {
   },
   data() {
     return {
-      options: ["Loại tin 1", "Loại tin 2", "Loại tin 3"],
+      options: ["Loại tin tập đoàn", "Loại tin phòng", "Loại tin hành chính"],
     }
   },
   setup() {
@@ -182,7 +183,7 @@ export default {
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
-    const option = ref("Loại tin 1");
+    const option = ref("Loại tin tập đoàn");
     const type = ref("");
     let success = false;
 
@@ -369,5 +370,16 @@ export default {
       }
     }
   }
+}
+.title-suggest__event {
+  position: absolute;
+    top: 1rem;
+    right: 10px;
+    border: 3px solid rgb(141, 141, 141);
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: rgb(168, 167, 167);
+    color: #FFFFFF;
+    font-weight: bold;
 }
 </style>

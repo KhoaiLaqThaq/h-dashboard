@@ -10,7 +10,7 @@
         :title="btnTitle"
         :routerPush="routerPush"
       />
-      <div class="ms-auto" id="searchBox">
+      <div class="ms-auto input-suggest__event">
         <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
         <span class="btn-suggest">Enter</span>
       </div>
@@ -149,7 +149,7 @@ export default {
 };
 </script>
 <style lang="scss">
-#searchBox {
+.input-suggest__event {
   position: relative;
   
   .btn-suggest {
