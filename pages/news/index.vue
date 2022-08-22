@@ -20,7 +20,7 @@
         :headers="headers"
         :items="content"
         :actionEdit="true"
-        :actionDelete="true"
+        :actionDelete="false"
         :page="page"
         :size="size"
       />

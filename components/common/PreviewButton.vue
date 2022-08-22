@@ -1,19 +1,33 @@
 <template>
-    <button class="btn"
-        :type="btnType"
-        data-bs-toggle="modal"
-        data-bs-target="#newsPreview"
-    >
-        <PreviewIcon class="lucide w-4 h-4" />
-        <span class="ms-2" :class="textSize">{{ name }}</span>
-    </button>
+    <div>
+        <div class="dropdown">
+            <button class="btn dropdown-toggle btn-light box ms-auto d-flex items-center" data-toggle="dropdown"
+                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                :type="btnType"
+            >
+                <PreviewIcon class="lucide w-4 h-4" />
+                <span class="ms-2" :class="textSize">{{ name }}</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newsPreview"
+                ><IconPhone /> <span>Phone preview </span></li>
+                <li class="dropdown-item"><IconTablet /> <span>Tablet preview </span></li>
+            </ul>
+        </div>
+    </div>
 </template>
 <script>
 import PreviewIcon from '~~/assets/images/icons/PreviewIcon.vue';
+import IconPhone from '~~/assets/images/icons/IconPhone.vue';
+import IconTablet from '~~/assets/images/icons/IconTablet.vue'
 
 export default {
     components: {
-        PreviewIcon
+        PreviewIcon,
+        IconPhone,
+        IconTablet
     },
     props: [
         'btnType',

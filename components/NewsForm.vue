@@ -3,7 +3,7 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
       <PreviewButton
-        class="btn-light box ms-auto d-flex items-center"
+        class="ms-auto"
         :btnType="'button'"
         :name="'Preview'"
         :textSize="'text-small'"
@@ -45,10 +45,9 @@
             as="select"
             name="type"
             v-model="type"
-            id=""
             class="form-select box"
             required="required"
-            :value="option"
+            :value="type"
             :rules="validateField"
           >
             <option
@@ -70,7 +69,6 @@
             as="select"
             name="topic"
             v-model="topic"
-            id=""
             class="form-select box"
             required="required"
             :value="topic"
@@ -167,7 +165,7 @@
   </Form>
 </template>
 <script>
-import { ref, watch, reactive } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -227,8 +225,8 @@ export default {
     const route = useRoute();
     const newsId = ref(route.params.id);
     const newsExist = ref({});
+    const titleForm = ref(newsId.value ? 'Giao diện chỉnh sửa tin tức':'Giao diện thêm mới tin tức');
 
-    const titleForm = ref("");
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
     const avatarUrl = ref("");
