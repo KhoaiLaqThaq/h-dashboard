@@ -63,7 +63,10 @@
             >Phân nhóm quyền <span class="text-danger">*</span></label
           >
           <div class="form-floating mb-3 row">
-            <MultiCheckboxVue v-model:value="priority" :options="options" />
+            <MultiCheckboxVue
+              v-model:value="groupPriority"
+              :options="groupOptions"
+            />
           </div>
 
           <label for="">Phân quyền <span class="text-danger">*</span></label>
@@ -120,6 +123,8 @@ export default {
     const fullname = ref("");
     const priority = ref([]);
     const options = ref([]);
+    const groupOptions = ref([]);
+    const groupPriority = ref([]);
 
     function onSubmit() {
       console.log("Form Submmitted");
@@ -138,8 +143,18 @@ export default {
       ];
     };
 
+    const getGroupOptions = () => {
+      groupOptions.value = [
+        { name: "Nhóm Admin", id: 1 },
+        { name: "Nhóm Content Creator", id: 2 },
+        { name: "Nhóm Phê duyệt", id: 3 },
+        { name: "Nhóm Chỉnh sửa", id: 4 },
+      ];
+    };
+
     onMounted(() => {
       getOptions();
+      getGroupOptions();
     });
 
     return {
@@ -147,6 +162,8 @@ export default {
       email,
       priority,
       options,
+      groupOptions,
+      groupPriority,
 
       // function
       onSubmit,
