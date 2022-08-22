@@ -16,7 +16,7 @@
             <ErrorMessage name="name" class="text-danger" />
           </div>
 
-          <label for="">Tên chủ đề <span class="text-danger">*</span></label>
+          <label for="">Tên đơn vị <span class="text-danger">*</span></label>
         </div>
         <BaseButton
           class="btn-primary ms-auto"
@@ -41,35 +41,64 @@ export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {
     return {
-      titleAdd: "Thêm mới chủ đề",
-      titleEdit: "Chỉnh sửa chủ đề",
+      titleAdd: "Thêm mới đơn vị",
+      titleEdit: "Chỉnh sửa đơn vị",
     };
   },
   setup(props) {
     const route = useRoute();
     const name = ref("");
-    const topicId = ref(route.params.id);
-    const topicExist = ref({});
+    const unitId = ref(route.params.id);
+    const unitExist = ref({});
     let success = false;
-
+    const units = ref([
+      {
+        id: 1,
+        name: "Mavinex",
+      },
+      {
+        id: 2,
+        name: "Mavin Foods",
+      },
+      {
+        id: 3,
+        name: "Mavin Aqua",
+      },
+      {
+        id: 4,
+        name: "Mavin Fish",
+      },
+      {
+        id: 5,
+        name: "Mekovet",
+      },
+      {
+        id: 6,
+        name: "Mavin Pigfarm",
+      },
+      {
+        id: 7,
+        name: "Mavin Duckfarm",
+      },
+    ]);
     // call api getById
     function callApiGetById() {
-      if (topicId.value) {
-        console.log("entering callApiGetById()...", topicId.value);
+      if (unitId.value) {
+        console.log("entering callApiGetById()...", unitId.value);
         axios
-          .get(`${CONFIG.BASE_URL}/api/topic/${topicId.value}`)
+          .get(`${CONFIG.BASE_URL}/api/unit/${unitId.value}`)
           .then((response) => {
             if (response) {
-              topicExist.value = response.data;
+              unitExist.value = response.data;
             }
           })
           .catch((error) => console.log(error));
       }
     }
 
-    watch(topicExist, () => {
-      if (topicExist.value) {
-        name.value = topicExist.value.name;
+    watch(unitExist, () => {
+      if (unitExist.value) {
+        name.value = unitExist.value.name;
       }
     });
 
@@ -87,15 +116,15 @@ export default {
       return true;
     }
 
-    //Call post API topic
-    function addTopic() {
-      const topic = {
+    //Call post API unit
+    function addUnit() {
+      const unit = {
         name: name.value,
       };
-      console.log(topic);
+      console.log(unit);
       const headers = { "Content-Type": "application/json" };
       axios
-        .post(`${CONFIG.BASE_URL}/api/topic`, topic, { headers })
+        .post(`${CONFIG.BASE_URL}/api/unit`, unit, { headers })
         .then((res) => {
           console.log(res.data);
           success = true;
@@ -105,16 +134,16 @@ export default {
         });
     }
 
-    //Call put API topic
-    function editTopic() {
-      const topic = {
-        id: topicId.value,
+    //Call put API unit
+    function editUnit() {
+      const unit = {
+        id: unitId.value,
         name: name.value,
       };
-      console.log(topic);
+      console.log(unit);
       const headers = { "Content-Type": "application/json" };
       axios
-        .put(`${CONFIG.BASE_URL}/api/topic/` + topicId.value, topic, {
+        .put(`${CONFIG.BASE_URL}/api/unit/` + unitId.value, unit, {
           headers,
         })
         .then((res) => {
@@ -127,25 +156,25 @@ export default {
     }
 
     function onSubmit() {
-      if (topicId.value) {
-        editTopic();
-      } else {
-        addTopic();
-      }
-      //redirect("/topic");
+      // if (unitId.value) {
+      //   editUnit();
+      // } else {
+      //   addUnit();
+      // }
+      //redirect("/unit");
     }
     return {
       name,
       onSubmit,
       validateName,
-      addTopic,
+      addUnit,
       success,
-      editTopic,
+      editUnit,
       callApiGetById,
     };
   },
   created() {
-    this.callApiGetById();
+    //this.callApiGetById();
   },
 };
 </script>

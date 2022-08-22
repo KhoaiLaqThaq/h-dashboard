@@ -73,6 +73,16 @@
           <div class="form-floating mb-3 row">
             <MultiCheckboxVue v-model:value="priority" :options="options" />
           </div>
+
+          <label for=""
+            >Chọn đơn vị thành viên<span class="text-danger">*</span></label
+          >
+          <div class="form-floating mb-3 row">
+            <MultiCheckboxVue
+              v-model:value="unitPriority"
+              :options="unitOptions"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -125,6 +135,8 @@ export default {
     const options = ref([]);
     const groupOptions = ref([]);
     const groupPriority = ref([]);
+    const unitPriority = ref([]);
+    const unitOptions = ref([]);
 
     function onSubmit() {
       console.log("Form Submmitted");
@@ -152,9 +164,23 @@ export default {
       ];
     };
 
+    const getUnitOptions = () => {
+      unitOptions.value = [
+        { name: "Mavinex", id: 1 },
+        { name: "Mavin Foods", id: 2 },
+        { name: "Mavin Aqua", id: 3 },
+        { name: "Mavin Fish", id: 4 },
+        { name: "Mavinex", id: 5 },
+        { name: "Mekovet", id: 6 },
+        { name: "Mavin Pigfarm", id: 7 },
+        { name: "Mavin Duckfarm", id: 8 },
+      ];
+    };
+
     onMounted(() => {
       getOptions();
       getGroupOptions();
+      getUnitOptions();
     });
 
     return {
@@ -164,6 +190,8 @@ export default {
       options,
       groupOptions,
       groupPriority,
+      unitPriority,
+      unitOptions,
 
       // function
       onSubmit,
