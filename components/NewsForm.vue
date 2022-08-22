@@ -81,7 +81,7 @@
             <TabItem title="Ảnh đại diện">
               <div class="card">
                 <div class="card-body">
-                  <UseDropZone @changeImage="avatar = $event" :avatar="avatarUrl" />
+                  <UseDropZone @changeImage="avatar = $event" :avatarUrl="avatarUrl" />
                 </div>
               </div>
             </TabItem>
