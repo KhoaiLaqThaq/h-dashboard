@@ -37,7 +37,7 @@
                 />
               </div>
               <div class="title mb-3 px-3">
-                {{ title }}
+                {{ title ? title : newsDefault.title }}
               </div>
               <div class="info d-flex mb-3 px-3">
                 <div class="created-date">{{ createdDate }}</div>
@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="news-content px-3">
-                {{ content }}
+                {{ content ? content : newsDefault.content }}
               </div>
 
               <div class="my-3 px-3 text-medium fw-bold">
@@ -99,32 +99,23 @@ export default {
     Comment1,
   },
   props: ["title", "avatar", "content", "createdDate"],
-  // setup(props) {
-  //   const createdDate = ref(getNowDate());
-  //   const avatar = ref(undefined);
-  //   const title = ref(
-  //     "Đây là tiêu đề của bài viết sẽ được hiển thị khi có dữ liệu."
-  //   );
-  //   const content = ref(
-  //     `Chiều 9/8, áp thấp nhiệt đới ở phía đông bắc quần đảo Hoàng Sa đã mạnh lên thành bão, khả năng vào Đông Bắc Bộ, gây mưa trong ba ngày.
-  //                           Trung tâm Dự báo Khí tượng Thủy văn quốc gia cho biết, cơn bão thứ hai ở Biển Đông được đặt tên là Mulan. Lúc 13h, tâm bão cách đảo Hải Nam (Trung Quốc) khoảng 300 km, sức gió mạnh nhất 74 km/h, cấp 8, giật cấp 10. Bán kính gió mạnh cấp 6, giật cấp 8 khoảng 110 km tính từ tâm bão.
-  //                           Chiều tối nay, bão theo hướng bắc sau đó đổi sang tây bắc, tốc độ 15-20 km/h. Đến 13h ngày 10/8, tâm bão sát bán đảo Lôi Châu (Trung Quốc), sức gió cấp 8, giật tăng hai cấp.
-  //                           Sau đó, bão Mulan quặt hướng tây tây bắc với tốc độ 15 km/h và suy yếu thành áp thấp nhiệt đới ở trên khu vực đông bắc của Bắc Bộ. Đến 13h ngày 11/8, áp thấp nhiệt đới giảm còn cấp 6-7.
-  //                           Đài khí tượng Nhật Bản dự báo bão vòng lên phía bắc đảo Hải Nam (Trung Quốc) với sức gió 65 km/h rồi giữ nguyên cường độ đi vào vịnh Bắc Bộ, sau đó suy yếu. Đài Hong Kong nhận định hướng đi tương tự, dự báo bão vào hai tỉnh Quảng Ninh và Lạng Sơn với sức gió 75 km/h.
-  //                           Vùng nguy hiểm trên Biển Đông trong 24 giờ tới (gió mạnh cấp 6, giật từ cấp 8 trở lên) từ phía bắc vĩ tuyến 15,5; từ kinh tuyến 110,5 đến 114,5. Bắc Biển Đông (gồm vùng biển quần đảo Hoàng Sa) có gió mạnh cấp 6-7, vùng gần tâm bão mạnh cấp 8, sóng biển cao 4-6 m.
-  //                           Vịnh Bắc Bộ (gồm cả huyện đảo Cô Tô, Bạch Long Vĩ) từ tối và đêm 10/8 gió mạnh dần từ cấp 6 đến cấp 8, giật tăng hai cấp, sóng biển cao 2-4 m.
-  //                           Từ chiều tối 10/8 đến ngày 12/8, Bắc Bộ, Thanh Hóa và Nghệ An mưa 100-200 mm, có nơi trên 250 mm.
-  //                           Sáng 9/8, Ban Chỉ đạo quốc gia về Phòng chống thiên tai đã có công điện yêu cầu các tỉnh ven biển từ Quảng Ninh đến Khánh Hòa theo dõi diễn biến bão, kiểm đếm tàu thuyền; thực hiện các biện pháp bảo đảm an toàn cho người và tài sản đối với tàu vận tải, hoạt động du lịch.
-  //                           Từ đầu năm đến nay có một cơn bão và một áp thấp nhiệt đới trên Biển Đông. Dự báo cả năm có 10-12 cơn bão và áp thấp nhiệt đới ở khu vực này, trong đó khoảng 4-6 cơn ảnh hưởng trực tiếp đến đất liền Việt Nam.`
-  //   );
-
-  //   return {
-  //     avatar,
-  //     title,
-  //     createdDate,
-  //     content,
-  //   };
-  // },
+  data() {
+    return {
+      newsDefault: {
+        title: "Đây là tiêu đề của bài viết sẽ được hiển thị khi có dữ liệu.",
+        content: `Chiều 9/8, áp thấp nhiệt đới ở phía đông bắc quần đảo Hoàng Sa đã mạnh lên thành bão, khả năng vào Đông Bắc Bộ, gây mưa trong ba ngày.
+                            Trung tâm Dự báo Khí tượng Thủy văn quốc gia cho biết, cơn bão thứ hai ở Biển Đông được đặt tên là Mulan. Lúc 13h, tâm bão cách đảo Hải Nam (Trung Quốc) khoảng 300 km, sức gió mạnh nhất 74 km/h, cấp 8, giật cấp 10. Bán kính gió mạnh cấp 6, giật cấp 8 khoảng 110 km tính từ tâm bão.
+                            Chiều tối nay, bão theo hướng bắc sau đó đổi sang tây bắc, tốc độ 15-20 km/h. Đến 13h ngày 10/8, tâm bão sát bán đảo Lôi Châu (Trung Quốc), sức gió cấp 8, giật tăng hai cấp.
+                            Sau đó, bão Mulan quặt hướng tây tây bắc với tốc độ 15 km/h và suy yếu thành áp thấp nhiệt đới ở trên khu vực đông bắc của Bắc Bộ. Đến 13h ngày 11/8, áp thấp nhiệt đới giảm còn cấp 6-7.
+                            Đài khí tượng Nhật Bản dự báo bão vòng lên phía bắc đảo Hải Nam (Trung Quốc) với sức gió 65 km/h rồi giữ nguyên cường độ đi vào vịnh Bắc Bộ, sau đó suy yếu. Đài Hong Kong nhận định hướng đi tương tự, dự báo bão vào hai tỉnh Quảng Ninh và Lạng Sơn với sức gió 75 km/h.
+                            Vùng nguy hiểm trên Biển Đông trong 24 giờ tới (gió mạnh cấp 6, giật từ cấp 8 trở lên) từ phía bắc vĩ tuyến 15,5; từ kinh tuyến 110,5 đến 114,5. Bắc Biển Đông (gồm vùng biển quần đảo Hoàng Sa) có gió mạnh cấp 6-7, vùng gần tâm bão mạnh cấp 8, sóng biển cao 4-6 m.
+                            Vịnh Bắc Bộ (gồm cả huyện đảo Cô Tô, Bạch Long Vĩ) từ tối và đêm 10/8 gió mạnh dần từ cấp 6 đến cấp 8, giật tăng hai cấp, sóng biển cao 2-4 m.
+                            Từ chiều tối 10/8 đến ngày 12/8, Bắc Bộ, Thanh Hóa và Nghệ An mưa 100-200 mm, có nơi trên 250 mm.
+                            Sáng 9/8, Ban Chỉ đạo quốc gia về Phòng chống thiên tai đã có công điện yêu cầu các tỉnh ven biển từ Quảng Ninh đến Khánh Hòa theo dõi diễn biến bão, kiểm đếm tàu thuyền; thực hiện các biện pháp bảo đảm an toàn cho người và tài sản đối với tàu vận tải, hoạt động du lịch.
+                            Từ đầu năm đến nay có một cơn bão và một áp thấp nhiệt đới trên Biển Đông. Dự báo cả năm có 10-12 cơn bão và áp thấp nhiệt đới ở khu vực này, trong đó khoảng 4-6 cơn ảnh hưởng trực tiếp đến đất liền Việt Nam.`,
+      },
+    };
+  },
 };
 </script>
 <style lang="scss"></style>
