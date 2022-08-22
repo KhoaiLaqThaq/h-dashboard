@@ -29,8 +29,8 @@
             </div>
             <div class="previews-content auto-scroll-y">
               <div class="avatar mb-3">
-                <img v-if="avatar" :src="avatar" alt="" />
-                <img v-if="!avatar" src="~~/assets/images/avatar-default.jpg" alt="" />
+                <img v-if="avatarUrl" :src="avatarUrl" alt="" />
+                <img v-if="!avatarUrl" src="~~/assets/images/avatar-default.jpg" alt="" />
               </div>
               <div class="title mb-3 px-3">{{ title }}</div>
               <div class="info d-flex mb-3 px-3">
@@ -40,7 +40,7 @@
                 </div>
               </div>
               <div class="news-content px-3">
-                {{ displayContent(content) }}
+                <pre id="showContent"></pre>
               </div>
 
               <div class="my-3 px-3 text-medium fw-bold">
@@ -76,7 +76,6 @@ import NewsRelated from "~~/components/NewsRelated.vue";
 // icon
 import HeartIcon from "../assets/images/icons/HeartIcon.vue";
 import moment from "moment";
-import { getNowDate } from "~~/constants/format-date";
 import SquareIcon from "../assets/images/icons/SquareIcon.vue";
 import BackIcon from "../assets/images/icons/BackIcon.vue";
 import CircleIcon from "../assets/images/icons/CircleIcon.vue";
@@ -92,15 +91,25 @@ export default {
     CircleIcon,
     Comment1,
   },
-  props: ["title", "avatar", "content", "createdDate"],
+  props: ["title", "avatarUrl", "content", "createdDate"],
   setup(props) {
-
     const displayDate = (createdDate) => moment(createdDate).month(createdDate[1] - 1).format('YYYY-MM-DD HH:mm:ss');
-    
-    const displayContent = (content) => content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    return {displayDate, displayContent}
+    return {displayDate}
+  },
+  watch: {
+    content: function(newContent, oldContent) {
+      document.getElementById('showContent').innerHTML = newContent;
+    }
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+pre {
+  white-space: pre-wrap;
+  img {
+    width: 100%;
+  }
+}
+
+</style>

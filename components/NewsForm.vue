@@ -16,7 +16,7 @@
       />
       <NewsPreview
         :title="title"
-        :avatar="avatar"
+        :avatarUrl="avatarUrl"
         :content="content"
         :createdDate="createdDate"
       />
