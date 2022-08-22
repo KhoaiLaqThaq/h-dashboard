@@ -34,7 +34,6 @@ import axios from "axios";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
-
   data() {
     return {
       titleForm: "Danh sách chủ đề",
@@ -93,7 +92,6 @@ export default {
     };
   },
   created() {
-    // console.log("enter created()...");
     this.searchCallApi();
   },
 };

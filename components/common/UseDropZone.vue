@@ -7,7 +7,7 @@
         </div>
         <button @click="open" class="d-none">open</button>
 
-        <div class="previews d-none">
+        <div class="previews" :class="avatarUrl ? 'd-block' : 'd-none'">
             <div class="remove" @click="removePreview()">
                 <IconPlus class="rounded-full" />
             </div>
@@ -16,15 +16,15 @@
     </div>
 </template>
 <script>
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import { useDropzone } from 'vue3-dropzone';
 import IconPlus from '~~/assets/images/icons/IconPlus.vue';
 
 export default {
     components: { IconPlus },
+    props: ['avatar'],
     setup(props, {emit}) {
-
-        const currentImage = ref();
+        const avatarUrl = ref(props.avatar);
 
         function removePreview() {
             console.log('remove preview');
@@ -35,6 +35,7 @@ export default {
             console.log(rejectReasons)
             if (acceptFiles) {
                 let previewImage = URL.createObjectURL(acceptFiles[0]);
+                console.log('preview image: ' + previewImage);
                 document.getElementById('preview').src = previewImage;
 
                 emit('changeImage', acceptFiles[0]);
@@ -44,13 +45,19 @@ export default {
             }
         }
 
+        watch(props.avatar, () => {
+            console.log('entering watch avatarUrl');
+            document.getElementById('preview').src = avatarUrl.value;
+        });
+
         const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop })
 
         return {
             getRootProps,
             getInputProps,
             ...rest,
-            removePreview
+            removePreview,
+            avatarUrl
         }
     }
 }

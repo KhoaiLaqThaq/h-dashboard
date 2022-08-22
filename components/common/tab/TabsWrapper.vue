@@ -30,11 +30,6 @@ provide('selectedTitle', selectedTitle)
 </template>
 
 <style>
-.tabs {
-    max-width: 60vw;
-    margin: 0 auto;
-}
-
 .tabs__header {
     list-style: none;
     padding: 0;

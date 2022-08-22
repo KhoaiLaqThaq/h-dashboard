@@ -21,10 +21,10 @@
         :createdDate="createdDate"
       />
     </div>
-    <div class="row mt-3">
-      <div class="col-8">
-        <!-- title -->
-        <div class="form-floating mb-3">
+
+    <div class="row mt-3 py-3">
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
           <Field
             name="title"
             v-model="title"
@@ -37,148 +37,149 @@
           <ErrorMessage name="title" class="text-danger" />
           <label for="">Tiêu đề <span class="text-danger">*</span></label>
         </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <Field
+            as="select"
+            name="type"
+            v-model="type"
+            id=""
+            class="form-select box"
+            required="required"
+            :value="option"
+            :rules="validateField"
+          >
+            <option
+              v-for="(option, index) in options"
+              :key="index"
+              :value="option"
+            >
+              {{ option }}
+            </option>
+            <ErrorMessage name="type" class="text-danger" />
+          </Field>
+          <label>Loại tin tức <span class="text-danger">*</span></label>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <Field
+            as="select"
+            name="topic"
+            v-model="topic"
+            id=""
+            class="form-select box"
+            required="required"
+            :value="topic"
+            :rules="validateField"
+          >
+            <option
+              v-for="(option, index) in topics"
+              :key="index"
+              :value="option.id"
+            >
+              {{ option.name }}
+            </option>
+            <ErrorMessage name="topic" class="text-danger" />
+          </Field>
+          <label>Chủ đề <span class="text-danger">*</span></label>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <datepicker-lite
+            class="form-control box"
+            :class-attr="'border-none'"
+            :name-attr="'createdDate'"
+            :show-bottom-button="true"
+            :value-attr="createdDate"
+            :locale="locale"
+          />
+          <label>Ngày viết <span class="text-danger">*</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-9 col-sm-12">
         <!-- brief -->
         <div class="form-floating mb-3">
           <Field
             as="textarea"
             name="brief"
             v-model="brief"
-            class="form-control"
+            class="form-control box"
             id="floatingTextarea2"
-            style="height: 100px"
+            style="min-height: 150px"
             :rules="validateField"
           />
           <ErrorMessage name="brief" class="text-danger" />
           <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
         </div>
+      </div>
 
-        <div class="form-group">
-          <TabsWrapper>
-            <TabItem title="Ảnh đại diện">
-              <div class="card">
-                <div class="card-body">
-                  <UseDropZone @changeImage="avatar = $event" />
-                </div>
-              </div>
-            </TabItem>
-            <TabItem title="Nội dung">
-              <!-- content -->
-              <div class="form-group box pb-3">
-                <div class="card m-3">
-                  <div class="card-body">
-                    <Field
-                      as="ckeditor"
-                      name="content"
-                      :editor="editor"
-                      :config="editorConfig"
-                      v-model="content"
-                      :rules="validateField"
-                    />
-                  </div>
-                  <ErrorMessage name="content" class="text-danger" />
-                </div>
-              </div>
-            </TabItem>
-          </TabsWrapper>
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control box"
+            autocomplete="false"
+            v-model="tag"
+            @keyup.space="addTags()"
+          />
+          <label for="">Thêm tag <span class="text-danger">*</span></label>
+          <div class="tags mt-2">
+            <span
+              class="tag-item bg-primary"
+              v-for="(tag, index) in tags"
+              :key="index"
+              >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
+            /></span>
+          </div>
         </div>
       </div>
-      <div class="col-4">
-        <div class="box p-3">
-          <!-- type -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Loại tin tức <span class="text-danger">*</span></label
-            >
-            <Field
-              as="select"
-              name="type"
-              v-model="type"
-              id=""
-              class="form-select"
-              required="required"
-              :value="option"
-              :rules="validateField"
-            >
-              <option
-                v-for="(option, index) in options"
-                :key="index"
-                :value="option"
-              >
-                {{ option }}
-              </option>
-              <ErrorMessage name="type" class="text-danger" />
-            </Field>
-          </div>
+    </div>
 
-          <!-- ngay viet -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Ngày viết <span class="text-danger">*</span></label
-            >
-            <datepicker-lite
-              :class-attr="'form-control'"
-              :name-attr="'createdDate'"
-              :show-bottom-button="true"
-              :value-attr="createdDate"
-              :locale="locale"
-            />
-          </div>
-
-          <!-- topic -->
-          <div class="mb-3">
-            <label for="" class="form-label"
-              >Chủ đề <span class="text-danger">*</span></label
-            >
-            <Field
-              as="select"
-              name="topic"
-              v-model="topic"
-              id=""
-              class="form-select"
-              required="required"
-              :value="topic"
-              :rules="validateField"
-            >
-              <option
-                v-for="(option, index) in topics"
-                :key="index"
-                :value="option.id"
-              >
-                {{ option.name }}
-              </option>
-              <ErrorMessage name="topic" class="text-danger" />
-            </Field>
-          </div>
-
-          <!-- tag -->
-          <div class="form-floating mb-3">
-            <Field
-              name="tag"
-              type="text"
-              class="form-control"
-              autocomplete="false"
-              v-model="tag"
-              @keyup.space="addTags()"
-              :rules="validateField"
-            />
-            <ErrorMessage name="tag" class="text-danger" />
-            <label for="">Thêm tag <span class="text-danger">*</span></label>
-            <div class="tags mt-2">
-              <span
-                class="tag-item bg-primary"
-                v-for="(tag, index) in tags"
-                :key="index"
-                >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
-              /></span>
+    <div class="row mx-0">
+      <div class="col-12 form-group box py-3">
+        <TabsWrapper>
+          <TabItem title="Ảnh đại diện">
+            <div class="card">
+              <div class="card-body">
+                <UseDropZone
+                  @changeImage="avatar = $event"
+                  :avatar="avatarUrl"
+                />
+              </div>
             </div>
-          </div>
-        </div>
+          </TabItem>
+          <TabItem title="Nội dung">
+            <!-- content -->
+            <div class="form-group bg-white pb-3">
+              <div class="card m-3">
+                <div class="card-body">
+                  <ckeditor
+                    :editor="editor"
+                    :config="editorConfig"
+                    v-model="content"
+                  ></ckeditor>
+                </div>
+                <ErrorMessage name="content" class="text-danger" />
+              </div>
+            </div>
+          </TabItem>
+        </TabsWrapper>
       </div>
     </div>
   </Form>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, reactive } from "vue";
+import { useRoute } from "vue-router";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
@@ -228,16 +229,20 @@ export default {
     Field,
     ErrorMessage,
   },
-  props: ["news"],
   data() {
     return {
-      titleForm: "Giao diện thêm mới tin tức",
       options: ["Loại tin 1", "Loại tin 2", "Loại tin 3"],
     };
   },
-  setup(props) {
+  setup() {
+    const route = useRoute();
+    const newsId = ref(route.params.id);
+    const newsExist = ref({});
+
+    const titleForm = ref("");
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
+    const avatarUrl = ref("");
     const title = ref("");
     const brief = ref("");
     const status = ref(0);
@@ -245,12 +250,40 @@ export default {
       "<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>"
     );
     const tag = ref("");
+    const tagNames = ref("");
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
     const option = ref("Loại tin 1");
     const type = ref("");
     let success = false;
+
+    // call api getById
+    function callApiGetById() {
+      if (newsId.value) {
+        console.log("entering callApiGetById()...", newsId.value);
+        axios
+          .get(`${CONFIG.BASE_URL}/api/news/${newsId.value}`)
+          .then((response) => {
+            if (response) {
+              newsExist.value = response.data;
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    }
+
+    watch(newsExist, () => {
+      if (newsExist.value) {
+        title.value = newsExist.value.title;
+        type.value = newsExist.value.type;
+        topic.value = newsExist.value.topic.id;
+        createdDate.value = newsExist.value.createdDate;
+        brief.value = newsExist.value.brief;
+        content.value = newsExist.value.content;
+        avatarUrl.value = newsExist.value.avatarUrl;
+      }
+    });
 
     const locale = {
       format: "YYYY/MM/DD",
@@ -268,14 +301,21 @@ export default {
       };
     }
 
+    // TODO: thêm tag
     function addTags() {
+      tagNames.value += "," + tag.value;
       tags.value.push(tag.value);
       tag.value = "";
     }
 
-    const removeTag = (index) => tags.value.splice(index, 1);
+    // TODO: Remove tag
+    const removeTag = (index) => {
+      let tagName = tags[index].value;
+      console.log(tagName);
+      tags.value.splice(index, 1);
+    };
 
-    //call API get lisTopics
+    // TODO: call API get lisTopics
     function getListTopic() {
       axios
         .get(`${CONFIG.BASE_URL}/api/topics`)
@@ -289,9 +329,17 @@ export default {
         });
     }
 
-    //Call post API news
-    function addNews() {
-      console.log("avatar.value", avatar.value);
+    // TODO: Define rules for validate
+    function validateField(value) {
+      // if the field is empty
+      if (!value) return "Trường này là bắt buộc";
+      // if the field is not a valid email
+      if (value.length < 3) return "Trường này phải có hơn 3 ký tự";
+      return true;
+    }
+
+    function onSubmit() {
+      console.log("entering onSubmit()...");
       const news = {
         avatar: avatar.value ? avatar.value : null,
         type: option.value,
@@ -300,7 +348,9 @@ export default {
         content: content.value,
         status: 2,
         topicId: topic.value,
+        tagNames: tagNames.value,
       };
+
       const headers = { "Content-Type": "multipart/form-data" };
       axios
         .post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
@@ -313,25 +363,8 @@ export default {
         });
     }
 
-    function validateField(value) {
-      // if the field is empty
-      if (!value) {
-        return "Trường này là bắt buộc";
-      }
-      // if the field is not a valid email
-      if (value.length < 3)
-        // if (valu < 3) {
-        return "Trường này phải có hơn 3 ký tự";
-      // }
-      // All is good
-      return true;
-    }
-
-    function onSubmit() {
-      addNews();
-    }
-
     return {
+      titleForm,
       // config editor
       locale,
       editor: ClassicEditor,
@@ -353,18 +386,20 @@ export default {
       content,
       title,
       avatar,
+      avatarUrl,
       status,
       // function
       addTags,
       removeTag,
       onSubmit,
       getListTopic,
-      addNews,
       validateField,
+      callApiGetById,
     };
   },
   created() {
     this.getListTopic();
+    this.callApiGetById();
   },
 };
 </script>
