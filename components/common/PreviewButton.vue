@@ -13,7 +13,10 @@
                     data-bs-toggle="modal"
                     data-bs-target="#newsPreview"
                 ><IconPhone /> <span>Phone preview </span></li>
-                <li class="dropdown-item"><IconTablet /> <span>Tablet preview </span></li>
+                <li class="dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newsTabletPreview"
+                ><IconTablet /> <span>Tablet preview </span></li>
             </ul>
         </div>
     </div>

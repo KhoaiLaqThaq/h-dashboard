@@ -20,6 +20,12 @@
         :content="content"
         :createdDate="createdDate"
       />
+      <NewsTabletPreview
+        :title="title"
+        :avatarUrl="avatarUrl"
+        :content="content"
+        :createdDate="createdDate"
+      />
     </div>
 
     <div class="row mt-3 py-3">
@@ -186,6 +192,7 @@ import UseDropZone from "~~/components/common/UseDropZone.vue";
 import TabsWrapper from "~~/components/common/tab/TabsWrapper.vue";
 import TabItem from "~~/components/common/tab/TabItem.vue";
 import NewsPreview from "~~/components/NewsPreview.vue";
+import NewsTabletPreviewVue from "~~/components/NewsTabletPreview.vue";
 
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
@@ -216,6 +223,7 @@ export default {
     Form,
     Field,
     ErrorMessage,
+    NewsTabletPreviewVue,
   },
   data() {
     return {
