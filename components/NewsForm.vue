@@ -226,7 +226,7 @@ export default {
   },
   data() {
     return {
-      options: ["Loại tin tập đoàn", "Loại tin phòng", "Loại tin hành chính"],
+      options: ["Loại tin tập đoàn", "Loại tin phòng", "Loại tin hành chính", "Tin Hot"],
     }
   },
   setup() {
