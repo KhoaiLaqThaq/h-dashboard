@@ -400,6 +400,128 @@ $bgc-content: rgb(241 245 249);
       right: 30%;
     }
   }
+
+  .previews-tablet {
+    height: 80vh;
+    width: 120vh;
+    border: 10px solid rgb(0 0 0);
+    border-radius: 32px;
+    z-index: 100;
+    margin: auto;
+
+    .previews-header {
+      position: relative;
+      height: 46px;
+      display: flex;
+      padding: 10px;
+      background-color: $primaryTheme;
+      color: #ffffff;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+
+      .back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 46px;
+        height: 46px;
+        svg {
+          padding: 10px;
+          width: 46px;
+          height: 46px;
+        }
+      }
+      .widget-title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    .previews-content {
+      position: relative;
+      display: block;
+      height: calc(80vh - 110px);
+      overflow-y: auto;
+      background-color: #fafafa;
+
+      .avatar {
+        width: 100%;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      // title
+      .title {
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .info {
+        .reaction {
+          color: rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      .created-date {
+        color: rgba(0, 0, 0, 0.3);
+      }
+
+      // related news
+      .news-related {
+        ul {
+          li {
+            list-style: none;
+
+            .box-related {
+              width: 100%;
+              box-shadow: 0 3px 2px rgb(0 0 0 / 10%);
+              position: relative;
+              border-radius: 0.375rem;
+              border-color: transparent;
+              --tw-bg-opacity: 1;
+              background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+              img {
+                width: 30%;
+              }
+            }
+          }
+        }
+        .news-relate-container{
+          display: flex;
+          flex-wrap: wrap;
+
+          .news-relate-item{
+            width: 50%;
+            padding: 1%;
+          }
+
+          .box-related {
+            width: 100%;
+            box-shadow: 0 3px 2px rgb(0 0 0 / 10%);
+            position: relative;
+            border-radius: 0.375rem;
+            border-color: transparent;
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+            img {
+              width: 30%;
+            }
+          }
+        }
+      }
+    }
+
+    .button-dialect {
+      width: 40%;
+      height: 5px;
+      background-color: #e2e2e2;
+      position: absolute;
+      bottom: 10px;
+      right: 30%;
+    }
+  }
 }
 
 .rotate-180 {
