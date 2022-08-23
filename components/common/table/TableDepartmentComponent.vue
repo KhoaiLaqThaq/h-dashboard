@@ -5,26 +5,23 @@
         <th v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
-        <th class="ms-0 me-0" v-if="actionEdit || actionDelete"></th>
+        <th class="ms-0 me-0 text-center" v-if="actionEdit || actionDelete">#</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(item, index) in items" :key="index">
-        <td>{{ index + 1 + page * size }}</td>
+        <td>{{ index + 1}}</td>
+        <td>{{ item.code }}</td>
         <td>{{ item.name }}</td>
-        <td class="px-0" v-if="actionEdit || actionDelete">
+        <td class="px-0 text-center" v-if="actionEdit || actionDelete">
           <div class="d-flex me-0">
-            <div class="ms-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/unit/form/' + item.id" class="d-flex"
-                ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
-              >
+            <div class=" cursor-pointer" v-if="actionEdit">
+              <NuxtLink :to="routerPush + item.id" class="d-flex">
+                <edit-icon /><span class="ms-1">Sửa</span>
+              </NuxtLink>
             </div>
-            <div
-              class="d-flex me-3 cursor-pointer ms-3 text-danger"
-              v-if="actionDelete"
-            >
-              <delete-icon @click="disabledTopics(item.id)" />
-              <span class="ms-1">Xóa</span>
+            <div class="d-flex me-3 cursor-pointer ms-3 text-danger" v-if="actionDelete">
+              <delete-icon /><span class="ms-1">Xóa</span>
             </div>
           </div>
         </td>
@@ -41,7 +38,7 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
+  props: ["headers", "items", "routerPush", "actionEdit", "actionDelete"],
   setup() {},
 };
 </script>

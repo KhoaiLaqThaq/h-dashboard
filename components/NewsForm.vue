@@ -116,7 +116,7 @@
             as="textarea"
             name="brief"
             v-model="brief"
-            class="form-control box"
+            class="form-control box auto-scroll-y"
             id="floatingTextarea2"
             style="min-height: 100px"
             :rules="validateField"
@@ -138,7 +138,7 @@
       </div>
     </div>
 
-    <div class="row mx-0">
+    <div class="row mx-0 mb-3">
       <div class="col-12 form-group box px-0">
         <TabsWrapper>
           <TabItem title="Ảnh đại diện">
@@ -167,6 +167,22 @@
             </div>
           </TabItem>
         </TabsWrapper>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <Field as="select" name="type" v-model="units" class="form-select box" required="required" :value="type"
+            :rules="validateField"
+          >
+            <option v-for="(option, index) in options" :key="index" :value="option">
+              {{ option }}
+            </option>
+            <ErrorMessage name="type" class="text-danger" />
+          </Field>
+          <label>Phân phối phòng ban <span class="text-danger">*</span></label>
+        </div>
       </div>
     </div>
   </Form>

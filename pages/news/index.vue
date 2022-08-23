@@ -15,7 +15,7 @@
         <span class="btn-suggest">Enter</span>
       </div>
     </div>
-    <div class="table-content box p-3 mt-3">
+    <div class="table-content box mt-3 radius-20">
       <table-news-component
         :headers="headers"
         :items="content"

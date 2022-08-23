@@ -1,17 +1,17 @@
 <template>
-  <table class="table table-striped table-hover">
+  <table class="table table-custom table-unhover">
     <thead>
       <tr>
-        <th>#</th>
-        <th v-for="(item, index) in headers" :key="index">
+        <th class="th-primary px-3">#</th>
+        <th class="th-primary" v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
-        <th class="text-center" v-if="actionEdit || actionDelete">Actions</th>
+        <th class="text-center px-3 th-primary" v-if="actionEdit || actionDelete">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(item, index) in items" :key="index">
-        <td><input type="checkbox"></td>
+        <td class="px-3"><input type="checkbox"></td>
         <td class="text-center">{{ index + 1 + page * size }}</td>
         <td>{{ item.title }}</td>
         <td>{{ displayBrief(item.brief) }}</td>
@@ -24,7 +24,7 @@
             ><span class="text-success">Đã phê duyệt</span></template
           >
         </td>
-        <td class="" v-if="actionEdit || actionDelete">
+        <td class="px-3" v-if="actionEdit || actionDelete">
           <div class="d-flex">
             <div class="ms-auto cursor-pointer" v-if="actionEdit">
               <NuxtLink :to="'/news/form/' + item.id" class="d-flex"
@@ -76,15 +76,4 @@ export default {
 };
 </script>
 <style lang="scss">
-.table {
-  tr {
-    th {
-      // text-transform: uppercase;
-
-      &:hover {
-        background-color: rgb(241 245 249);
-      }
-    }
-  }
-}
 </style>

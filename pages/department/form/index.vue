@@ -3,21 +3,21 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
     </div>
-    <UnitForm />
+    <DepartmentForm />
   </div>
 </template>
 <script>
-import UnitForm from "~~/components/UnitForm.vue";
+import DepartmentForm from "~~/components/DepartmentForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
-    UnitForm,
+    DepartmentForm,
     TitleHeader,
   },
 
   data() {
     return {
-      titleForm: "Thêm đơn vị mới",
+      titleForm: "Thêm đơn vị phòng ban",
     };
   },
   setup() {

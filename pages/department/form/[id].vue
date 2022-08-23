@@ -3,17 +3,18 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
     </div>
-    <UnitForm />
+    <DepartmentForm :department="department"/>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { ref } from "vue";
-import UnitForm from "~~/components/UnitForm.vue";
+import { ref, reactive } from "vue";
+
+import DepartmentForm from "~~/components/DepartmentForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
-    UnitForm,
+    DepartmentForm,
     TitleHeader,
   },
   data() {
@@ -23,8 +24,18 @@ export default {
   },
   setup() {
     // define variables
+    const department = reactive({
+      code: "",
+      name: ""
+    });
+
+    // TODO: Call api to get a department have id
+    // const onSubmit = () => {
+      
+    // }
+
     return {
-      //   addNews,
+      department: department
     };
   },
   mounted() {},

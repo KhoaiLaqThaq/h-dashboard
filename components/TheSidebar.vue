@@ -23,18 +23,18 @@
           :class="{ active: routeNameActive == 'user' }"
         >
           <div class="side-menu__icon"><UserIcon /></div>
-          <span class="side-menu__title pl-1"> Users</span>
+          <span class="side-menu__title pl-1"> User</span>
         </NuxtLink>
       </li>
       <li>
         <NuxtLink
-          to="/unit"
+          to="/department"
           class="side-menu"
           aria-label="unit"
-          :class="{ active: routeNameActive == 'unit' }"
+          :class="{ active: routeNameActive == 'department' }"
         >
           <div class="side-menu__icon"><PostIcon /></div>
-          <span class="side-menu__title pl-1"> Units</span>
+          <span class="side-menu__title pl-1"> Department</span>
         </NuxtLink>
       </li>
       <li>
@@ -56,7 +56,7 @@
           :class="{ active: routeNameActive == 'topic' }"
         >
           <div class="side-menu__icon"><PostIcon /></div>
-          <span class="side-menu__title pl-1"> Topics</span>
+          <span class="side-menu__title pl-1"> Topic</span>
         </NuxtLink>
       </li>
       <!-- <li class="dropdown">
