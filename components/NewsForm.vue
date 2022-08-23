@@ -50,7 +50,7 @@
           <Field
             as="select"
             name="type"
-            v-model="type"
+            v-model="optionType"
             class="form-select box"
             required="required"
             :value="type"
@@ -59,9 +59,9 @@
             <option
               v-for="(option, index) in options"
               :key="index"
-              :value="option"
+              :value="option.value"
             >
-              {{ option }}
+              {{ option.name }}
             </option>
             <ErrorMessage name="type" class="text-danger" />
           </Field>
@@ -226,7 +226,13 @@ export default {
   },
   data() {
     return {
-      options: ["Loại tin tập đoàn", "Loại tin phòng", "Loại tin hành chính", "Tin Hot"],
+      // options: ["Loại in tập đoàn", "Loại tin phòng", "Loại tin hành chính", "Tin Hot"],
+      options: [
+        { name : "Loại tin tập đoàn", value : "company"},
+        { name : "Loại tin phòng", value : "department"},
+        { name : "Loại tin hành chính", value : "administrative"},
+        { name : "Tin Hot", value : "hot_news"},
+      ],
     }
   },
   setup() {
@@ -249,7 +255,8 @@ export default {
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
-    const option = ref("Loại tin tập đoàn");
+    let option = ref("");
+    const optionType = ref("");
     const type = ref("");
 
     // call api getById
@@ -271,6 +278,7 @@ export default {
       if (newsExist.value) {
         title.value = newsExist.value.title;
         type.value = newsExist.value.type;
+        optionType.value = newsExist.value.type;
         topic.value = newsExist.value.topic.id;
         createdDate.value = newsExist.value.createdDate;
         brief.value = newsExist.value.brief;
@@ -336,7 +344,7 @@ export default {
       console.log("entering onSubmit()...");
       const news = {
         avatar: avatar.value ? avatar.value : null,
-        type: option.value,
+        type: optionType.value,
         title: title.value,
         brief: brief.value,
         content: content.value,
@@ -376,6 +384,7 @@ export default {
       topics,
       topic,
       option,
+      optionType,
       brief,
       content,
       title,
