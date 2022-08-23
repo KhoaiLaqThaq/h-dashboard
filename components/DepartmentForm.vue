@@ -4,7 +4,7 @@
       <div class="col-lg-4 col-md-6 col-sm-12">
         <!-- code -->
         <div class="form-floating mb-3">
-          <Field type="text" class="form-control box" v-model="code" name="code"
+          <Field type="text" class="form-control box" v-model="department.code" name="code"
             :rules="validateName"
           />
 
@@ -18,7 +18,7 @@
       <div class="col-lg-8 col-md-6 col-sm-12">
         <!-- title -->
         <div class="form-floating mb-3">
-          <Field type="text" class="form-control box" v-model="name" name="name"
+          <Field type="text" class="form-control box" v-model="department.name" name="name"
             :rules="validateName"
           />
 
@@ -43,9 +43,9 @@
   </Form>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { useRoute } from 'vue-router';
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { useRoute } from "vue-router";
 
 import TitleHeader from "./common/TitleHeader.vue";
 import BaseButton from "./common/BaseButton.vue";
@@ -54,12 +54,14 @@ import axios from "axios";
 import CONFIG from "~~/config";
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
-  props: ['department'],
-  setup(props) {
+  setup() {
     const route = useRoute();
-    const code = ref("");
-    const name = ref("");
-
+    const departmentId = ref(route.params.id);
+    const department = reactive({
+      code: "",
+      name: ""
+    });
+    
     function validateName(value) {
       if (!value)
         return "Trường này là bắt buộc";
@@ -70,14 +72,29 @@ export default {
       return true;
     }
 
+    // TODO: Call api to get a department have id
+    const getDepartmentById = () => {
+      if (departmentId.value) {
+        axios.get(`${CONFIG.BASE_URL}/api/department/${departmentId.value}`)
+        .then((response) => {
+          let responseData = response.data;
+          department.code = responseData.code;
+          department.name = responseData.name;
+        }).catch((error) => {
+          console.log('error: ' + error);
+        });
+      }
+    }
+
     // call api save
     function onSubmit() {
-      let department = {
-        code: code.value,
-        name: name.value
+      let data = {
+        id: departmentId.value,
+        code: department.code,
+        name: department.name
       };
 
-      axios.post(`${CONFIG.BASE_URL}/api/department`, department)
+      axios.post(`${CONFIG.BASE_URL}/api/department`, data)
       .then(response => {
         console.log('responseData: ', response.data);
         let responseData = response.data;
@@ -89,10 +106,16 @@ export default {
       });
     }
     return {
-      code, name,
+      // code, name,
+      department,
+      getDepartmentById,
       onSubmit,
       validateName,
+      setDepartment
     };
+  },
+  mounted() {
+    this.getDepartmentById();
   }
 };
 </script>
