@@ -18,6 +18,15 @@ $bgc-content: rgb(241 245 249);
 
 #primary_theme {
   background-color: $primaryTheme;
+  .sidebar {
+    position: relative;
+    
+    .logo-sidebar__bottom  {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+  }
 
   .side-nav {
     overflow: hidden;
@@ -770,6 +779,23 @@ a {
   }
 }
 
+.picker-date input {
+  width: inherit;
+}
+
+.preview-container {
+  .dropdown-toggle::after{
+      content: none;
+  }
+}
+
+
+// md
+@media only screen and (max-width: 768px){
+  
+}
+
+// lg
 @media only screen and (max-width: 992px) {
   #primary_theme {
     .content {

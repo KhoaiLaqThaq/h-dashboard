@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="preview-container">
         <div class="dropdown">
-            <button class="btn dropdown-toggle btn-light box ms-auto d-flex items-center" data-toggle="dropdown"
+            <button class="btn dropdown-toggle after-content-none btn-light box ms-auto d-flex items-center" data-toggle="dropdown"
                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
                 :type="btnType"
             >

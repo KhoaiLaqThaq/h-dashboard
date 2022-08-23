@@ -59,13 +59,15 @@
           <span class="side-menu__title pl-1"> Topics</span>
         </NuxtLink>
       </li>
-      <li class="dropdown">
+      <!-- <li class="dropdown">
         <div class="side-menu dropdown-toggle">
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Menu</span>
         </div>
+      </li> -->
+      <li class="logo-sidebar__bottom ">
+        <ImgSidebar />
       </li>
-      <li class="mt-5"></li>
     </ul>
   </nav>
 </template>
@@ -76,13 +78,16 @@ import { useRoute } from "vue-router";
 import DashboardIconVue from "~~/assets/images/icons/DashboardIcon.vue";
 import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import PostIcon from "~~/assets/images/icons/PostIcon.vue";
+import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
+
 
 export default {
   components: {
     DashboardIconVue,
     UserIcon,
     PostIcon,
-  },
+    ImgSidebar
+},
   setup() {
     const routeNameActive = ref();
     const route = useRoute();

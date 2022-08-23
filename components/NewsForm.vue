@@ -96,7 +96,7 @@
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
           <datepicker-lite
-            class="form-control box"
+            class="form-control picker-date box"
             :class-attr="'border-none'"
             :name-attr="'createdDate'"
             :show-bottom-button="true"
