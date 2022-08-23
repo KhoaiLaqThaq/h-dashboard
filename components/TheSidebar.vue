@@ -59,6 +59,12 @@
           <span class="side-menu__title pl-1"> Topics</span>
         </NuxtLink>
       </li>
+      <li class="dropdown">
+        <div class="side-menu dropdown-toggle">
+          <div class="side-menu__icon"><PostIcon /></div>
+          <span class="side-menu__title pl-1"> Menu</span>
+        </div>
+      </li>
       <li class="mt-5"></li>
     </ul>
   </nav>
