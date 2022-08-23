@@ -8,7 +8,7 @@
                 <PreviewIcon class="lucide w-4 h-4" />
                 <span class="ms-2" :class="textSize">{{ name }}</span>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li class="dropdown-item"
                     data-bs-toggle="modal"
                     data-bs-target="#newsPreview"

@@ -9,7 +9,7 @@
         :textSize="'text-small'"
       />
       <BaseButton
-        class="btn-primary ms-2"
+        class="btn-primary ms-2 box"
         :btnType="'submit'"
         :name="'Save'"
         :textSize="'text-small'"
@@ -112,6 +112,7 @@
             v-model="brief"
             class="form-control box"
             id="floatingTextarea2"
+            style="min-height: 100px"
             :rules="validateField"
           />
           <ErrorMessage name="brief" class="text-danger" />

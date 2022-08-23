@@ -216,6 +216,44 @@ $bgc-content: rgb(241 245 249);
           border-radius: inherit;
         }
       }
+
+      .dropdown-acc__customize {
+        background-color: $primaryTheme;
+        min-width: 240px;
+
+        .dropdown-acc-item {
+          align-items:center;
+          color: #ffffff;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          border-radius: 5px;
+
+          &:first-child {
+            border-bottom: 1px solid #ffffff14;
+            border-radius: unset;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            
+            &:hover {
+              background-color: unset
+            }
+            .name {
+              font-weight: bold;
+            }
+            .description {
+              font-size: 13px;
+            }
+          }
+
+          &:not(:first-child):hover {
+            background-color: #244ac7;
+          }
+
+          &:last-child {
+            border-top: 1px solid #ffffff14;
+          }
+        }
+      }
     }
 
     // General report
