@@ -41,16 +41,6 @@
         <ul class="side-menu__sub-open">
           <li>
             <NuxtLink
-              to="/department"
-              class="side-menu"
-              aria-label="unit"
-              :class="{ active: routeNameActive == 'department' }"
-            >
-              <span class="side-menu__title pl-1"> Department</span>
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink
               to="/group"
               class="side-menu"
               aria-label="group"
