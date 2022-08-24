@@ -536,8 +536,8 @@ export default {
   }
 
   .tag-option:hover{
-    background-color: #a8aaab;
-    color: rgb(3, 3, 3);
+    background-color: #1982f1;
+    color: rgb(250, 247, 247);
   }
 }
 </style>
