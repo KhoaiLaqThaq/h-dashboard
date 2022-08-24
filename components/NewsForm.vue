@@ -128,11 +128,22 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating mb-3 input-suggest__event">
-          <input type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
+          <input
+            type="text"
+            class="form-control box"
+            autocomplete="false"
+            v-model="tag"
+            @keyup.space="addTags()"
+          />
           <span class="title-suggest__event">Space</span>
           <label for="">Thêm tag <span class="text-danger">*</span></label>
           <div class="tags mt-2">
-            <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"/></span>
+            <span
+              class="tag-item bg-primary"
+              v-for="(tag, index) in tags"
+              :key="index"
+              >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
+            /></span>
           </div>
         </div>
       </div>
@@ -173,15 +184,37 @@
     <div class="row">
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
-          <Field as="select" name="type" v-model="units" class="form-select box" required="required" :value="type"
+          <!-- <Field
+            as="select"
+            name="type"
+            v-model="units"
+            class="form-select box"
+            required="required"
+            :value="type"
             :rules="validateField"
           >
-            <option v-for="(option, index) in options" :key="index" :value="option">
+            <option
+              v-for="(option, index) in options"
+              :key="index"
+              :value="option"
+            >
               {{ option }}
             </option>
             <ErrorMessage name="type" class="text-danger" />
-          </Field>
-          <label>Phân phối phòng ban <span class="text-danger">*</span></label>
+          </Field> -->
+          <div>
+            <label
+              >Phân phối phòng ban <span class="text-danger">*</span></label
+            >
+          </div>
+
+          <div>
+            <DualListBox
+              :source="source"
+              :destination="destination"
+              v-on:onChangeList="onChangeList"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -193,6 +226,9 @@ import { useRoute } from "vue-router";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
+
+import DualListBox from "~~/components/DualListBox.vue";
+//import "dual-listbox-vue/dist/dual-listbox.css";
 
 // components
 import PreviewButton from "~~/components/common/PreviewButton.vue";
@@ -240,23 +276,35 @@ export default {
     Field,
     ErrorMessage,
     NewsTabletPreviewVue,
+    DualListBox,
   },
   data() {
     return {
-      // options: ["Loại in tập đoàn", "Loại tin phòng", "Loại tin hành chính", "Tin Hot"],
       options: [
-        { name : "Loại tin tập đoàn", value : "company"},
-        { name : "Loại tin phòng", value : "department"},
-        { name : "Loại tin hành chính", value : "administrative"},
-        { name : "Tin Hot", value : "hot_news"},
+        { name: "Loại tin tập đoàn", value: "company" },
+        { name: "Loại tin phòng", value: "department" },
+        { name: "Loại tin hành chính", value: "administrative" },
+        { name: "Tin Hot", value: "hot_news" },
       ],
-    }
+    };
+  },
+  methods: {
+    onChangeList: function ({ source, destination }) {
+      this.source = source;
+      this.destination = destination;
+      console.log(source);
+      console.log(destination);
+    },
   },
   setup() {
     const route = useRoute();
     const newsId = ref(route.params.id);
     const newsExist = ref({});
-    const titleForm = ref(newsId.value ? 'Giao diện chỉnh sửa tin tức':'Giao diện thêm mới tin tức');
+    const titleForm = ref(
+      newsId.value
+        ? "Giao diện chỉnh sửa tin tức"
+        : "Giao diện thêm mới tin tức"
+    );
 
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
@@ -275,6 +323,9 @@ export default {
     let option = ref("");
     const optionType = ref("");
     const type = ref("");
+    //source and destination of departments dual-listbox
+    const source = ref([]);
+    const destination = ref([]);
 
     // call api getById
     function callApiGetById() {
@@ -350,6 +401,20 @@ export default {
         });
     }
 
+    // TODO: call API get listDepartments
+    function getListDepartments() {
+      axios
+        .get(`${CONFIG.BASE_URL}/api/departments`)
+        .then((response) => {
+          const data = response.data;
+          source.value = data;
+          console.log(data);
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
+    }
+
     // TODO: Define rules for validate
     function validateField(value) {
       // if the field is empty
@@ -411,17 +476,21 @@ export default {
       avatar,
       avatarUrl,
       status,
+      source,
+      destination,
       // function
       addTags,
       removeTag,
       onSubmit,
       getListTopic,
+      getListDepartments,
       validateField,
       callApiGetById,
     };
   },
   created() {
     this.getListTopic();
+    this.getListDepartments();
     this.callApiGetById();
   },
 };
@@ -467,13 +536,13 @@ export default {
 }
 .title-suggest__event {
   position: absolute;
-    top: 1rem;
-    right: 10px;
-    border: 3px solid rgb(141, 141, 141);
-    padding: 2px 4px;
-    border-radius: 4px;
-    background-color: rgb(168, 167, 167);
-    color: #FFFFFF;
-    font-weight: bold;
+  top: 1rem;
+  right: 10px;
+  border: 3px solid rgb(141, 141, 141);
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: rgb(168, 167, 167);
+  color: #ffffff;
+  font-weight: bold;
 }
 </style>
