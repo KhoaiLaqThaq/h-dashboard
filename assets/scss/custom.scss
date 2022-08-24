@@ -76,6 +76,8 @@ $bgc-content: rgb(241 245 249);
       padding-left: 1.25rem;
       &.router-link-exact-active,
       &.active {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
         background-color: $bgc-content;
         svg {
           color: $primaryTheme;
