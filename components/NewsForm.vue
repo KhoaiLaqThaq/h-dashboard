@@ -379,6 +379,7 @@ export default {
           let responseData = res.data;
           console.log(res.data);
           alert(responseData.code + ' ' + responseData.message);
+          navigateTo("/news");
         })
         .catch((error) => {
           console.log(error);
