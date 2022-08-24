@@ -66,6 +66,20 @@ $bgc-content: rgb(241 245 249);
       }
     }
 
+    .has-submenu {
+      ul {
+        &.submenu {
+          &.show {
+            li {
+              margin-left: 25px;
+              border-left: 1px solid #FFFFFF;
+              padding-left: 10px;
+            }
+          }
+        }
+      }
+    }
+
     .side-menu {
       height: 50px;
       position: relative;
@@ -98,7 +112,7 @@ $bgc-content: rgb(241 245 249);
         }
 
         .side-menu__title {
-          color: rgb(0, 0, 0);
+          color: #FBBA16;
         }
         &::before {
           content: "";

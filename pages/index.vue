@@ -50,7 +50,6 @@ export default {
                 data.forEach(e => {
                     addData(e);
                 });
-                console.log(hotNews);
             })
             .catch((e) => {
                 console.log(e);
@@ -63,7 +62,6 @@ export default {
         }
     },
     created() {
-        // console.log("enter created()...");
         this.searchCallApi();
     },
 }

@@ -5,7 +5,7 @@
         <th class="th-primary" v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
-        <th class="ms-0 me-0 th-primary" v-if="actionEdit || actionDelete"></th>
+        <th class="m-auto th-primary text-center" v-if="actionEdit || actionDelete">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -13,11 +13,11 @@
         <td>{{ index + 1 + page * size }}</td>
         <td>{{ item.name }}</td>
         <td class="px-0" v-if="actionEdit || actionDelete">
-          <div class="d-flex me-0">
-            <div class="ms-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/topic/form/' + item.id" class="d-flex"
-                ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
-              >
+          <div class="d-flex">
+            <div class="m-auto cursor-pointer" v-if="actionEdit">
+              <NuxtLink :to="'/topic/form/' + item.id" class="d-flex">
+                <edit-icon /><span class="ms-1">Sửa</span>
+              </NuxtLink>
             </div>
             <div
               class="d-flex me-3 cursor-pointer ms-3 text-danger"

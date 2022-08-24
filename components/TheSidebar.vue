@@ -15,6 +15,18 @@
           <span class="side-menu__title pl-1"> Trang chủ</span>
         </NuxtLink>
       </li>
+      <!-- submenu -->
+      <li class="nav-item has-submenu" aria-label="has-submenu">
+        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
+          @click="toggleSubmenu(e)" id="common" ref="common">
+          <div class="side-menu__icon"><IconCommunity /></div>
+          <span class="side-menu__title pl-1"> Quản lý chung</span>
+        </a>
+        <ul class="submenu collapse">
+          <li><NuxtLink to="/common" title="Title" :class="{active: routeNameActive == 'common'}" class="common nav-link side-menu"><span class="side-menu__title">Submenu item 4</span> </NuxtLink></li>
+        </ul>
+      </li>
+
       <li>
         <NuxtLink
           to="/user"
@@ -93,6 +105,7 @@ import PostIcon from "~~/assets/images/icons/PostIcon.vue";
 import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
 import IconUnit from "~~/assets/images/icons/IconUnit.vue";
 import IconTopic from "../assets/images/icons/IconTopic.vue";
+import IconCommunity from "~~/assets/images/icons/IconCommunity.vue";
 
 export default {
   components: {
@@ -100,15 +113,19 @@ export default {
     UserIcon,
     PostIcon,
     ImgSidebar,
-
     IconUnit,
     IconTopic,
-  },
+    IconCommunity
+},
 
   setup() {
     const routeNameActive = ref();
     const route = useRoute();
     const routeNameState = useRouteActive();
+    const common = ref(null);
+    
+    // TODO: define submenu
+    const routeSubMenu = ref("common");   // common, system
 
     function setRouteNameState() {
       routeNameState.value = null;
@@ -117,19 +134,52 @@ export default {
     function setRouteNameActive(to) {
       routeNameActive.value = to;
       routeNameState.value = to;
+      setLocalStorageRoute(to)
+      if (localStorage.getItem('rType') == null) {
+        const submenu = document.getElementsByClassName('submenu');
+        if (submenu) {
+          for (let i = 0; i < submenu.length; i++) {
+            const element = submenu[i];
+            element.classList.remove('show');
+          }
+        }
+      }
+    }
+    
+    function setLocalStorageRoute(pageGroup) {
+      if (routeSubMenu.value.includes(pageGroup)) {
+        localStorage.setItem("activeRname", pageGroup);
+        localStorage.setItem("rType", "submenu");
+      } else {
+        localStorage.removeItem("activeRname");
+        localStorage.removeItem("rType");
+      }
     }
 
     function onLoadRouteNameCurrent() {
       let pageGroup = route.name.split("-")[0];
       setRouteNameActive(pageGroup);
+      setLocalStorageRoute(pageGroup);
+      let rType = localStorage.getItem("rType");
+      if (rType) {
+        let activeRname = localStorage.getItem("activeRname");
+        document.getElementById(activeRname).nextElementSibling.classList.add('show');
+      }
+    }
+
+    function toggleSubmenu(e) {
+      let idSubmenu = common.value?.id;
+      document.getElementById(idSubmenu).nextElementSibling.classList.toggle('show');
     }
 
     return {
-      routeNameActive,
+      routeNameActive, common,
 
+      toggleSubmenu,
       setRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
+      setLocalStorageRoute
     };
   },
   watch: {
@@ -140,6 +190,7 @@ export default {
         this.setRouteNameState();
         this.setRouteNameActive(pageGroup);
         this.show = false;
+        this.setLocalStorageRoute(pageGroup);
       },
     },
   },
@@ -147,5 +198,8 @@ export default {
     this.setRouteNameState();
     this.onLoadRouteNameCurrent();
   },
+  unmounted() {
+    // localStorage.clear();
+  }
 };
 </script>

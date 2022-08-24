@@ -62,6 +62,7 @@ export default {
       if (brief.length > maxLength) {
         return brief.slice(0, maxLength).concat("...");
       }
+      return brief;
     }
 
     function displayDate(date) {
