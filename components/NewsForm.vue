@@ -132,6 +132,7 @@
             class="form-control box"
             autocomplete="false"
             v-model="tag"
+            @focusout="inputTagFocusOut()"
             @keyup.space="addTags()"
             list = "tagOption"
           />
@@ -317,6 +318,12 @@ export default {
         brief.value = newsExist.value.brief;
         content.value = newsExist.value.content;
         avatarUrl.value = newsExist.value.avatarUrl;
+        if(newsExist.value.tags.length > 0){
+          newsExist.value.tags.forEach(e => {
+            tagNames.value += "," + e.name;
+            tags.value.push(e.name);
+          });
+        }
       }
     });
 
@@ -419,6 +426,10 @@ export default {
       tag.value = "";
     }
 
+    function inputTagFocusOut(){
+      tagsOption.value = false;
+    }
+
     return {
       titleForm,
       // config editor
@@ -458,6 +469,7 @@ export default {
       callApiGetById,
       callApiGetAllTags,
       selectTagSuggestion,
+      inputTagFocusOut,
     };
   },
   created() {
