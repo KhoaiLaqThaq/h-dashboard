@@ -803,7 +803,7 @@ a {
   thead {
     th {
       &.th-primary {
-        background-color: $primaryTheme;
+        background-color: $primaryTheme !important;
         color: #ffffff;
         margin: auto;
         vertical-align: middle;
@@ -823,6 +823,28 @@ a {
   .radius-20 {
     border-radius: 20px;
   }
+}
+
+.side-menu__sub-open {
+  display: block;
+}
+
+.side-menu__sub-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 @media only screen and (max-width: 768px) {
