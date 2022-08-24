@@ -801,7 +801,6 @@ a {
 //################### table ######################
 .table-custom {
   thead {
-
     //   border-bottom: 1px solid $bgc-content;
     th {
       //     &:first-child {
@@ -814,77 +813,76 @@ a {
       //     }
 
       &.th-primary {
-
         background-color: $primaryTheme;
         color: #ffffff;
         margin: auto;
         vertical-align: middle;
+      }
     }
-  }
-  tbody {
-    tr {
-      vertical-align: middle;
-    }
-  }
-}
-
-.table-unhover tr th:hover {
-  background-color: $primaryTheme !important;
-}
-
-.radius-20 {
-  border-radius: 20px;
-}
-
-.side-menu__sub-open {
-  display: block;
-}
-
-.side-menu__sub-icon {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.transform {
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
-    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-180 {
-  --tw-rotate: 180deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
-    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-// md
-@media only screen and (max-width: 768px) {
-}
-
-// lg
-@media only screen and (max-width: 992px) {
-  .sidebar {
-    width: 85px;
-    .logo-img {
-      margin: 0 auto;
-    }
-    .logo-title {
-      display: none;
-    }
-  }
-  #primary_theme .side-nav .side-menu .side-menu__title {
-    display: none;
-  }
-  #primary_theme {
-    .content {
-      .grid-cols-12 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    tbody {
+      tr {
+        vertical-align: middle;
       }
     }
   }
-}
 
-// xl 1500
-@media only screen and (min-width: 1500px) {
+  .table-unhover tr th:hover {
+    background-color: $primaryTheme !important;
+  }
 
+  .radius-20 {
+    border-radius: 20px;
+  }
+
+  .side-menu__sub-open {
+    display: block;
+  }
+
+  .side-menu__sub-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .transform {
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .rotate-180 {
+    --tw-rotate: 180deg;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+  // md
+  @media only screen and (max-width: 768px) {
+  }
+
+  // lg
+  @media only screen and (max-width: 992px) {
+    .sidebar {
+      width: 85px;
+      .logo-img {
+        margin: 0 auto;
+      }
+      .logo-title {
+        display: none;
+      }
+    }
+    #primary_theme .side-nav .side-menu .side-menu__title {
+      display: none;
+    }
+    #primary_theme {
+      .content {
+        .grid-cols-12 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+
+  // xl 1500
+  @media only screen and (min-width: 1500px) {
+  }
 }
