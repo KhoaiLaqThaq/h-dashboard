@@ -57,7 +57,6 @@ export default {
         axios
             .get(`${CONFIG.BASE_URL}/api/report/preview`)
             .then((response) => {
-                console.log(response.data);
                 const data = response.data;
                 setData(data);
             })
