@@ -127,7 +127,20 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating mb-3 input-suggest__event">
-          <input type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()"/>
+          <input
+            type="text"
+            class="form-control box"
+            autocomplete="false"
+            v-model="tag"
+            @keyup.space="addTags()"
+            list = "tagOption"
+          />
+          <div v-if="tagsOption"
+              class="tags-unorder-list">
+            <div class="tag-option" v-for="(tag, index) in listTagsForSelect" :key="index" @click="selectTagSuggestion">
+              {{tag.name}}
+            </div>
+          </div>
           <span class="title-suggest__event">Space</span>
           <label for="">Thêm tag <span class="text-danger">*</span></label>
           <div class="tags mt-2">
@@ -259,6 +272,13 @@ export default {
     const optionType = ref("");
     const type = ref("");
 
+    //source and destination of departments dual-listbox
+    const source = ref([]);
+    const destination = ref([]);
+    const listTags = ref([]);
+    const tagsOption = ref(false);
+    let listTagsForSelect = ref([]);
+
     // call api getById
     function callApiGetById() {
       if (newsId.value) {
@@ -274,6 +294,19 @@ export default {
       }
     }
 
+    function callApiGetAllTags() {
+      console.log("entering callApiGetAllTags...");
+        axios
+          .get(`${CONFIG.BASE_URL}/api/tags`)
+          .then((response) => {
+            if (response) {
+              listTags.value = response.data;
+              console.log(listTags.value);
+            }
+          })
+          .catch((error) => console.log(error));
+    }
+
     watch(newsExist, () => {
       if (newsExist.value) {
         title.value = newsExist.value.title;
@@ -284,6 +317,17 @@ export default {
         brief.value = newsExist.value.brief;
         content.value = newsExist.value.content;
         avatarUrl.value = newsExist.value.avatarUrl;
+      }
+    });
+
+    watch(tag, () => {
+      if(tag.value.trim().length > 0){
+        tagsOption.value = true;
+        listTagsForSelect.value = listTags.value.filter(function(item){
+          return item.name.includes(tag.value);
+        })
+      } else {
+        tagsOption.value = false;
       }
     });
 
@@ -366,6 +410,15 @@ export default {
         });
     }
 
+    function selectTagSuggestion(event){
+      let tagSelected = event.target.innerHTML
+      if (tagSelected.trim().length > 0 && tagSelected != "") {
+        tagNames.value += "," + tagSelected;
+        tags.value.push(tagSelected);
+      }
+      tag.value = "";
+    }
+
     return {
       titleForm,
       // config editor
@@ -391,6 +444,11 @@ export default {
       avatar,
       avatarUrl,
       status,
+      source,
+      destination,
+      listTags,
+      tagsOption,
+      listTagsForSelect,
       // function
       addTags,
       removeTag,
@@ -398,11 +456,14 @@ export default {
       getListTopic,
       validateField,
       callApiGetById,
+      callApiGetAllTags,
+      selectTagSuggestion,
     };
   },
   created() {
     this.getListTopic();
     this.callApiGetById();
+    this.callApiGetAllTags();
   },
 };
 </script>
@@ -455,5 +516,28 @@ export default {
     background-color: rgb(168, 167, 167);
     color: #FFFFFF;
     font-weight: bold;
+}
+
+.tags-unorder-list{
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  border-top: none;
+  background-color: rgb(255 255 255/var(--tw-bg-opacity));
+  box-shadow: 0 10px 20px rgb(0 0 0 / 8%);
+  --tw-bg-opacity: 1;
+
+  .tag-option{
+    display: block;
+    padding-left: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+  }
+
+  .tag-option:hover{
+    background-color: #a8aaab;
+    color: rgb(3, 3, 3);
+  }
 }
 </style>
