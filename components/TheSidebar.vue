@@ -23,19 +23,35 @@
           :class="{ active: routeNameActive == 'user' }"
         >
           <div class="side-menu__icon"><UserIcon /></div>
-          <span class="side-menu__title pl-1"> User</span>
+          <span class="side-menu__title pl-1">
+            User
+            <div class="side-menu__sub-icon transform rotate-180">
+              <font-awesome-icon icon="fa-solid fa-chevron-down" />
+            </div>
+          </span>
         </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          to="/department"
-          class="side-menu"
-          aria-label="unit"
-          :class="{ active: routeNameActive == 'department' }"
-        >
-          <div class="side-menu__icon"><PostIcon /></div>
-          <span class="side-menu__title pl-1"> Department</span>
-        </NuxtLink>
+        <ul class="side-menu__sub-open">
+          <li>
+            <NuxtLink
+              to="/department"
+              class="side-menu"
+              aria-label="unit"
+              :class="{ active: routeNameActive == 'department' }"
+            >
+              <span class="side-menu__title pl-1"> Department</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/group"
+              class="side-menu"
+              aria-label="group"
+              :class="{ active: routeNameActive == 'group' }"
+            >
+              <span class="side-menu__title pl-1"> Group</span>
+            </NuxtLink>
+          </li>
+        </ul>
       </li>
       <li>
         <NuxtLink
@@ -59,7 +75,7 @@
           <span class="side-menu__title pl-1"> Topic</span>
         </NuxtLink>
       </li>
-      <li class="logo-sidebar__bottom ">
+      <li class="logo-sidebar__bottom">
         <ImgSidebar />
       </li>
     </ul>
@@ -74,14 +90,13 @@ import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import PostIcon from "~~/assets/images/icons/PostIcon.vue";
 import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
 
-
 export default {
   components: {
     DashboardIconVue,
     UserIcon,
     PostIcon,
-    ImgSidebar
-},
+    ImgSidebar,
+  },
   setup() {
     const routeNameActive = ref();
     const route = useRoute();

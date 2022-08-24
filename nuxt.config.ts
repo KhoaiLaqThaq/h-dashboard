@@ -21,8 +21,14 @@ export default {
     ],
     script: [],
   },
-  css: ["@/assets/scss/custom.scss"],
-  plugins: [{ src: "~/plugins/editor-vue.js" }],
+  css: [
+    "@/assets/scss/custom.scss",
+    "@fortawesome/fontawesome-svg-core/styles.css",
+  ],
+  plugins: [
+    { src: "~/plugins/editor-vue.js" },
+    { src: "~/plugins/fort-awesome.js" },
+  ],
   components: true,
   buildModules: [],
   modules: [],
