@@ -26,21 +26,18 @@ export default {
         HotNewsStatistic
     },
     setup() {
-        const hotNews = [
-            { title: "Tin hot chính trị", author: "acc-test-1", brief: "Đồng minh của Nga bất ngờ giao toàn bộ phi đội cường kích Su-25 cho Ukraine", comments: 10, likes: 59, views: 1200 },
-            { title: "Tin hot thời sự", author: "BTC-test-1", brief: "Cần có chính sách cải cách tiền lương, đảm bảo tương đồng giữa khu vực công và tư để thu hút, trọng dụng nhân tài, theo đại diện Bộ Nội vụ.", comments: 30, likes: 101, views: 1578 },
-        ]
+        const hotNews = ref([]);
 
         function addData(data){
             var item = {
                 title: data.title,
-                author: "sdgf",
+                author: data.createdBy,
                 brief: data.brief,
-                likes: 0,
-                comments: 0,
-                views: 0
+                likes: data.likeTotal,
+                comments: data.commentTotal,
+                views: data.viewTotal
             }
-            hotNews.push(item);
+            hotNews.value.push(item);
         }
 
         // call api
@@ -56,7 +53,7 @@ export default {
                 console.log(hotNews);
             })
             .catch((e) => {
-                this.errors.push(e);
+                console.log(e);
             });
         }
 
