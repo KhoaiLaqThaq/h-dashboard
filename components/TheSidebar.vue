@@ -46,7 +46,7 @@
               aria-label="group"
               :class="{ active: routeNameActive == 'group' }"
             >
-              <span class="side-menu__title pl-1"> Group</span>
+              <span class="side-menu__title pl-1"> Nhóm người dùng</span>
             </NuxtLink>
           </li>
         </ul>

@@ -182,40 +182,17 @@
     </div>
     <hr />
     <div class="row">
-      <div class="col-lg-3 col-sm-12">
-        <div class="form-floating">
-          <!-- <Field
-            as="select"
-            name="type"
-            v-model="units"
-            class="form-select box"
-            required="required"
-            :value="type"
-            :rules="validateField"
-          >
-            <option
-              v-for="(option, index) in options"
-              :key="index"
-              :value="option"
-            >
-              {{ option }}
-            </option>
-            <ErrorMessage name="type" class="text-danger" />
-          </Field> -->
-          <div>
-            <label
-              >Phân phối phòng ban <span class="text-danger">*</span></label
-            >
-          </div>
-
-          <div>
-            <DualListBox
-              :source="source"
-              :destination="destination"
-              v-on:onChangeList="onChangeList"
-            />
-          </div>
+      <div class="col-lg-12">
+        <div>
+          <label>Phân phối phòng ban <span class="text-danger">*</span></label>
         </div>
+
+        <DualListBox
+            class="m-auto"
+            :source="source"
+            :destination="destination"
+            v-on:onChangeList="onChangeList"
+          />
       </div>
     </div>
   </Form>

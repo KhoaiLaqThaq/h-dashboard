@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-9 pt-4">
+        <div class="col-lg-9 col-md-12 pt-4">
             <h2 class="font-medium text-lg lucide">General Reports</h2>
             <PreviewReport />
 
@@ -8,7 +8,7 @@
         </div>
 
         <!-- top 5 hot news -->
-        <div class="col-3 container-statistic pt-4 pe-0">
+        <div class="col-lg-3 col-md-12 container-statistic pt-4 pe-0">
             <h2 class="font-medium text-lg lucide">Hot news</h2>
             <HotNewsStatistic :hotNews="hotNews" />
         </div>
