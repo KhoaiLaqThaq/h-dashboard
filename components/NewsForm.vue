@@ -132,14 +132,12 @@
             class="form-control box"
             autocomplete="false"
             v-model="tag"
-            @focusout="inputTagFocusOut()"
             @keyup.space="addTags()"
             list = "tagOption"
           />
-          <div v-if="tagsOption"
-              class="tags-unorder-list">
-            <div class="tag-option" v-for="(tag, index) in listTagsForSelect" :key="index" @click="selectTagSuggestion">
-              {{tag.name}}
+          <div v-if="tagsOption" class="tags-unorder-list">
+            <div class="tag-option" v-for="(tagItem, index) in listTagsForSelect" :key="index" @click="selectTagSuggestion">
+              {{tagItem.name}}
             </div>
           </div>
           <span class="title-suggest__event">Space</span>
@@ -272,13 +270,22 @@ export default {
     let option = ref("");
     const optionType = ref("");
     const type = ref("");
+    const commentTotal = ref(0);
+    const likeTotal = ref(0);
+    const viewTotal = ref(0);
+    const createdBy = ref("");
+    let createdDateString = ref("");
+
 
     //source and destination of departments dual-listbox
     const source = ref([]);
     const destination = ref([]);
+
+    //tag suggesstion field
     const listTags = ref([]);
     const tagsOption = ref(false);
     let listTagsForSelect = ref([]);
+
 
     // call api getById
     function callApiGetById() {
@@ -318,9 +325,17 @@ export default {
         brief.value = newsExist.value.brief;
         content.value = newsExist.value.content;
         avatarUrl.value = newsExist.value.avatarUrl;
+        commentTotal.value = newsExist.value.commentTotal;
+        likeTotal.value = newsExist.value.likeTotal;
+        viewTotal.value = newsExist.value.viewTotal;
+        createdDateString.value = newsExist.value.displayCreatedDate;
+        createdBy.value = newsExist.value.createdBy;
+        if(avatarUrl != null){
+          getObjectFileFromUrl(avatarUrl);
+        }
         if(newsExist.value.tags.length > 0){
           newsExist.value.tags.forEach(e => {
-            tagNames.value += "," + e.name;
+            // tagNames.value += "," + e.name;
             tags.value.push(e.name);
           });
         }
@@ -356,7 +371,7 @@ export default {
 
     // TODO: thêm tag
     function addTags() {
-      tagNames.value += "," + tag.value;
+      // tagNames.value += "," + tag.value;
       tags.value.push(tag.value);
       tag.value = "";
     }
@@ -393,8 +408,13 @@ export default {
 
     function onSubmit() {
       console.log("entering onSubmit()...");
+      tags.value.forEach((item) => {
+        tagNames.value += "," + item;
+      })
       const news = {
+        id : newsId.value ? newsId.value : null,
         avatar: avatar.value ? avatar.value : null,
+        avatarUrl: avatarUrl.value,
         type: optionType.value,
         title: title.value,
         brief: brief.value,
@@ -402,7 +422,13 @@ export default {
         status: 2,
         topicId: topic.value,
         tagNames: tagNames.value,
+        commentTotal: commentTotal.value,
+        likeTotal: likeTotal.value,
+        viewTotal: viewTotal.value,
+        createdBy: createdBy.value,
+        createdDateString: newsId.value ? createdDateString.value : null,
       };
+      console.log(news);
 
       const headers = { "Content-Type": "multipart/form-data" };
       axios
@@ -418,16 +444,25 @@ export default {
     }
 
     function selectTagSuggestion(event){
-      let tagSelected = event.target.innerHTML
+      let tagSelected = event.target.innerHTML;
       if (tagSelected.trim().length > 0 && tagSelected != "") {
-        tagNames.value += "," + tagSelected;
+        // tagNames.value += "," + tagSelected;
         tags.value.push(tagSelected);
       }
       tag.value = "";
     }
 
-    function inputTagFocusOut(){
-      tagsOption.value = false;
+    function getObjectFileFromUrl(url){
+      const config = { responseType: 'blob' };
+      axios
+        .get(`${CONFIG.BASE_URL}/api/topics`, config)
+        .then((response) => {
+          const file = new File([response.data],"");
+          avatar.value = file;
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
     }
 
     return {
@@ -469,7 +504,6 @@ export default {
       callApiGetById,
       callApiGetAllTags,
       selectTagSuggestion,
-      inputTagFocusOut,
     };
   },
   created() {
