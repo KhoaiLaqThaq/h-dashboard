@@ -110,8 +110,7 @@ export default {
       department,
       getDepartmentById,
       onSubmit,
-      validateName,
-      setDepartment
+      validateName
     };
   },
   mounted() {

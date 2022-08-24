@@ -56,7 +56,7 @@ export default {
             roundViews,
             convertMaxLength
         }
-    }
+    },
 }
 </script>
 <style lang="scss">
@@ -64,6 +64,7 @@ export default {
     display: inline-block;
     vertical-align: top;
     white-space: normal;
+    width: 100%;
 
     .item-news {
         text-align: left;

@@ -4,7 +4,7 @@
       <TitleHeader :title="titleForm" />
     </div>
     <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
-    <div class="col-8 table-content box p-3">
+    <div class="col-12 table-content box">
       <TableComponent
         :headers="tableHeader"
         :items="topics"

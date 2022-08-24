@@ -4,15 +4,15 @@
       to="/"
       class="router-link-active router-link-exact-active d-flex intro-x"
     >
-      <img src="~/assets/images/logo/logo.svg" alt="" class="w-6" />
-      <span class="text-white text-lg ps-3">My Mavin</span>
+      <img src="~/assets/images/logo/logo.svg" alt="" class="w-6 logo-img" />
+      <span class="text-white text-lg ps-3 logo-title">My Mavin</span>
     </NuxtLink>
     <div class="side-nav__devider my-6 me-3"></div>
     <ul>
       <li>
-        <NuxtLink to="/" class="side-menu">
+        <NuxtLink to="/" class="side-menu" title="Trang chủ">
           <div class="side-menu__icon"><DashboardIconVue /></div>
-          <span class="side-menu__title pl-1"> Dashboard</span>
+          <span class="side-menu__title pl-1"> Trang chủ</span>
         </NuxtLink>
       </li>
       <li>
@@ -21,14 +21,22 @@
           class="side-menu"
           aria-label="user"
           :class="{ active: routeNameActive == 'user' }"
+          title="Quản lý người dùng"
         >
           <div class="side-menu__icon"><UserIcon /></div>
-          <span class="side-menu__title pl-1">
-            User
-            <div class="side-menu__sub-icon transform rotate-180">
-              <font-awesome-icon icon="fa-solid fa-chevron-down" />
-            </div>
-          </span>
+          <span class="side-menu__title pl-1"> Quản lý người dùng</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink
+          to="/department"
+          class="side-menu"
+          aria-label="unit"
+          :class="{ active: routeNameActive == 'department' }"
+          title="Quản lý đơn vị thành viên"
+        >
+          <div class="side-menu__icon"><IconUnit /></div>
+          <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
         </NuxtLink>
         <ul class="side-menu__sub-open">
           <li>
@@ -59,9 +67,10 @@
           class="side-menu"
           aria-label="news"
           :class="{ active: routeNameActive == 'news' }"
+          title="Quản lý tin tức"
         >
           <div class="side-menu__icon"><PostIcon /></div>
-          <span class="side-menu__title pl-1"> News</span>
+          <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </NuxtLink>
       </li>
       <li>
@@ -70,11 +79,14 @@
           class="side-menu"
           aria-label="topic"
           :class="{ active: routeNameActive == 'topic' }"
+          title="Quản lý chủ đề"
         >
-          <div class="side-menu__icon"><PostIcon /></div>
-          <span class="side-menu__title pl-1"> Topic</span>
+          <div class="side-menu__icon"><IconTopic /></div>
+          <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
         </NuxtLink>
       </li>
+
+      <li class="mt-5"></li>
       <li class="logo-sidebar__bottom">
         <ImgSidebar />
       </li>
@@ -89,6 +101,8 @@ import DashboardIconVue from "~~/assets/images/icons/DashboardIcon.vue";
 import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import PostIcon from "~~/assets/images/icons/PostIcon.vue";
 import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
+import IconUnit from "~~/assets/images/icons/IconUnit.vue";
+import IconTopic from "../assets/images/icons/IconTopic.vue";
 
 export default {
   components: {
@@ -96,7 +110,11 @@ export default {
     UserIcon,
     PostIcon,
     ImgSidebar,
+
+    IconUnit,
+    IconTopic,
   },
+
   setup() {
     const routeNameActive = ref();
     const route = useRoute();
