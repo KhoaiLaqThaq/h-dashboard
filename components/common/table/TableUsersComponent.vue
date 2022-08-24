@@ -1,11 +1,11 @@
 <template>
-  <table class="table table-striped table-hover">
+  <table class="table table-custom table-unhover">
     <thead>
       <tr>
-        <th v-for="(item, index) in headers" :key="index">
+        <th class="th-primary" v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
-        <th class="text-center" v-if="actionEdit || actionDelete">Actions</th>
+        <th class="text-center th-primary" v-if="actionEdit || actionDelete">Actions</th>
       </tr>
     </thead>
     <tbody>

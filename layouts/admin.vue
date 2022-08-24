@@ -32,7 +32,5 @@ export default {
 }
 </script>
 <style lang="scss">
-    .sidebar {
-        width: 220px;
-    }
+    
 </style>
