@@ -21,7 +21,7 @@
           class="side-menu"
           aria-label="user"
           :class="{ active: routeNameActive == 'user' }"
-           title="Quản lý người dùng"
+          title="Quản lý người dùng"
         >
           <div class="side-menu__icon"><UserIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý người dùng</span>
@@ -33,11 +33,33 @@
           class="side-menu"
           aria-label="unit"
           :class="{ active: routeNameActive == 'department' }"
-           title="Quản lý đơn vị thành viên"
+          title="Quản lý đơn vị thành viên"
         >
           <div class="side-menu__icon"><IconUnit /></div>
           <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
         </NuxtLink>
+        <ul class="side-menu__sub-open">
+          <li>
+            <NuxtLink
+              to="/department"
+              class="side-menu"
+              aria-label="unit"
+              :class="{ active: routeNameActive == 'department' }"
+            >
+              <span class="side-menu__title pl-1"> Department</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/group"
+              class="side-menu"
+              aria-label="group"
+              :class="{ active: routeNameActive == 'group' }"
+            >
+              <span class="side-menu__title pl-1"> Group</span>
+            </NuxtLink>
+          </li>
+        </ul>
       </li>
       <li>
         <NuxtLink
@@ -45,7 +67,7 @@
           class="side-menu"
           aria-label="news"
           :class="{ active: routeNameActive == 'news' }"
-           title="Quản lý tin tức"
+          title="Quản lý tin tức"
         >
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
@@ -57,14 +79,15 @@
           class="side-menu"
           aria-label="topic"
           :class="{ active: routeNameActive == 'topic' }"
-           title="Quản lý chủ đề"
+          title="Quản lý chủ đề"
         >
           <div class="side-menu__icon"><IconTopic /></div>
           <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
         </NuxtLink>
       </li>
+
       <li class="mt-5"></li>
-      <li class="logo-sidebar__bottom ">
+      <li class="logo-sidebar__bottom">
         <ImgSidebar />
       </li>
     </ul>
@@ -81,16 +104,17 @@ import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
 import IconUnit from "~~/assets/images/icons/IconUnit.vue";
 import IconTopic from "../assets/images/icons/IconTopic.vue";
 
-
 export default {
   components: {
     DashboardIconVue,
     UserIcon,
     PostIcon,
     ImgSidebar,
+
     IconUnit,
-    IconTopic
-},
+    IconTopic,
+  },
+
   setup() {
     const routeNameActive = ref();
     const route = useRoute();
