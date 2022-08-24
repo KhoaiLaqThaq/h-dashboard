@@ -6,8 +6,7 @@
             :wrap-around="true"
         >
             <slide v-for="(news, index) in hotNews" :key="index">
-                <!-- <div class="item-news box m-3 p-3 zoom-in"> -->
-                <div class="item-news box zoom-in">
+                <div class="item-news box m-3 p-3 zoom-in">
                     <div class="text-lg font-medium trancate">{{ news.title }}</div>
                     <div class="author text-slate-400 mt-1">{{ news.author }}</div>
                     <div class="brief text-slate-500 mt-1">{{ convertMaxLength(news.brief) }}</div>
@@ -65,6 +64,7 @@ export default {
     display: inline-block;
     vertical-align: top;
     white-space: normal;
+    width: 100%;
 
     .item-news {
         text-align: left;
