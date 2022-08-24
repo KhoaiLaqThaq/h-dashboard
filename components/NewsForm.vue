@@ -212,6 +212,7 @@
             <DualListBox
               :source="source"
               :destination="destination"
+              label="name"
               v-on:onChangeList="onChangeList"
             />
           </div>
