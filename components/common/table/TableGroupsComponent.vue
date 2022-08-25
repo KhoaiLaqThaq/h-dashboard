@@ -20,7 +20,7 @@
         <td class="px-0" v-if="actionEdit || actionDelete">
           <div class="d-flex">
             <div class="m-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/common/topic/form/' + item.id" class="d-flex">
+              <NuxtLink :to="'/common/group/form/' + item.no" class="d-flex">
                 <edit-icon /><span class="ms-1">Sửa</span>
               </NuxtLink>
             </div>
@@ -28,7 +28,7 @@
               class="d-flex me-3 cursor-pointer ms-3 text-danger"
               v-if="actionDelete"
             >
-              <delete-icon @click="disabledTopics(item.id)" />
+              <delete-icon @click="disabledGroups(item.id)" />
               <span class="ms-1">Xóa</span>
             </div>
           </div>

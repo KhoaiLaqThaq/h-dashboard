@@ -17,13 +17,48 @@
       </li>
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
-          @click="toggleSubmenu(e)" id="common" ref="common">
+        <a
+          class="nav-link side-menu cursor-pointer"
+          title="Quản lý chung"
+          @click="toggleSubmenu(e)"
+          id="common"
+          ref="common"
+        >
           <div class="side-menu__icon"><IconCommunity /></div>
           <span class="side-menu__title pl-1"> Quản lý chung</span>
         </a>
         <ul class="submenu collapse">
-          <li><NuxtLink to="/common" title="Title" :class="{active: routeNameActive == 'common'}" class="common nav-link side-menu"><span class="side-menu__title">Submenu item 4</span> </NuxtLink></li>
+          <!-- <li>
+            <NuxtLink
+              to="/common"
+              title="Title"
+              :class="{ active: routeNameActive == 'common' }"
+              class="common nav-link side-menu"
+              ><span class="side-menu__title">Submenu item 4</span>
+            </NuxtLink>
+          </li> -->
+          <li>
+            <NuxtLink
+              to="/common/group"
+              class="side-menu"
+              aria-label="group"
+              :class="{ active: routeNameActive == 'group' }"
+            >
+              <span class="side-menu__title pl-1"> Nhóm người dùng</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/common/topic"
+              class="side-menu"
+              aria-label="topic"
+              :class="{ active: routeNameActive == 'topic' }"
+              title="Quản lý chủ đề"
+            >
+              <div class="side-menu__icon"><IconTopic /></div>
+              <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
+            </NuxtLink>
+          </li>
         </ul>
       </li>
 
@@ -50,18 +85,7 @@
           <div class="side-menu__icon"><IconUnit /></div>
           <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
         </NuxtLink>
-        <ul class="side-menu__sub-open">
-          <li>
-            <NuxtLink
-              to="/group"
-              class="side-menu"
-              aria-label="group"
-              :class="{ active: routeNameActive == 'group' }"
-            >
-              <span class="side-menu__title pl-1"> Nhóm người dùng</span>
-            </NuxtLink>
-          </li>
-        </ul>
+        <ul class="side-menu__sub-open"></ul>
       </li>
       <li>
         <NuxtLink
@@ -73,18 +97,6 @@
         >
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          to="/topic"
-          class="side-menu"
-          aria-label="topic"
-          :class="{ active: routeNameActive == 'topic' }"
-          title="Quản lý chủ đề"
-        >
-          <div class="side-menu__icon"><IconTopic /></div>
-          <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
         </NuxtLink>
       </li>
 
@@ -115,17 +127,17 @@ export default {
     ImgSidebar,
     IconUnit,
     IconTopic,
-    IconCommunity
-},
+    IconCommunity,
+  },
 
   setup() {
     const routeNameActive = ref();
     const route = useRoute();
     const routeNameState = useRouteActive();
     const common = ref(null);
-    
+
     // TODO: define submenu
-    const routeSubMenu = ref("common");   // common, system
+    const routeSubMenu = ref("common"); // common, system
 
     function setRouteNameState() {
       routeNameState.value = null;
@@ -134,18 +146,18 @@ export default {
     function setRouteNameActive(to) {
       routeNameActive.value = to;
       routeNameState.value = to;
-      setLocalStorageRoute(to)
-      if (localStorage.getItem('rType') == null) {
-        const submenu = document.getElementsByClassName('submenu');
+      setLocalStorageRoute(to);
+      if (localStorage.getItem("rType") == null) {
+        const submenu = document.getElementsByClassName("submenu");
         if (submenu) {
           for (let i = 0; i < submenu.length; i++) {
             const element = submenu[i];
-            element.classList.remove('show');
+            element.classList.remove("show");
           }
         }
       }
     }
-    
+
     function setLocalStorageRoute(pageGroup) {
       if (routeSubMenu.value.includes(pageGroup)) {
         localStorage.setItem("activeRname", pageGroup);
@@ -163,23 +175,28 @@ export default {
       let rType = localStorage.getItem("rType");
       if (rType) {
         let activeRname = localStorage.getItem("activeRname");
-        document.getElementById(activeRname).nextElementSibling.classList.add('show');
+        document
+          .getElementById(activeRname)
+          .nextElementSibling.classList.add("show");
       }
     }
 
     function toggleSubmenu(e) {
       let idSubmenu = common.value?.id;
-      document.getElementById(idSubmenu).nextElementSibling.classList.toggle('show');
+      document
+        .getElementById(idSubmenu)
+        .nextElementSibling.classList.toggle("show");
     }
 
     return {
-      routeNameActive, common,
+      routeNameActive,
+      common,
 
       toggleSubmenu,
       setRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
-      setLocalStorageRoute
+      setLocalStorageRoute,
     };
   },
   watch: {
@@ -200,6 +217,6 @@ export default {
   },
   unmounted() {
     // localStorage.clear();
-  }
+  },
 };
 </script>
