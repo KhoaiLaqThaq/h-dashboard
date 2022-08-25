@@ -18,14 +18,14 @@
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
         <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
-          @click="toggleSubmenu(common)" id="common" ref="common">
+          @click="toggleSubmenu(system)" id="system" ref="system">
           <div class="side-menu__icon"><IconCommunity /></div>
-          <span class="side-menu__title pl-1"> Quản lý chung</span>
+          <span class="side-menu__title pl-1"> Quản lý hệ thống</span>
         </a>
         <ul class="submenu collapse">
           <li>
             <NuxtLink
-              to="/common/group"
+              to="/system/group"
               class="side-menu"
               aria-label="group"
               :class="{ active: routeNameActive == 'group' }"
@@ -33,6 +33,41 @@
               <div class="side-menu__icon"><IconGroup /></div>
               <span class="side-menu__title pl-1"> Nhóm người dùng</span>
             </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/system/user"
+              class="side-menu"
+              aria-label="user"
+              :class="{ active: routeNameActive == 'user' }"
+              title="Quản lý người dùng"
+            >
+              <div class="side-menu__icon"><UserIcon /></div>
+              <span class="side-menu__title pl-1"> Quản lý người dùng</span>
+            </NuxtLink>
+          </li>
+        </ul>
+      </li>
+      <!-- submenu -->
+      <li class="nav-item has-submenu" aria-label="has-submenu">
+        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
+          @click="toggleSubmenu(common)" id="common" ref="common">
+          <div class="side-menu__icon"><IconCommunity /></div>
+          <span class="side-menu__title pl-1"> Quản lý chung</span>
+        </a>
+        <ul class="submenu collapse">
+          <li>
+            <NuxtLink
+              to="/common/department"
+              class="side-menu"
+              aria-label="department"
+              :class="{ active: routeNameActive == 'department' }"
+              title="Quản lý đơn vị thành viên"
+            >
+              <div class="side-menu__icon"><IconUnit /></div>
+              <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
+            </NuxtLink>
+            <ul class="side-menu__sub-open"></ul>
           </li>
           <li>
             <NuxtLink
@@ -48,32 +83,7 @@
           </li>
         </ul>
       </li>
-
-      <li>
-        <NuxtLink
-          to="/user"
-          class="side-menu"
-          aria-label="user"
-          :class="{ active: routeNameActive == 'user' }"
-          title="Quản lý người dùng"
-        >
-          <div class="side-menu__icon"><UserIcon /></div>
-          <span class="side-menu__title pl-1"> Quản lý người dùng</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          to="/department"
-          class="side-menu"
-          aria-label="unit"
-          :class="{ active: routeNameActive == 'department' }"
-          title="Quản lý đơn vị thành viên"
-        >
-          <div class="side-menu__icon"><IconUnit /></div>
-          <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
-        </NuxtLink>
-        <ul class="side-menu__sub-open"></ul>
-      </li>
+      
        <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
         <a class="nav-link side-menu cursor-pointer" title="Quản lý tin tức"
@@ -123,8 +133,9 @@ export default {
     const routeNameState = useRouteActive();
     const common = ref(null);
     const news = ref(null);
+    const system = ref(null);
     // TODO: define submenu
-    const routeSubMenu = ref("common, news");   // common, system
+    const routeSubMenu = ref("common, news, system");   // common, system
 
     function setRouteNameState() {
       routeNameState.value = null;
@@ -173,7 +184,7 @@ export default {
     }
 
     return {
-      routeNameActive, common, news,
+      routeNameActive, common, news, system,
 
       toggleSubmenu,
       setRouteNameState,

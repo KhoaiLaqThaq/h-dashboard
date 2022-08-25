@@ -31,7 +31,7 @@ export default {
     return {
       titleForm: "Danh sách đơn vị",
       btnTitle: "Thêm mới",
-      routerPush: "/department/form/",
+      routerPush: "/common/department/form/",
     };
   },
   setup() {

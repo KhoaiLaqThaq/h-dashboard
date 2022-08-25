@@ -37,7 +37,7 @@ export default {
     return {
       titleForm: "Danh sách nhóm quyền",
       btnTitle: "Thêm mới",
-      routerPush: "/common/group/form",
+      routerPush: "/system/group/form",
     };
   },
   setup() {

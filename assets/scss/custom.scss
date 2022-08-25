@@ -3,6 +3,7 @@
 
 $primaryTheme: #025893;
 $bgc-content: rgb(241 245 249);
+$textTheme: #FBBA16;
 
 #main {
   overflow-x: hidden;
@@ -125,7 +126,7 @@ $bgc-content: rgb(241 245 249);
         }
 
         .side-menu__title {
-          color: #FBBA16;
+          color: $textTheme;
         }
         &::before {
           content: "";
@@ -895,8 +896,38 @@ a {
       }
     }
   }
+
+  #primary_theme {
+    .side-nav {
+      .has-submenu ul.submenu.show li {
+        margin-left: 30px;
+        border-left: 1px dashed #FFFFFF;
+        padding-left: 10px;
+        margin-bottom: 9px;
+        .side-menu__icon {
+          svg {
+            position: absolute;
+            left: -28px;
+            top: 8px;
+            background-color: $primaryTheme;
+            border-radius: 999px;
+            width: 35px;
+            height: 35px;
+            padding: 8px;
+          }
+        }
+      }
+    }
+
+    .side-nav .side-menu.router-link-exact-active svg {
+      color: $textTheme !important;
+    }
+  }
 }
 
 // xl 1500
 @media only screen and (min-width: 1500px) {
+  .sidebar {
+    min-width: 270px;
+  }
 }

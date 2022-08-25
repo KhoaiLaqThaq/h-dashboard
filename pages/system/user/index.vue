@@ -63,7 +63,7 @@ export default {
       title: "Danh sách người dùng",
       itemsSelected: [],
       themeColor: "#1e40af",
-      routerPush: "/user/form",
+      routerPush: "/system/user/form",
     };
   },
   setup() {
