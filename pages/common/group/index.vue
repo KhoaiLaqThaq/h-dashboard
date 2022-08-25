@@ -25,7 +25,7 @@
 import { ref, watch } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
-import TableComponent from "~~/components/common/table/TableTopicsComponent.vue";
+import TableComponent from "~~/components/common/table/TableGroupsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
 import CONFIG from "~~/config";
@@ -37,7 +37,7 @@ export default {
     return {
       titleForm: "Danh sách nhóm quyền",
       btnTitle: "Thêm mới",
-      routerPush: "/group/form",
+      routerPush: "/common/group/form",
     };
   },
   setup() {

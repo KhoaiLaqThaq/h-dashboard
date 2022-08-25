@@ -1,15 +1,44 @@
 <template>
   <div class="list-box-wrapper">
     <div>
+      <div class="search-box">
+        <input v-model="searchSource" type="text" placeholder="Tìm kiếm..." />
+        <div
+          v-if="searchSource"
+          class="clear-search"
+          title="Clear Search"
+          @click="searchSource = ''"
+        >
+          &times;
+        </div>
+      </div>
       <ul class="list-box">
         <li
-          v-for="(item, key) in source"
+          v-for="(item, key) in source
+            .map((item, inx) => ({ inx, ...item }))
+            .filter((item) =>
+              item[label in item ? label : 'label']
+                .toLowerCase()
+                .includes(searchSource.toLowerCase())
+            )"
           v-bind:key="key"
           class="list-item"
           v-bind:style="{ backgroundColor: item.selected ? '#eeeeee' : '' }"
-          @click="selectSource(key)"
+          @click="selectSource(searchSource ? item.inx : key)"
         >
-          {{ item.name }}
+          {{ item[label in item ? label : "label"] }}
+        </li>
+        <li
+          v-if="
+            source.filter((item) =>
+              item[label in item ? label : 'label']
+                .toLowerCase()
+                .includes(searchSource.toLowerCase())
+            ).length == 0 && source.length
+          "
+          class="list-item"
+        >
+          Không tìm thấy kết quả
         </li>
       </ul>
       <div class="bulk-action">
@@ -36,23 +65,56 @@
       </div>
     </div>
     <div>
-      <ul class="list-box">
-        <li
-          v-for="(item, key) in destination"
-          v-bind:key="key"
-          class="list-item"
-          v-bind:style="{ backgroundColor: item.selected ? '#f5f5f5' : '' }"
-          @click="selectDestination(key)"
+      <div class="search-box">
+        <input
+          v-model="searchDestination"
+          type="text"
+          placeholder="Tìm kiếm..."
+        />
+        <div
+          v-if="searchDestination"
+          class="clear-search"
+          title="Clear Search"
+          @click="searchDestination = ''"
         >
-          {{ item.name }}
-        </li>
-      </ul>
-      <div class="bulk-action">
-        <div class="btn-action select-all" @click="selectAllDestination">
-          Chọn tất cả
+          &times;
         </div>
-        <div class="btn-action deselect-all" @click="deSelectAllDestination">
-          Bỏ chọn tất cả
+        <ul class="list-box">
+          <li
+            v-for="(item, key) in destination
+              .map((item, inx) => ({ inx, ...item }))
+              .filter((item) =>
+                item[label in item ? label : 'label']
+                  .toLowerCase()
+                  .includes(searchDestination.toLowerCase())
+              )"
+            v-bind:key="key"
+            class="list-item"
+            v-bind:style="{ backgroundColor: item.selected ? '#f5f5f5' : '' }"
+            @click="selectDestination(searchDestination ? item.inx : key)"
+          >
+            {{ item[label in item ? label : "label"] }}
+          </li>
+          <li
+            v-if="
+              destination.filter((item) =>
+                item[label in item ? label : 'label']
+                  .toLowerCase()
+                  .includes(searchDestination.toLowerCase())
+              ).length == 0 && destination.length
+            "
+            class="list-item"
+          >
+            Không tìm thấy kết quả
+          </li>
+        </ul>
+        <div class="bulk-action">
+          <div class="btn-action select-all" @click="selectAllDestination">
+            Chọn tất cả
+          </div>
+          <div class="btn-action deselect-all" @click="deSelectAllDestination">
+            Bỏ chọn tất cả
+          </div>
         </div>
       </div>
     </div>
@@ -64,19 +126,29 @@ export default {
   props: {
     source: Array,
     destination: Array,
+    label: String,
   },
   mounted: function () {
     console.log(this);
   },
+  data() {
+    return {
+      searchSource: "",
+      searchDestination: "",
+    };
+  },
   methods: {
     moveDestination: function () {
       let selected = this.source.filter((f) => f.selected);
+      if (!selected.length) return;
       selected = selected.map((item) => ({
         ...item,
         selected: false,
       }));
       let destination = [...selected, ...this.destination];
       let source = this.source.filter((f) => !f.selected);
+      this.searchSource = "";
+      this.searchDestination = "";
       this.$emit("onChangeList", {
         source,
         destination,
@@ -84,12 +156,15 @@ export default {
     },
     moveSource: function () {
       let selected = this.destination.filter((f) => f.selected);
+      if (!selected.length) return;
       selected = selected.map((item) => ({
         ...item,
         selected: false,
       }));
       let source = [...selected, ...this.source];
       let destination = this.destination.filter((f) => !f.selected);
+      this.searchSource = "";
+      this.searchDestination = "";
       this.$emit("onChangeList", {
         source,
         destination,
@@ -101,6 +176,8 @@ export default {
         ...this.destination,
       ];
       let source = [];
+      this.searchSource = "";
+      this.searchDestination = "";
       this.$emit("onChangeList", {
         source,
         destination,
@@ -112,6 +189,8 @@ export default {
         ...this.source,
       ];
       let destination = [];
+      this.searchSource = "";
+      this.searchDestination = "";
       this.$emit("onChangeList", {
         source,
         destination,
@@ -199,6 +278,24 @@ export default {
   .deselect-all {
     margin-left: 0.5rem;
   }
+}
+.list-box-wrapper .search-box {
+  border-bottom: solid 1px #cccccc;
+  position: relative;
+}
+.list-box-wrapper .search-box input {
+  border: none;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+.list-box-wrapper .search-box .clear-search {
+  position: absolute;
+  padding: 0.5rem;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  font-weight: bold;
+  color: #e74c3c;
 }
 .list-box-wrapper {
   margin-top: 10px;

@@ -37,7 +37,7 @@ export default {
     return {
       titleForm: "Danh sách chuyên mục",
       btnTitle: "Thêm mới",
-      routerPush: "/topic/form",
+      routerPush: "/common/topic/form",
     };
   },
   setup() {

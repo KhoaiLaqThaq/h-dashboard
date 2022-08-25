@@ -187,17 +187,42 @@
     </div>
     <hr />
     <div class="row">
-      <div class="col-lg-12">
-        <div>
-          <label>Phân phối phòng ban <span class="text-danger">*</span></label>
-        </div>
+      <div class="col-lg-12 col-sm-12">
+        <div class="form-floating">
+          <!-- <Field
+            as="select"
+            name="type"
+            v-model="units"
+            class="form-select box"
+            required="required"
+            :value="type"
+            :rules="validateField"
+          >
+            <option
+              v-for="(option, index) in options"
+              :key="index"
+              :value="option"
+            >
+              {{ option }}
+            </option>
+            <ErrorMessage name="type" class="text-danger" />
+          </Field> -->
+          <div>
+            <label
+              >Phân phối phòng ban <span class="text-danger">*</span></label
+            >
+          </div>
 
-        <DualListBox
-            class="m-auto"
-            :source="source"
-            :destination="destination"
-            v-on:onChangeList="onChangeList"
-          />
+          <div>
+            <DualListBox
+              class="m-auto"
+              :source="source"
+              :destination="destination"
+              label="name"
+              v-on:onChangeList="onChangeList"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </Form>
@@ -488,7 +513,7 @@ export default {
         .then((res) => {
           let responseData = res.data;
           console.log(res.data);
-          alert(responseData.code + ' ' + responseData.message);
+          alert(responseData.code + " " + responseData.message);
           navigateTo("/news");
         })
         .catch((error) => {
