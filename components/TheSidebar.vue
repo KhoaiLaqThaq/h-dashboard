@@ -19,7 +19,7 @@
       <li class="nav-item has-submenu" aria-label="has-submenu">
         <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
           @click="toggleSubmenu(system)" id="system" ref="system">
-          <div class="side-menu__icon"><IconCommunity /></div>
+          <div class="side-menu__icon"><IconTooling /></div>
           <span class="side-menu__title pl-1"> Quản lý hệ thống</span>
         </a>
         <ul class="submenu collapse">
@@ -92,7 +92,7 @@
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </a>
         <ul class="submenu collapse">
-          <li><NuxtLink to="/news" title="Title" :class="{active: routeNameActive == 'news'}" class="news nav-link side-menu"><span class="side-menu__title">Quản lý tin tức</span> </NuxtLink></li>
+          <li><NuxtLink to="/news" title="Title" :class="{active: routeNameActive == 'news'}" class="news nav-link side-menu"><PostIcon /><span class="side-menu__title">Quản lý tin tức</span> </NuxtLink></li>
         </ul>
       </li>
 
@@ -114,6 +114,7 @@ import IconUnit from "~~/assets/images/icons/IconUnit.vue";
 import IconTopic from "../assets/images/icons/IconTopic.vue";
 import IconCommunity from "~~/assets/images/icons/IconCommunity.vue";
 import IconGroup from "../assets/images/icons/IconGroup.vue";
+import IconTooling from "~~/assets/images/icons/IconTooling.vue";
 
 export default {
   components: {
@@ -124,7 +125,8 @@ export default {
     IconUnit,
     IconTopic,
     IconCommunity,
-    IconGroup
+    IconGroup,
+    IconTooling
 },
 
   setup() {
