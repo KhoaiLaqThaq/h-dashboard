@@ -4,8 +4,11 @@
       to="/"
       class="router-link-active router-link-exact-active d-flex intro-x"
     >
-      <img src="~/assets/images/logo/logo.svg" alt="" class="w-6 logo-img" />
-      <span class="text-white text-lg ps-3 logo-title">My Mavin</span>
+      <img
+        src="~/assets/images/logo/logomavin.png"
+        alt=""
+        class="logo-img logo-mavin"
+      />
     </NuxtLink>
     <div class="side-nav__devider my-6 me-3"></div>
     <ul>

@@ -1,7 +1,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "vue3-carousel/dist/carousel.css";
 
-$primaryTheme: #025893;
+$primaryTheme: #014683;
 $bgc-content: rgb(241 245 249);
 
 #main {
@@ -72,7 +72,7 @@ $bgc-content: rgb(241 245 249);
           &.show {
             li {
               margin-left: 25px;
-              border-left: 1px solid #FFFFFF;
+              border-left: 1px solid #ffffff;
               padding-left: 10px;
             }
           }
@@ -112,7 +112,7 @@ $bgc-content: rgb(241 245 249);
         }
 
         .side-menu__title {
-          color: #FBBA16;
+          color: #fbba16;
         }
         &::before {
           content: "";
@@ -859,6 +859,18 @@ a {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
     rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
     scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.logo-mavin {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
+.text-yl {
+  color: #fbba16;
+  font-weight: 500;
 }
 
 @media only screen and (max-width: 768px) {
