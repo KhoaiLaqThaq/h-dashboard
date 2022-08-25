@@ -46,7 +46,7 @@
               title="Quản lý người dùng"
             >
               <div class="side-menu__icon"><UserIcon /></div>
-              <span class="side-menu__title pl-1"> Quản lý người dùng</span>
+              <span class="side-menu__title pl-1"> Người dùng</span>
             </NuxtLink>
           </li>
         </ul>
@@ -60,53 +60,35 @@
         </a>
         <ul class="submenu collapse">
           <li>
-            <NuxtLink
-              to="/common/department"
-              class="side-menu"
-              aria-label="department"
-              :class="{ active: routeNameActive == 'department' }"
-              title="Quản lý đơn vị thành viên"
-            >
+            <NuxtLink to="/common/department" class="side-menu" aria-label="department" :class="{ active: routeNameActive == 'department' }" title="Quản lý đơn vị thành viên">
               <div class="side-menu__icon"><IconUnit /></div>
-              <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
+              <span class="side-menu__title pl-1"> Đơn vị thành viên</span>
             </NuxtLink>
             <ul class="side-menu__sub-open"></ul>
           </li>
           <li>
-            <NuxtLink
-              to="/common/topic"
-              class="side-menu"
-              aria-label="topic"
-              :class="{ active: routeNameActive == 'topic' }"
-              title="Quản lý chủ đề"
-            >
+            <NuxtLink to="/common/topic" class="side-menu" aria-label="topic" :class="{ active: routeNameActive == 'topic' }" title="Quản lý chủ đề">
               <div class="side-menu__icon"><IconTopic /></div>
-              <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
+              <span class="side-menu__title pl-1"> Chủ đề tin tức</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/common/comment" class="side-menu" aria-label="comment" :class="{active: routeNameActive == 'comment'}" title="Quản lý bình luận">
+              <div  class="side-menu__icon"><IconComment /></div>
+              <span class="side-menu__title">Quản lý bình luận</span>
             </NuxtLink>
           </li>
         </ul>
       </li>
-      
-       <!-- submenu -->
-      <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a class="nav-link side-menu cursor-pointer" title="Quản lý tin tức"
-          @click="toggleSubmenu(news)" id="news" ref="news">
+      <li>
+        <NuxtLink to="/news" class="side-menu" :class="{ active: routeNameActive == 'news' }" title="Quản lý tin tức">
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
-        </a>
-        <ul class="submenu collapse">
-          <li>
-            <NuxtLink to="/news" title="Quản lý tin tức" :class="{active: routeNameActive == 'news'}" class="side-menu">
-              <div  class="side-menu__icon"><PostIcon /></div>
-              <span class="side-menu__title">Quản lý tin tức</span>
-            </NuxtLink>
-          </li>
-        </ul>
+        </NuxtLink>
       </li>
 
       <li class="mt-5"></li>
-      <li class="logo-sidebar__bottom">
-      </li>
+      <li class="logo-sidebar__bottom"></li>
     </ul>
   </nav>
 </template>
@@ -123,6 +105,7 @@ import IconTopic from "../assets/images/icons/IconTopic.vue";
 import IconCommunity from "~~/assets/images/icons/IconCommunity.vue";
 import IconGroup from "../assets/images/icons/IconGroup.vue";
 import IconTooling from "~~/assets/images/icons/IconTooling.vue";
+import IconComment from "~~/assets/images/icons/IconComment.vue";
 
 export default {
   components: {
@@ -134,7 +117,8 @@ export default {
     IconTopic,
     IconCommunity,
     IconGroup,
-    IconTooling
+    IconTooling,
+    IconComment
 },
 
   setup() {
@@ -152,6 +136,7 @@ export default {
     }
 
     function setRouteNameActive(to) {
+      console.log('page to: ', to);
       routeNameActive.value = to;
       routeNameState.value = to;
       setLocalStorageRoute(to);
@@ -207,6 +192,7 @@ export default {
     $route: {
       deep: true,
       handler(to, from) {
+        console.log('eventListener route: ', to);
         let pageGroup = to.name.split("-")[0];
         this.setRouteNameState();
         this.setRouteNameActive(pageGroup);

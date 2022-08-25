@@ -836,22 +836,26 @@ a {
         margin: auto;
         vertical-align: middle;
       }
-    }
-    tbody {
-      tr {
-        vertical-align: middle;
-      }
+    } 
+  }
+  tbody {
+    tr {
+      vertical-align: middle;
     }
   }
 
-  .table-unhover tr th:hover {
+  &.table-unhover tr th:hover {
     background-color: $primaryTheme !important;
   }
 
-  .radius-20 {
-    border-radius: 20px;
-  }
+  
 }
+
+.radius-20 {
+  border-radius: 20px;
+}
+
+//################### /table ######################
 
 .side-menu__sub-open {
   display: block;
