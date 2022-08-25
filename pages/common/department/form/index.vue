@@ -17,7 +17,7 @@ export default {
 
   data() {
     return {
-      titleForm: "Thêm đơn vị phòng ban",
+      titleForm: "Thêm đơn vị thành viên",
     };
   },
   setup() {

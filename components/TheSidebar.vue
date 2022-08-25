@@ -126,28 +126,37 @@ export default {
     const route = useRoute();
     const routeNameState = useRouteActive();
     const common = ref(null);
-    const news = ref(null);
     const system = ref(null);
     // TODO: define submenu
-    const routeSubMenu = ref("common, news, system");   // common, system
+    const routeSubMenu = ref("common, system");   // common, system
 
-    function setRouteNameState() {
-      routeNameState.value = null;
-    }
+    const resetRouteNameState = () => { routeNameState.value = null; }
+    const onLoadRouteNameCurrent = () => { setRouteNameActive(route.name); }
+    const toggleSubmenu = (e) => { document.getElementById(e.id).nextElementSibling.classList.toggle('show'); }
 
     function setRouteNameActive(to) {
-      console.log('page to: ', to);
-      routeNameActive.value = to;
-      routeNameState.value = to;
-      setLocalStorageRoute(to);
-      if (localStorage.getItem("rType") == null) {
+      let pageGroup = to.split("-")  // ['common', 'department', ...]
+      let toGroup = pageGroup[0]; // to show submenu
+      routeNameActive.value = toGroup;
+      routeNameState.value = toGroup;
+      setLocalStorageRoute(toGroup);
+
+      let rType = localStorage.getItem("rType");
+      if (rType == null) {
         const submenu = document.getElementsByClassName("submenu");
         if (submenu) {
           for (let i = 0; i < submenu.length; i++) {
             const element = submenu[i];
+            // to hide submenu
             element.classList.remove("show");
           }
         }
+      } else {
+        let toSubGroup = pageGroup[1];
+        routeNameActive.value = toSubGroup;
+        routeNameState.value = toSubGroup;
+        // to show submenu
+        document.getElementById(toGroup).nextElementSibling.classList.add("show");
       }
     }
 
@@ -161,52 +170,30 @@ export default {
       }
     }
 
-    function onLoadRouteNameCurrent() {
-      let pageGroup = route.name.split("-")[0];
-      setRouteNameActive(pageGroup);
-      setLocalStorageRoute(pageGroup);
-      let rType = localStorage.getItem("rType");
-      if (rType) {
-        let activeRname = localStorage.getItem("activeRname");
-        document
-          .getElementById(activeRname)
-          .nextElementSibling.classList.add("show");
-      }
-    }
-
-    function toggleSubmenu(e) {
-      document.getElementById(e.id).nextElementSibling.classList.toggle('show');
-    }
-
     return {
-      routeNameActive, common, news, system,
+      routeNameActive, common, system,
 
       toggleSubmenu,
-      setRouteNameState,
+      resetRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
-      setLocalStorageRoute,
     };
   },
   watch: {
     $route: {
       deep: true,
       handler(to, from) {
-        console.log('eventListener route: ', to);
-        let pageGroup = to.name.split("-")[0];
-        this.setRouteNameState();
-        this.setRouteNameActive(pageGroup);
-        this.show = false;
-        this.setLocalStorageRoute(pageGroup);
+        this.resetRouteNameState();
+        this.setRouteNameActive(to.name);
       },
     },
   },
   mounted() {
-    this.setRouteNameState();
+    this.resetRouteNameState();
     this.onLoadRouteNameCurrent();
   },
   unmounted() {
-    // localStorage.clear();
+    localStorage.clear();
   },
 };
 </script>
