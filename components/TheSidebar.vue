@@ -18,7 +18,7 @@
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
         <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
-          @click="toggleSubmenu(e)" id="common" ref="common">
+          @click="toggleSubmenu(common)" id="common" ref="common">
           <div class="side-menu__icon"><IconCommunity /></div>
           <span class="side-menu__title pl-1"> Quản lý chung</span>
         </a>
@@ -63,17 +63,16 @@
           </li>
         </ul>
       </li>
-      <li>
-        <NuxtLink
-          to="/news"
-          class="side-menu"
-          aria-label="news"
-          :class="{ active: routeNameActive == 'news' }"
-          title="Quản lý tin tức"
-        >
+       <!-- submenu -->
+      <li class="nav-item has-submenu" aria-label="has-submenu">
+        <a class="nav-link side-menu cursor-pointer" title="Quản lý tin tức"
+          @click="toggleSubmenu(news)" id="news" ref="news">
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
-        </NuxtLink>
+        </a>
+        <ul class="submenu collapse">
+          <li><NuxtLink to="/news" title="Title" :class="{active: routeNameActive == 'news'}" class="news nav-link side-menu"><span class="side-menu__title">Quản lý tin tức</span> </NuxtLink></li>
+        </ul>
       </li>
       <li>
         <NuxtLink
@@ -122,9 +121,10 @@ export default {
     const route = useRoute();
     const routeNameState = useRouteActive();
     const common = ref(null);
+    const news = ref(null);
     
     // TODO: define submenu
-    const routeSubMenu = ref("common");   // common, system
+    const routeSubMenu = ref("common, news");   // common, system
 
     function setRouteNameState() {
       routeNameState.value = null;
@@ -167,12 +167,11 @@ export default {
     }
 
     function toggleSubmenu(e) {
-      let idSubmenu = common.value?.id;
-      document.getElementById(idSubmenu).nextElementSibling.classList.toggle('show');
+      document.getElementById(e.id).nextElementSibling.classList.toggle('show');
     }
 
     return {
-      routeNameActive, common,
+      routeNameActive, common, news,
 
       toggleSubmenu,
       setRouteNameState,
