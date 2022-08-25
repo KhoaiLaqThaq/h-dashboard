@@ -430,12 +430,10 @@ export default {
 
     // TODO: thêm tag
     function addTags() {
-      if (tag.value.trim().length > 0 && tag.value != "") {
+      if (tag.value.trim().length > 0 && tag.value.trim() != "") {
         tagNames.value += "," + tag.value;
         tags.value.push(tag.value);
       }
-      // tagNames.value += "," + tag.value;
-      tags.value.push(tag.value);
       tag.value = "";
     }
 

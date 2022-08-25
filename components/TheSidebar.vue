@@ -4,8 +4,11 @@
       to="/"
       class="ps-3 router-link-active router-link-exact-active d-flex intro-x"
     >
-      <img src="~/assets/images/logo/logo.svg" alt="" class="w-6 logo-img" />
-      <span class="text-white text-lg ps-3 logo-title">My Mavin</span>
+      <img
+        src="~/assets/images/logo/logomavin.png"
+        alt=""
+        class="logo-img logo-mavin"
+      />
     </NuxtLink>
     <div class="side-nav__devider my-6 me-3"></div>
     <ul>
@@ -92,7 +95,12 @@
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </a>
         <ul class="submenu collapse">
-          <li><NuxtLink to="/news" title="Title" :class="{active: routeNameActive == 'news'}" class="news nav-link side-menu"><PostIcon /><span class="side-menu__title">Quản lý tin tức</span> </NuxtLink></li>
+          <li>
+            <NuxtLink to="/news" title="Quản lý tin tức" :class="{active: routeNameActive == 'news'}" class="side-menu">
+              <div  class="side-menu__icon"><PostIcon /></div>
+              <span class="side-menu__title">Quản lý tin tức</span>
+            </NuxtLink>
+          </li>
         </ul>
       </li>
 
