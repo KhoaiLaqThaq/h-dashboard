@@ -182,7 +182,8 @@
     </div>
     <hr />
     <div class="row">
-      <div class="col-lg-3 col-sm-12">
+
+      <div class="col-lg-12 col-sm-12">
         <div class="form-floating">
           <!-- <Field
             as="select"
@@ -210,14 +211,14 @@
 
           <div>
             <DualListBox
+            class="m-auto"
               :source="source"
               :destination="destination"
               label="name"
               v-on:onChangeList="onChangeList"
             />
           </div>
-        </div>
-      </div>
+
     </div>
   </Form>
 </template>
@@ -444,7 +445,8 @@ export default {
         .then((res) => {
           let responseData = res.data;
           console.log(res.data);
-          alert(responseData.code + " " + responseData.message);
+          alert(responseData.code + ' ' + responseData.message);
+          navigateTo("/news");
         })
         .catch((error) => {
           console.log(error);
