@@ -2,7 +2,7 @@
   <nav class="side-nav pt-2">
     <NuxtLink
       to="/"
-      class="router-link-active router-link-exact-active d-flex intro-x"
+      class="ps-3 router-link-active router-link-exact-active d-flex intro-x"
     >
       <img src="~/assets/images/logo/logo.svg" alt="" class="w-6 logo-img" />
       <span class="text-white text-lg ps-3 logo-title">My Mavin</span>
@@ -90,7 +90,6 @@
 
       <li class="mt-5"></li>
       <li class="logo-sidebar__bottom">
-        <ImgSidebar />
       </li>
     </ul>
   </nav>
