@@ -823,7 +823,9 @@ a {
 
 //################### button style ###############
 .btn-primary {
-  background-color: $primaryTheme;
+  background-color: $textTheme;
+  color: $primaryTheme;
+  border: unset;
 }
 
 //################### table ######################
