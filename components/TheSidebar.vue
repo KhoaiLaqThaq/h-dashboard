@@ -101,6 +101,12 @@
               <span class="side-menu__title">Quản lý tin tức</span>
             </NuxtLink>
           </li>
+          <li>
+            <NuxtLink to="/comment" title="Quản lý bình luận" :class="{active: routeNameActive == 'comment'}" class="side-menu">
+              <div  class="side-menu__icon"><PostIcon /></div>
+              <span class="side-menu__title">Quản lý Comment</span>
+            </NuxtLink>
+          </li>
         </ul>
       </li>
 
