@@ -103,8 +103,11 @@ export default {
 .table-footer {
   margin-top: 0.5rem;
   border-top-width: 0px;
-  background-color: transparent;
-  padding: 0;
+  background-color: white;
+  border: 1px solid #CCC;
+  padding: 10px;
+  vertical-align: middle;
+  border-radius: 20px;
 
   .table-pagination {
     display: flex;
