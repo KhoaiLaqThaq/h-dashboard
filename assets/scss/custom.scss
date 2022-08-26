@@ -884,16 +884,20 @@ a {
       font-size: 16px;
       display: table-cell;
       padding: 5px;
-      // width: 150px;
+      background-color: #FFFFFF;
       border: 1px solid #ccc;
       margin: 5px;
       border-right: unset;
       border-left: unset;
 
+      .action-group {
+        justify-content:center;
+      }
     }
 
     .th, .td {
       &:first-child {
+        width: 50px;
         padding-left: 20px;
         border-top-left-radius: 20px;
         border-end-start-radius: 20px;
