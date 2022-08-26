@@ -2,7 +2,7 @@
   <nav class="side-nav pt-2">
     <NuxtLink
       to="/"
-      class="ps-3 router-link-active router-link-exact-active d-flex intro-x"
+      class="router-link-active router-link-exact-active d-flex intro-x"
     >
       <img
         src="~/assets/images/logo/logomavin.png"
