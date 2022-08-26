@@ -13,9 +13,9 @@
       <div class="td">{{ index + 1 }}</div>
       <div class="td">{{ item.code }}</div>
       <div class="td">{{ item.name }}</div>
-      <div class="td" v-if="actionEdit || actionDelete">
+      <div class="td px-0 text-center" v-if="actionEdit || actionDelete">
         <div class="d-flex me-0">
-          <div class="cursor-pointer" v-if="actionEdit">
+          <div class="m-auto cursor-pointer" v-if="actionEdit">
             <NuxtLink :to="routerPush + item.id" class="d-flex">
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>
