@@ -9,7 +9,6 @@
       />
     </div>
 
-    <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
     <div class="col-12 table-content">
       <TableDepartmentComponent
         :headers="tableHeader"
