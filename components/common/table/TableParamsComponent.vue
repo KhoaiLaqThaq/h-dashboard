@@ -41,7 +41,15 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "routerPush", "actionEdit", "actionDelete"],
+  props: [
+    "headers",
+    "items",
+    "routerPush",
+    "actionEdit",
+    "actionDelete",
+    "page",
+    "size",
+  ],
   setup() {},
 };
 </script>

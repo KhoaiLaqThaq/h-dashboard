@@ -56,10 +56,10 @@
           </li>
           <li>
             <NuxtLink
-              to="/system/system-params"
+              to="/system/systemParams"
               class="side-menu"
-              aria-label="system-params"
-              :class="{ active: routeNameActive == 'system-params' }"
+              aria-label="systemParams"
+              :class="{ active: routeNameActive == 'systemParams' }"
               title="Quản lý tham số hệ thống"
             >
               <div class="side-menu__icon"><ComputerIcon /></div>
