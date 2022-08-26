@@ -20,8 +20,13 @@
       </li>
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
-          @click="toggleSubmenu(system)" id="system" ref="system">
+        <a
+          class="nav-link side-menu cursor-pointer"
+          title="Quản lý chung"
+          @click="toggleSubmenu(system)"
+          id="system"
+          ref="system"
+        >
           <div class="side-menu__icon"><IconTooling /></div>
           <span class="side-menu__title pl-1"> Quản lý hệ thống</span>
         </a>
@@ -49,39 +54,79 @@
               <span class="side-menu__title pl-1"> Người dùng</span>
             </NuxtLink>
           </li>
+          <li>
+            <NuxtLink
+              to="/system/system-params"
+              class="side-menu"
+              aria-label="system-params"
+              :class="{ active: routeNameActive == 'system-params' }"
+              title="Quản lý tham số hệ thống"
+            >
+              <div class="side-menu__icon"><ComputerIcon /></div>
+              <span class="side-menu__title pl-1"> Tham số hệ thống</span>
+            </NuxtLink>
+          </li>
         </ul>
       </li>
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung"
-          @click="toggleSubmenu(common)" id="common" ref="common">
+        <a
+          class="nav-link side-menu cursor-pointer"
+          title="Quản lý chung"
+          @click="toggleSubmenu(common)"
+          id="common"
+          ref="common"
+        >
           <div class="side-menu__icon"><IconCommunity /></div>
           <span class="side-menu__title pl-1"> Quản lý chung</span>
         </a>
         <ul class="submenu collapse">
           <li>
-            <NuxtLink to="/common/department" class="side-menu" aria-label="department" :class="{ active: routeNameActive == 'department' }" title="Quản lý đơn vị thành viên">
+            <NuxtLink
+              to="/common/department"
+              class="side-menu"
+              aria-label="department"
+              :class="{ active: routeNameActive == 'department' }"
+              title="Quản lý đơn vị thành viên"
+            >
               <div class="side-menu__icon"><IconUnit /></div>
               <span class="side-menu__title pl-1"> Đơn vị thành viên</span>
             </NuxtLink>
             <ul class="side-menu__sub-open"></ul>
           </li>
           <li>
-            <NuxtLink to="/common/topic" class="side-menu" aria-label="topic" :class="{ active: routeNameActive == 'topic' }" title="Quản lý chủ đề">
+            <NuxtLink
+              to="/common/topic"
+              class="side-menu"
+              aria-label="topic"
+              :class="{ active: routeNameActive == 'topic' }"
+              title="Quản lý chủ đề"
+            >
               <div class="side-menu__icon"><IconTopic /></div>
               <span class="side-menu__title pl-1"> Chủ đề tin tức</span>
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/common/comment" class="side-menu" aria-label="comment" :class="{active: routeNameActive == 'comment'}" title="Quản lý bình luận">
-              <div  class="side-menu__icon"><IconComment /></div>
+            <NuxtLink
+              to="/common/comment"
+              class="side-menu"
+              aria-label="comment"
+              :class="{ active: routeNameActive == 'comment' }"
+              title="Quản lý bình luận"
+            >
+              <div class="side-menu__icon"><IconComment /></div>
               <span class="side-menu__title">Quản lý bình luận</span>
             </NuxtLink>
           </li>
         </ul>
       </li>
       <li>
-        <NuxtLink to="/news" class="side-menu" :class="{ active: routeNameActive == 'news' }" title="Quản lý tin tức">
+        <NuxtLink
+          to="/news"
+          class="side-menu"
+          :class="{ active: routeNameActive == 'news' }"
+          title="Quản lý tin tức"
+        >
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </NuxtLink>
@@ -105,6 +150,7 @@ import IconCommunity from "~~/assets/images/icons/IconCommunity.vue";
 import IconGroup from "../assets/images/icons/IconGroup.vue";
 import IconTooling from "~~/assets/images/icons/IconTooling.vue";
 import IconComment from "~~/assets/images/icons/IconComment.vue";
+import ComputerIcon from "~~/assets/images/icons/ComputerIcon.vue";
 
 export default {
   components: {
@@ -116,8 +162,9 @@ export default {
     IconCommunity,
     IconGroup,
     IconTooling,
-    IconComment
-},
+    IconComment,
+    ComputerIcon,
+  },
 
   setup() {
     const routeNameActive = ref();
@@ -126,14 +173,20 @@ export default {
     const common = ref(null);
     const system = ref(null);
     // TODO: define submenu
-    const routeSubMenu = ref("common, system");   // common, system
+    const routeSubMenu = ref("common, system"); // common, system
 
-    const resetRouteNameState = () => { routeNameState.value = null; }
-    const onLoadRouteNameCurrent = () => { setRouteNameActive(route.name); }
-    const toggleSubmenu = (e) => { document.getElementById(e.id).nextElementSibling.classList.toggle('show'); }
+    const resetRouteNameState = () => {
+      routeNameState.value = null;
+    };
+    const onLoadRouteNameCurrent = () => {
+      setRouteNameActive(route.name);
+    };
+    const toggleSubmenu = (e) => {
+      document.getElementById(e.id).nextElementSibling.classList.toggle("show");
+    };
 
     function setRouteNameActive(to) {
-      let pageGroup = to.split("-")  // ['common', 'department', ...]
+      let pageGroup = to.split("-"); // ['common', 'department', ...]
       let toGroup = pageGroup[0]; // to show submenu
       routeNameActive.value = toGroup;
       routeNameState.value = toGroup;
@@ -154,7 +207,9 @@ export default {
         routeNameActive.value = toSubGroup;
         routeNameState.value = toSubGroup;
         // to show submenu
-        document.getElementById(toGroup).nextElementSibling.classList.add("show");
+        document
+          .getElementById(toGroup)
+          .nextElementSibling.classList.add("show");
       }
     }
 
@@ -169,7 +224,9 @@ export default {
     }
 
     return {
-      routeNameActive, common, system,
+      routeNameActive,
+      common,
+      system,
 
       toggleSubmenu,
       resetRouteNameState,

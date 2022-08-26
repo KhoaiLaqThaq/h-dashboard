@@ -4,10 +4,11 @@
       <TitleHeader :title="titleForm" />
     </div>
 
+    <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
     <div class="col-12 table-content">
-      <TableDepartmentComponent
+      <TableComponent
         :headers="tableHeader"
-        :items="departments"
+        :items="systemParams"
         :actionEdit="true"
         :actionDelete="false"
         :routerPush="routerPush"
@@ -19,36 +20,37 @@
 import { ref } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
-import TableDepartmentComponent from "~~/components/common/table/TableDepartmentComponent.vue";
+import TableComponent from "~~/components/common/table/TableParamsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
 import CONFIG from "~~/config";
 import axios from "axios";
 
 export default {
-  components: { TitleHeader, AddButton, TableDepartmentComponent, Pagination },
+  components: { TitleHeader, AddButton, TableComponent, Pagination },
   data() {
     return {
-      titleForm: "Danh sách đơn vị",
+      titleForm: "Danh sách tham số hệ thống",
       btnTitle: "Thêm mới",
-      routerPush: "/common/department/form/",
+      routerPush: "/system/system-params/form/",
     };
   },
   setup() {
     const tableHeader = [
-      { text: "No", value: "no" },
-      { text: "Code", value: "code" },
-      { text: "Name", value: "name" },
+      { text: "No", value: "id" },
+      { text: "Name", value: "paramName" },
+      { text: "Value", value: "paramValue" },
+      { text: "Description", value: "description" },
     ];
-    const departments = ref([]);
+    const systemParams = ref([]);
 
     // call api
     function searchCallApi() {
       axios
-        .get(`${CONFIG.BASE_URL}/api/departments`)
+        .get(`${CONFIG.BASE_URL}/api/systemParameters`)
         .then((response) => {
           const data = response.data;
-          departments.value = data;
+          systemParams.value = data;
         })
         .catch((e) => {
           this.errors.push(e);
@@ -57,7 +59,7 @@ export default {
 
     return {
       tableHeader,
-      departments,
+      systemParams,
       searchCallApi,
     };
   },

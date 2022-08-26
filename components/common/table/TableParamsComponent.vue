@@ -11,8 +11,9 @@
 
     <div class="tr" v-for="(item, index) in items" :key="index">
       <div class="td">{{ index + 1 }}</div>
-      <div class="td">{{ item.code }}</div>
-      <div class="td">{{ item.name }}</div>
+      <div class="td">{{ item.paramName }}</div>
+      <div class="td">{{ item.paramValue }}</div>
+      <div class="td">{{ item.description }}</div>
       <div class="td px-0 text-center" v-if="actionEdit || actionDelete">
         <div class="d-flex me-0">
           <div class="m-auto cursor-pointer" v-if="actionEdit">

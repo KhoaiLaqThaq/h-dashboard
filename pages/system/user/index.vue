@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="table-content box mt-3">
+    <div class="table-content mt-3">
       <table-component
         :headers="headers"
         :items="items"
