@@ -1,41 +1,39 @@
 <template>
-  <table class="table table-custom table-unhover">
-    <thead>
-      <tr>
-        <th class="th-primary" v-for="(item, index) in headers" :key="index">
-          {{ item.text }}
-        </th>
-        <th class="text-center th-primary" v-if="actionEdit || actionDelete">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in items" :key="index">
-        <td class="text-center">{{ item.no }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.email }}</td>
-        <td>{{ item.first_name }}</td>
-        <td>{{ item.last_name }}</td>
-        <td>{{ item.age }}</td>
-        <td>{{ item.role }}</td>
-        <td class="" v-if="actionEdit || actionDelete">
-          <div class="d-flex">
-            <div class="ms-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/users/form/' + item.id" class="d-flex"
-                ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
-              >
-            </div>
-            <div
-              class="d-flex me-auto cursor-pointer ms-3 text-danger"
-              v-if="actionDelete"
+  <div class="table-container">
+    <div class="tr">
+      <div class="th" v-for="(item, index) in headers" :key="index">
+        {{ item.text }}
+      </div>
+      <div class="text-center th" v-if="actionEdit || actionDelete">
+        Actions
+      </div>
+    </div>
+    <div class="tr" v-for="(item, index) in items" :key="index">
+      <div class="td text-center">{{ item.no }}</div>
+      <div class="td">{{ item.name }}</div>
+      <div class="td">{{ item.email }}</div>
+      <div class="td">{{ item.first_name }}</div>
+      <div class="td">{{ item.last_name }}</div>
+      <div class="td">{{ item.age }}</div>
+      <div class="td">{{ item.role }}</div>
+      <div class="td" v-if="actionEdit || actionDelete">
+        <div class="d-flex">
+          <div class="ms-auto cursor-pointer" v-if="actionEdit">
+            <NuxtLink :to="'/users/form/' + item.id" class="d-flex"
+              ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
             >
-              <delete-icon @click="disabledUsers(item.id)" />
-              <span class="ms-1">Xóa</span>
-            </div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <div
+            class="d-flex me-auto cursor-pointer ms-3 text-danger"
+            v-if="actionDelete"
+          >
+            <delete-icon @click="disabledUsers(item.id)" />
+            <span class="ms-1">Xóa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import moment from "moment";

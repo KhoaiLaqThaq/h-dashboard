@@ -4,7 +4,7 @@
       <TitleHeader :title="titleForm" />
     </div>
     <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
-    <div class="col-12 table-content box">
+    <div class="col-12 table-content">
       <TableDepartmentComponent
         :headers="tableHeader"
         :items="departments"
@@ -58,12 +58,12 @@ export default {
     return {
       tableHeader,
       departments,
-      searchCallApi
+      searchCallApi,
     };
   },
   mounted() {
     this.searchCallApi();
-  }
+  },
 };
 </script>
 <style lang=""></style>
