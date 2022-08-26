@@ -1,8 +1,32 @@
 <template>
-  <table class="table table-custom table-unhover">
+  <div class="table-container">
+    <div class="tr">
+      <div class="th w50">No</div>
+      <div class="th">Name</div>
+      <div class="th">Age</div>
+      <div class="th">Status</div>
+      <div class="th">Action</div>
+    </div>
+    <div class="tr">
+      <div class="td w50">1</div>
+      <div class="td">hangnguyen</div>
+      <div class="td">27</div>
+      <div class="td">Active</div>
+      <div class="td">Action</div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- <table class="table table-custom table-unhover">
     <thead>
       <tr>
-        <th class="th-primary" v-for="(item, index) in headers" :key="index">
+        <th class="th-primary px-3" v-for="(item, index) in headers" :key="index">
           {{ item.text }}
         </th>
         <th
@@ -15,7 +39,7 @@
     </thead>
     <tbody>
       <tr v-for="(item, index) in items" :key="index">
-        <td>{{ index + 1 + page * size }}</td>
+        <td class="px-3">{{ index + 1 + page * size }}</td>
         <td>{{ item.name }}</td>
         <td class="px-0" v-if="actionEdit || actionDelete">
           <div class="d-flex">
@@ -35,7 +59,7 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
 </template>
 <script>
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";

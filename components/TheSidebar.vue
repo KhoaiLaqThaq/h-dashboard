@@ -96,7 +96,6 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
-import DashboardIconVue from "~~/assets/images/icons/DashboardIcon.vue";
 import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import PostIcon from "~~/assets/images/icons/PostIcon.vue";
 import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
@@ -109,7 +108,6 @@ import IconComment from "~~/assets/images/icons/IconComment.vue";
 
 export default {
   components: {
-    DashboardIconVue,
     UserIcon,
     PostIcon,
     ImgSidebar,

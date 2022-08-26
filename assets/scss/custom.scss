@@ -855,6 +855,61 @@ a {
   border-radius: 20px;
 }
 
+.table-container {
+  display: table;
+  width: 100%;
+  background-color: $bgc-content;
+
+  .tr {
+    display: table-row;
+    padding: 5px;
+    width: 100%;
+    background-color: $bgc-content;
+
+    .th {
+      height: 56px;
+      vertical-align: middle;
+      font-family: "Roboto", sans-serif;
+      display: table-cell;
+      font-size: 16px;
+      padding: 10px 5px;
+      background-color: $primaryTheme;
+      color: #FFFFFF;
+      
+    }
+    
+    .td {
+      height: 70px;
+      vertical-align: middle;
+      font-size: 16px;
+      display: table-cell;
+      padding: 5px;
+      // width: 150px;
+      border: 1px solid #ccc;
+      margin: 5px;
+      border-right: unset;
+      border-left: unset;
+
+    }
+
+    .th, .td {
+      &:first-child {
+        padding-left: 20px;
+        border-top-left-radius: 20px;
+        border-end-start-radius: 20px;
+        border-left: 1px solid #ccc;
+      }
+      &:last-child {
+        text-align: center;
+        border-top-right-radius: 20px;
+        border-end-end-radius: 20px;
+        border-right: 1px solid #ccc;
+      }
+    }
+  }
+
+}
+
 //################### /table ######################
 
 .side-menu__sub-open {
@@ -889,6 +944,10 @@ a {
 .text-yl {
   color: #fbba16;
   font-weight: 500;
+}
+
+.w50 {
+  width: 50px;
 }
 
 @media only screen and (max-width: 768px) {
