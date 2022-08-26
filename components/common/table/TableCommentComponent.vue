@@ -1,5 +1,36 @@
 <template>
-  <table class="table table-custom table-unhover">
+  <div class="table-container">
+    <div class="tr">
+      <div class="th">#</div>
+      <div class="th" v-for="(item, index) in headers" :key="index">{{ item.text }}</div>
+      <div class="th" v-if="actionEdit || actionDelete">Action</div>
+    </div>
+
+    <div class="tr" v-for="(item, index) in items" :key="index">
+      <div class="td px-3"><input type="checkbox"></div>
+      <div class="td">{{ index + 1 + page * size }}</div>
+      <div class="td">{{ item.newsTitle }}</div>
+      <div class="td">{{ displayBrief(item.content) }}</div>
+      <div class="td">{{ item.createdBy }}</div>
+      <div class="td">{{ displayDate(item.createdDate) }}</div>
+      <div class="td">
+        <div class="form-check form-switch">
+          <input type="checkbox" class="form-check-input" :checked="item.enabled" role="switch" @click="changeCommentStatus(item.id)"/>
+        </div>
+      </div>
+      <td class="td">
+          <div class="action-group d-flex">
+            <div class="ms-3 cursor-pointer text-danger">
+              <delete-icon @click="disabledNews(item.id)" />
+              <span class="ms-1">Xóa</span>
+            </div>
+          </div>
+        </td>
+    </div>
+  </div>
+
+
+  <!-- <table class="table table-custom table-unhover">
     <thead>
       <tr>
         <th class="th-primary px-3">#</th>
@@ -38,7 +69,7 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
 </template>
 <script>
 import moment from "moment";
@@ -56,6 +87,7 @@ export default {
   },
   props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
   setup() {
+    const checkedAll = ref(false);
     function displayBrief(brief) {
       let maxLength = 125;
       if (brief.length > maxLength) {
@@ -75,14 +107,25 @@ export default {
         });
     }
 
+    function selectBox(){
+      checkedAll.value = !checkedAll.value;
+      console.log(checkedAll.value);
+    }
+
+    watch(checkedAll, () => {
+
+    })
+
     function displayDate(date) {
       return moment(date).month(date[1] - 1).format('YYYY-MM-DD HH:mm:ss');
     }
 
     return {
+      checkedAll,
       displayBrief,
       displayDate,
       changeCommentStatus,
+      selectBox,
     };
   },
 };
