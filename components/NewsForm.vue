@@ -398,6 +398,11 @@ export default {
             tags.value.push(e.name);
           });
         }
+        if(newsExist.value.departments.length > 0){
+          destination.value = newsExist.value.departments;
+          resetDepartmentSource();
+        }
+
       }
     });
 
@@ -466,6 +471,7 @@ export default {
           const data = response.data;
           source.value = data;
           console.log(data);
+          resetDepartmentSource();
         })
         .catch((e) => {
           console.log(e.toString());
@@ -483,6 +489,10 @@ export default {
 
     function onSubmit() {
       console.log("entering onSubmit()...");
+      let departmentCodes = '';
+      destination.value.forEach(item => {
+        departmentCodes += "," + item.code;
+      })
       tags.value.forEach((item) => {
         tagNames.value += "," + item;
       })
@@ -502,6 +512,7 @@ export default {
         viewTotal: viewTotal.value,
         createdBy: createdBy.value,
         createdDateString: newsId.value ? createdDateString.value : null,
+        departmentCodes: departmentCodes,
       };
       console.log(news);
 
@@ -539,6 +550,19 @@ export default {
         .catch((e) => {
           console.log(e.toString());
         });
+    }
+
+    function resetDepartmentSource(){
+      if(source.value.length > 0){
+        source.value.forEach((s,index) => {
+          let check = destination.value.find((d) =>{
+            if(d.code === s.code) return d;
+          });
+          if(check != undefined){
+            source.value.splice(index, 1);
+          }
+        })
+      }
     }
 
     return {
