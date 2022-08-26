@@ -1,41 +1,25 @@
 <template>
-  <table class="table table-custom table-unhover">
-    <thead>
-      <tr>
-        <th class="th-primary" v-for="(item, index) in headers" :key="index">
-          {{ item.text }}
-        </th>
-        <th
-          class="m-auto th-primary text-center"
-          v-if="actionEdit || actionDelete"
-        >
-          Action
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in items" :key="index">
-        <td>{{ index + 1 + page * size }}</td>
-        <td>{{ item.name }}</td>
-        <td class="px-0" v-if="actionEdit || actionDelete">
-          <div class="d-flex">
-            <div class="m-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/common/group/form/' + item.no" class="d-flex">
-                <edit-icon /><span class="ms-1">Sửa</span>
-              </NuxtLink>
-            </div>
-            <div
-              class="d-flex me-3 cursor-pointer ms-3 text-danger"
-              v-if="actionDelete"
-            >
-              <delete-icon @click="disabledGroups(item.id)" />
-              <span class="ms-1">Xóa</span>
-            </div>
+  <div class="table-container">
+    <div class="tr">
+      <div class="th" v-for="(item, index) in headers" :key="index">{{ item.text }}</div>
+      <div class="th" v-if="actionEdit || actionDelete">Action</div>
+    </div>
+    <div class="tr" v-for="(item, index) in items" :key="index">
+      <div class="td">{{ index + 1 + page*size }}</div>
+      <div class="td">{{ item.name }}</div>
+      <div class="td" v-if="actionEdit || actionDelete">
+        <div class="action-group d-flex">
+          <NuxtLink v-if="actionEdit" class="cursor-pointer" :to="'/common/group/form/' + item.no">
+            <edit-icon /><span class="ms-1">Sửa</span>
+          </NuxtLink>
+          <div class="ms-3 cursor-pointer text-danger">
+            <delete-icon @click="disabledGroups(item.id)" />
+            <span class="ms-1">Xóa</span>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";

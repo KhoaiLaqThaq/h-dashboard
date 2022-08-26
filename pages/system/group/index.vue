@@ -2,9 +2,10 @@
   <div class="mt-3">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
+      <AddButton class="ms-auto mb-4" :title="btnTitle" :routerPush="routerPush" />
     </div>
-    <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
-    <div class="col-8 table-content box p-3">
+    
+    <div class="col-12 table-content">
       <TableComponent
         :headers="tableHeader"
         :items="topics"
@@ -64,33 +65,6 @@ export default {
     const size = ref(10);
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
-
-    // function setPagination(data) {
-    //   topics.value = data;
-    // }
-    // call api
-    // function searchCallApi() {
-    //   let criteria = {
-    //     page: page.value,
-    //     size: size.value,
-    //   };
-
-    //   // TODO: Call api
-    //   axios
-    //     .get(`${CONFIG.BASE_URL}/api/topics`, criteria)
-    //     .then((response) => {
-    //       //   console.log(response.data);
-    //       const data = response.data;
-    //       setPagination(data);
-    //     })
-    //     .catch((e) => {
-    //       this.errors.push(e);
-    //     });
-    // }
-
-    // watch([page, size], () => {
-    //   searchCallApi();
-    // });
 
     return {
       tableHeader,

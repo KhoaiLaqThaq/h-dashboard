@@ -823,7 +823,9 @@ a {
 
 //################### button style ###############
 .btn-primary {
-  background-color: $primaryTheme;
+  background-color: $textTheme;
+  color: $primaryTheme;
+  border: unset;
 }
 
 //################### table ######################
@@ -836,22 +838,85 @@ a {
         margin: auto;
         vertical-align: middle;
       }
+    } 
+  }
+  tbody {
+    tr {
+      vertical-align: middle;
     }
-    tbody {
-      tr {
-        vertical-align: middle;
+  }
+
+  &.table-unhover tr th:hover {
+    background-color: $primaryTheme !important;
+  }
+
+  
+}
+
+.radius-20 {
+  border-radius: 20px;
+}
+
+.table-container {
+  display: table;
+  width: 100%;
+  background-color: $bgc-content;
+
+  .tr {
+    display: table-row;
+    padding: 5px;
+    width: 100%;
+    background-color: $bgc-content;
+
+    .th {
+      height: 56px;
+      vertical-align: middle;
+      font-family: "Roboto", sans-serif;
+      display: table-cell;
+      font-size: 16px;
+      padding: 10px 5px;
+      background-color: $primaryTheme;
+      color: #FFFFFF;
+      
+    }
+    
+    .td {
+      height: 70px;
+      vertical-align: middle;
+      font-size: 16px;
+      display: table-cell;
+      padding: 5px;
+      background-color: #FFFFFF;
+      border: 1px solid #ccc;
+      margin: 5px;
+      border-right: unset;
+      border-left: unset;
+
+      .action-group {
+        justify-content:center;
+      }
+    }
+
+    .th, .td {
+      &:first-child {
+        width: 50px;
+        padding-left: 20px;
+        border-top-left-radius: 20px;
+        border-end-start-radius: 20px;
+        border-left: 1px solid #ccc;
+      }
+      &:last-child {
+        text-align: center;
+        border-top-right-radius: 20px;
+        border-end-end-radius: 20px;
+        border-right: 1px solid #ccc;
       }
     }
   }
 
-  .table-unhover tr th:hover {
-    background-color: $primaryTheme !important;
-  }
-
-  .radius-20 {
-    border-radius: 20px;
-  }
 }
+
+//################### /table ######################
 
 .side-menu__sub-open {
   display: block;
@@ -885,6 +950,10 @@ a {
 .text-yl {
   color: #fbba16;
   font-weight: 500;
+}
+
+.w50 {
+  width: 50px;
 }
 
 @media only screen and (max-width: 768px) {

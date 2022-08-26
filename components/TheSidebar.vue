@@ -2,7 +2,7 @@
   <nav class="side-nav pt-2">
     <NuxtLink
       to="/"
-      class="ps-3 router-link-active router-link-exact-active d-flex intro-x"
+      class="router-link-active router-link-exact-active d-flex intro-x"
     >
       <img
         src="~/assets/images/logo/logomavin.png"
@@ -46,7 +46,7 @@
               title="Quản lý người dùng"
             >
               <div class="side-menu__icon"><UserIcon /></div>
-              <span class="side-menu__title pl-1"> Quản lý người dùng</span>
+              <span class="side-menu__title pl-1"> Người dùng</span>
             </NuxtLink>
           </li>
         </ul>
@@ -60,59 +60,35 @@
         </a>
         <ul class="submenu collapse">
           <li>
-            <NuxtLink
-              to="/common/department"
-              class="side-menu"
-              aria-label="department"
-              :class="{ active: routeNameActive == 'department' }"
-              title="Quản lý đơn vị thành viên"
-            >
+            <NuxtLink to="/common/department" class="side-menu" aria-label="department" :class="{ active: routeNameActive == 'department' }" title="Quản lý đơn vị thành viên">
               <div class="side-menu__icon"><IconUnit /></div>
-              <span class="side-menu__title pl-1"> Quản lý đơn vị thành viên</span>
+              <span class="side-menu__title pl-1"> Đơn vị thành viên</span>
             </NuxtLink>
             <ul class="side-menu__sub-open"></ul>
           </li>
           <li>
-            <NuxtLink
-              to="/common/topic"
-              class="side-menu"
-              aria-label="topic"
-              :class="{ active: routeNameActive == 'topic' }"
-              title="Quản lý chủ đề"
-            >
+            <NuxtLink to="/common/topic" class="side-menu" aria-label="topic" :class="{ active: routeNameActive == 'topic' }" title="Quản lý chủ đề">
               <div class="side-menu__icon"><IconTopic /></div>
-              <span class="side-menu__title pl-1"> Quản lý chủ đề</span>
+              <span class="side-menu__title pl-1"> Chủ đề tin tức</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/common/comment" class="side-menu" aria-label="comment" :class="{active: routeNameActive == 'comment'}" title="Quản lý bình luận">
+              <div  class="side-menu__icon"><IconComment /></div>
+              <span class="side-menu__title">Quản lý bình luận</span>
             </NuxtLink>
           </li>
         </ul>
       </li>
-      
-       <!-- submenu -->
-      <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a class="nav-link side-menu cursor-pointer" title="Quản lý tin tức"
-          @click="toggleSubmenu(news)" id="news" ref="news">
+      <li>
+        <NuxtLink to="/news" class="side-menu" :class="{ active: routeNameActive == 'news' }" title="Quản lý tin tức">
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
-        </a>
-        <ul class="submenu collapse">
-          <li>
-            <NuxtLink to="/news" title="Quản lý tin tức" :class="{active: routeNameActive == 'news'}" class="side-menu">
-              <div  class="side-menu__icon"><PostIcon /></div>
-              <span class="side-menu__title">Quản lý tin tức</span>
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/comment" title="Quản lý bình luận" :class="{active: routeNameActive == 'comment'}" class="side-menu">
-              <div  class="side-menu__icon"><PostIcon /></div>
-              <span class="side-menu__title">Quản lý Comment</span>
-            </NuxtLink>
-          </li>
-        </ul>
+        </NuxtLink>
       </li>
 
       <li class="mt-5"></li>
-      <li class="logo-sidebar__bottom">
-      </li>
+      <li class="logo-sidebar__bottom"></li>
     </ul>
   </nav>
 </template>
@@ -120,7 +96,6 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
-import DashboardIconVue from "~~/assets/images/icons/DashboardIcon.vue";
 import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import PostIcon from "~~/assets/images/icons/PostIcon.vue";
 import ImgSidebar from "~~/assets/images/logo/ImgSidebar.vue";
@@ -129,10 +104,10 @@ import IconTopic from "../assets/images/icons/IconTopic.vue";
 import IconCommunity from "~~/assets/images/icons/IconCommunity.vue";
 import IconGroup from "../assets/images/icons/IconGroup.vue";
 import IconTooling from "~~/assets/images/icons/IconTooling.vue";
+import IconComment from "~~/assets/images/icons/IconComment.vue";
 
 export default {
   components: {
-    DashboardIconVue,
     UserIcon,
     PostIcon,
     ImgSidebar,
@@ -140,7 +115,8 @@ export default {
     IconTopic,
     IconCommunity,
     IconGroup,
-    IconTooling
+    IconTooling,
+    IconComment
 },
 
   setup() {
@@ -148,27 +124,37 @@ export default {
     const route = useRoute();
     const routeNameState = useRouteActive();
     const common = ref(null);
-    const news = ref(null);
     const system = ref(null);
     // TODO: define submenu
-    const routeSubMenu = ref("common, news, system");   // common, system
+    const routeSubMenu = ref("common, system");   // common, system
 
-    function setRouteNameState() {
-      routeNameState.value = null;
-    }
+    const resetRouteNameState = () => { routeNameState.value = null; }
+    const onLoadRouteNameCurrent = () => { setRouteNameActive(route.name); }
+    const toggleSubmenu = (e) => { document.getElementById(e.id).nextElementSibling.classList.toggle('show'); }
 
     function setRouteNameActive(to) {
-      routeNameActive.value = to;
-      routeNameState.value = to;
-      setLocalStorageRoute(to);
-      if (localStorage.getItem("rType") == null) {
+      let pageGroup = to.split("-")  // ['common', 'department', ...]
+      let toGroup = pageGroup[0]; // to show submenu
+      routeNameActive.value = toGroup;
+      routeNameState.value = toGroup;
+      setLocalStorageRoute(toGroup);
+
+      let rType = localStorage.getItem("rType");
+      if (rType == null) {
         const submenu = document.getElementsByClassName("submenu");
         if (submenu) {
           for (let i = 0; i < submenu.length; i++) {
             const element = submenu[i];
+            // to hide submenu
             element.classList.remove("show");
           }
         }
+      } else {
+        let toSubGroup = pageGroup[1];
+        routeNameActive.value = toSubGroup;
+        routeNameState.value = toSubGroup;
+        // to show submenu
+        document.getElementById(toGroup).nextElementSibling.classList.add("show");
       }
     }
 
@@ -182,51 +168,30 @@ export default {
       }
     }
 
-    function onLoadRouteNameCurrent() {
-      let pageGroup = route.name.split("-")[0];
-      setRouteNameActive(pageGroup);
-      setLocalStorageRoute(pageGroup);
-      let rType = localStorage.getItem("rType");
-      if (rType) {
-        let activeRname = localStorage.getItem("activeRname");
-        document
-          .getElementById(activeRname)
-          .nextElementSibling.classList.add("show");
-      }
-    }
-
-    function toggleSubmenu(e) {
-      document.getElementById(e.id).nextElementSibling.classList.toggle('show');
-    }
-
     return {
-      routeNameActive, common, news, system,
+      routeNameActive, common, system,
 
       toggleSubmenu,
-      setRouteNameState,
+      resetRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
-      setLocalStorageRoute,
     };
   },
   watch: {
     $route: {
       deep: true,
       handler(to, from) {
-        let pageGroup = to.name.split("-")[0];
-        this.setRouteNameState();
-        this.setRouteNameActive(pageGroup);
-        this.show = false;
-        this.setLocalStorageRoute(pageGroup);
+        this.resetRouteNameState();
+        this.setRouteNameActive(to.name);
       },
     },
   },
   mounted() {
-    this.setRouteNameState();
+    this.resetRouteNameState();
     this.onLoadRouteNameCurrent();
   },
   unmounted() {
-    // localStorage.clear();
+    localStorage.clear();
   },
 };
 </script>
