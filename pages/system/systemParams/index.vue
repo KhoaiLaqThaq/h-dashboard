@@ -1,4 +1,3 @@
-@@ -1,71 +0,0 @@
 <template>
   <div class="mt-3">
     <div class="d-flex">
@@ -33,7 +32,7 @@ export default {
     return {
       titleForm: "Danh sách tham số hệ thống",
       btnTitle: "Thêm mới",
-      routerPush: "/system/systemParams/form/",
+      routerPush: "/system/system-params/form/",
     };
   },
   setup() {
