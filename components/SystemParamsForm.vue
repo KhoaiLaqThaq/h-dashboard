@@ -128,7 +128,7 @@ export default {
           console.log("responseData: ", response.data);
           let responseData = response.data;
           if (responseData) {
-            navigateTo("/system/system-params");
+            navigateTo("/system/systemParams");
           }
         })
         .catch((error) => {
