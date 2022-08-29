@@ -1,7 +1,7 @@
 <template>
   <Form @submit="onSubmit()">
     <div class="row mb-3">
-      <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="col-lg-6 col-md-6 col-sm-12">
         <!-- name -->
         <div class="form-floating mb-3">
           <Field
@@ -20,7 +20,7 @@
           <label for="">Tên tham số <span class="text-danger">*</span></label>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="col-lg-6 col-md-6 col-sm-12">
         <!-- value -->
         <div class="form-floating mb-3">
           <Field
@@ -28,7 +28,7 @@
             class="form-control box"
             v-model="systemParam.paramValue"
             name="paramValue"
-            :rules="validateName"
+            :rules="validateNumber"
           />
 
           <div class="mt-1 p-1">
@@ -40,14 +40,17 @@
           >
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="col-lg-12 col-md-12 col-sm-12">
         <!-- value -->
         <div class="form-floating mb-3">
           <Field
-            type="text"
-            class="form-control box"
-            v-model="systemParam.description"
+            as="textarea"
             name="description"
+            v-model="systemParam.description"
+            class="form-control box auto-scroll-y"
+            id="floatingTextarea2"
+            style="min-height: 100px"
+            :rules="validateField"
           />
 
           <label for="">Mô tả</label>
@@ -92,6 +95,12 @@ export default {
       if (!value) return "Trường này là bắt buộc";
 
       if (value.trim().length < 3) return "Trường này phải có hơn 3 ký tự";
+
+      return true;
+    }
+
+    function validateNumber(value) {
+      if (!value) return "Trường này là bắt buộc";
 
       return true;
     }
@@ -142,6 +151,7 @@ export default {
       getSystemParamById,
       onSubmit,
       validateName,
+      validateNumber,
     };
   },
   mounted() {
