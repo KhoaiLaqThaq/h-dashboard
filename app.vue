@@ -8,5 +8,5 @@
 
 <script setup>
 import "bootstrap";
-const layout = "auth";
+const layout = "admin";
 </script>
