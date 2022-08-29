@@ -1,8 +1,5 @@
 <template>
   <div class="content-news mt-3">
-    <div class="d-flex">
-      <TitleHeader :title="titleForm" />
-    </div>
     <GroupForm />
   </div>
 </template>

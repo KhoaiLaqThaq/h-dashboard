@@ -11,6 +11,7 @@
         :actionEdit="true"
         :page="page"
         :size="size"
+        :routerPush="routerPush"
       />
       <pagination
         :page="page"

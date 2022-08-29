@@ -9,7 +9,7 @@
       <div class="td">{{ item.name }}</div>
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="action-group d-flex">
-          <NuxtLink v-if="actionEdit" class="cursor-pointer" :to="'/common/group/form/' + item.no">
+          <NuxtLink v-if="actionEdit" class="cursor-pointer" :to="routerPush + '/' + item.no">
             <edit-icon /><span class="ms-1">Sửa</span>
           </NuxtLink>
           <div class="ms-3 cursor-pointer text-danger">
@@ -30,7 +30,7 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
+  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "routerPush"],
   setup() {},
 };
 </script>
