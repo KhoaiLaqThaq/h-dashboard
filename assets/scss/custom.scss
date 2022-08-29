@@ -111,19 +111,19 @@ $textTheme: #FBBA16;
         svg {
           color: $primaryTheme;
         }
-        .side-menu__icon {
-          &::before {
-            content: "";
-            z-index: 90;
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin-right: -1.25rem;
-            height: 100%;
-            width: 3rem;
-            background-color: $bgc-content;
-          }
-        }
+        // .side-menu__icon {
+        //   &::before {
+        //     content: "";
+        //     z-index: 90;
+        //     position: absolute;
+        //     top: 0;
+        //     right: 0;
+        //     margin-right: -1.25rem;
+        //     height: 100%;
+        //     width: 3rem;
+        //     background-color: $bgc-content;
+        //   }
+        // }
 
         .side-menu__title {
           color: $textTheme;
