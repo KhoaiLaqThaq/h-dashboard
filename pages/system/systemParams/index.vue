@@ -32,7 +32,7 @@ export default {
     return {
       titleForm: "Danh sách tham số hệ thống",
       btnTitle: "Thêm mới",
-      routerPush: "/system/system-params/form/",
+      routerPush: "/system/systemParams/form",
     };
   },
   setup() {

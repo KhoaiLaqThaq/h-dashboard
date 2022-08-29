@@ -17,7 +17,7 @@
       <div class="td px-0 text-center" v-if="actionEdit || actionDelete">
         <div class="d-flex me-0">
           <div class="m-auto cursor-pointer" v-if="actionEdit">
-            <NuxtLink :to="routerPush + item.id" class="d-flex">
+            <NuxtLink :to="routerPush + '/' + item.id" class="d-flex">
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>
           </div>
