@@ -14,7 +14,7 @@
     <ul>
       <li>
         <NuxtLink to="/" class="side-menu" title="Trang chủ">
-          <div class="side-menu__icon"><DashboardIconVue /></div>
+          <div class="side-menu__icon"></div>
           <span class="side-menu__title pl-1"> Trang chủ</span>
         </NuxtLink>
       </li>
