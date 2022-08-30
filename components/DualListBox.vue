@@ -346,14 +346,14 @@ export default {
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-radius: 0.25rem;
+  border-radius: 15px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   display: block;
   width: 100%;
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #014683;
+  border-color: #014683;
   cursor: pointer;
   img {
     vertical-align: middle;
