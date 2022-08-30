@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6 col-xl-5">
-      <div class="card">
+    <div class="col-sm-8 col-md-6 col-lg-6 col-xl-5">
+      <div class="card box">
         <div class="card-body p-4">
           <div class="text-center m-auto">
             <div class="auth-logo">
@@ -18,12 +18,11 @@
           </div>
 
           <div class="text-secondary">
-              <p>Email: {{ mockAccount.email }}</p>
-              <p>Password: {{ mockAccount.password }}</p>
+              <p>Email: <strong>{{ mockAccount.email }}</strong></p>
+              <p>Password: <strong>{{ mockAccount.password }}</strong></p>
           </div>
 
-          <!-- <form @submit="login()"> -->
-          <form>
+          <form @submit.prevent="login()">
             <div class="form-group mb-3">
               <label for="emailaddress">Địa chỉ Email</label>
               <input class="form-control" type="email" id="emailaddress" placeholder="Nhập địa chỉ email" v-model="email" />
@@ -50,12 +49,9 @@
                 <label class="custom-control-label" for="checkbox-signin">Ghi nhớ tài khoản</label>
               </div>
             </div>
-            <div class="form-group">
-              {{ tokenState }}
-            </div>
 
             <div class="form-group mb-0 text-center">
-              <button class="btn btn-login btn-block" type="button" @click="login()">
+              <button class="btn btn-login btn-block" type="submit">
                 Đăng nhập
               </button>
             </div>
@@ -82,12 +78,13 @@ export default {
     });
     const token = useToken();
 
-    function login() {
+    function login(e) {
       if (email.value != "" && password.value != "") {
         if (email.value == mockAccount.email && password.value == mockAccount.password) {
           // this.$router.push({ path: "/" });
-          console.log("Login success");
           token.value = "Bearer " + email.value + "_" + password.value;
+          localStorage.setItem("token", token.value);
+          localStorage.setItem("expired", new Date().getTime());
         }
       }
     }

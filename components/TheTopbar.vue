@@ -46,7 +46,7 @@
           <IconLock class="p-1" />
           <span class="ps-1">Reset Password</span>
         </li>
-        <li class="dropdown-item px-3 dropdown-acc-item">
+        <li class="dropdown-item px-3 dropdown-acc-item" @click="logout()">
           <IconSwitch class="p-1" />
           <span class="ps-1">Logout</span>
         </li>
@@ -70,9 +70,18 @@ export default {
   },
   setup() {
     const routeNameState = useRouteActive();
+    const token = useToken();
+
+    function logout() {
+      console.log('entering logout()...')
+      token.value = '';
+      localStorage.clear();
+    }
 
     return {
       routeNameState,
+
+      logout
     };
   },
 };

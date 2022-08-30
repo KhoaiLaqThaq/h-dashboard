@@ -174,6 +174,7 @@ export default {
     const system = ref(null);
     // TODO: define submenu
     const routeSubMenu = ref("common, system"); // common, system
+    const token = useToken();
 
     const resetRouteNameState = () => {
       routeNameState.value = null;
@@ -223,6 +224,25 @@ export default {
       }
     }
 
+    // check token
+    function checkAuthentication() {
+      let jwtTokenStorage = localStorage.getItem("token");
+      let expired = localStorage.getItem("expired");
+      let diffTime = Math.abs(new Date() - expired);
+
+      // Mock expired 30'
+      let expiredDiff = 30*60*1000;
+
+      if (diffTime < expiredDiff) {
+        if (jwtTokenStorage) {
+          if (!token) token.value = jwtTokenStorage;
+        }
+      } else {
+        token.value = 'auth';
+        localStorage.clear();
+      }
+    }
+
     return {
       routeNameActive,
       common,
@@ -232,6 +252,7 @@ export default {
       resetRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
+      checkAuthentication
     };
   },
   watch: {
@@ -240,6 +261,7 @@ export default {
       handler(to, from) {
         this.resetRouteNameState();
         this.setRouteNameActive(to.name);
+        this.checkAuthentication();
       },
     },
   },

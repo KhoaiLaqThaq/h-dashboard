@@ -16,7 +16,6 @@ export default {
     const token = useToken();
 
     const setLayoutDefault = () => {
-      console.log("set layout default", token);
       if (token.value) {
         layout.value = 'admin';
       } else {
