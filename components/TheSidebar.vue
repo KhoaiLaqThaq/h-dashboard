@@ -103,7 +103,7 @@
               title="Quản lý chủ đề"
             >
               <div class="side-menu__icon"><IconTopic /></div>
-              <span class="side-menu__title pl-1"> Chủ đề tin tức</span>
+              <span class="side-menu__title pl-1"> Chuyên mục</span>
             </NuxtLink>
           </li>
           <li>
