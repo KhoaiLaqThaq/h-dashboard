@@ -136,8 +136,13 @@
             @keyup.space="addTags()"
           />
           <div v-if="tagsOption" class="tags-unorder-list">
-            <div class="tag-option" v-for="(tagItem, index) in listTagsForSelect" :key="index" @click="selectTagSuggestion">
-              {{tagItem.name}}
+            <div
+              class="tag-option"
+              v-for="(tagItem, index) in listTagsForSelect"
+              :key="index"
+              @click="selectTagSuggestion"
+            >
+              {{ tagItem.name }}
             </div>
           </div>
           <span class="title-suggest__event">Space</span>
@@ -225,12 +230,40 @@
         </div>
       </div>
     </div>
+    <hr />
+
+    <div class="row mt-3">
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-floating">
+          <div>
+            <label>Trạng thái <span class="text-danger">*</span></label>
+          </div>
+          <Field
+            as="select"
+            name="status"
+            v-model="status"
+            class="form-select box"
+            required="required"
+            :value="status"
+            :rules="validateField"
+          >
+            <option
+              v-for="(status, index) in newStatus"
+              :key="index"
+              :value="status.value"
+            >
+              {{ status.name }}
+            </option>
+            <ErrorMessage name="topic" class="text-danger" />
+          </Field>
+        </div>
+      </div>
+    </div>
   </Form>
 </template>
 <script>
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
 
@@ -252,10 +285,9 @@ import TabsWrapper from "~~/components/common/tab/TabsWrapper.vue";
 import TabItem from "~~/components/common/tab/TabItem.vue";
 import NewsPreview from "~~/components/NewsPreview.vue";
 import NewsTabletPreviewVue from "~~/components/NewsTabletPreview.vue";
-
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
-
+import { newStatus } from "~~/constants/enum.js";
 // icons
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
@@ -293,6 +325,7 @@ export default {
         { name: "Loại tin hành chính", value: "administrative" },
         { name: "Tin Hot", value: "hot_news" },
       ],
+      newStatus: newStatus,
     };
   },
   methods: {
@@ -336,7 +369,6 @@ export default {
     const createdBy = ref("");
     let createdDateString = ref("");
 
-
     //source and destination of departments dual-listbox
     const source = ref([]);
     const destination = ref([]);
@@ -363,15 +395,15 @@ export default {
 
     function callApiGetAllTags() {
       console.log("entering callApiGetAllTags...");
-        axios
-          .get(`${CONFIG.BASE_URL}/api/tags`)
-          .then((response) => {
-            if (response) {
-              listTags.value = response.data;
-              console.log(listTags.value);
-            }
-          })
-          .catch((error) => console.log(error));
+      axios
+        .get(`${CONFIG.BASE_URL}/api/tags`)
+        .then((response) => {
+          if (response) {
+            listTags.value = response.data;
+            console.log(listTags.value);
+          }
+        })
+        .catch((error) => console.log(error));
     }
 
     watch(newsExist, () => {
@@ -389,29 +421,28 @@ export default {
         viewTotal.value = newsExist.value.viewTotal;
         createdDateString.value = newsExist.value.displayCreatedDate;
         createdBy.value = newsExist.value.createdBy;
-        if(avatarUrl != null){
+        if (avatarUrl != null) {
           getObjectFileFromUrl(avatarUrl);
         }
-        if(newsExist.value.tags.length > 0){
-          newsExist.value.tags.forEach(e => {
+        if (newsExist.value.tags.length > 0) {
+          newsExist.value.tags.forEach((e) => {
             // tagNames.value += "," + e.name;
             tags.value.push(e.name);
           });
         }
-        if(newsExist.value.departments.length > 0){
+        if (newsExist.value.departments.length > 0) {
           destination.value = newsExist.value.departments;
           resetDepartmentSource();
         }
-
       }
     });
 
     watch(tag, () => {
-      if(tag.value.trim().length > 0){
+      if (tag.value.trim().length > 0) {
         tagsOption.value = true;
-        listTagsForSelect.value = listTags.value.filter(function(item){
+        listTagsForSelect.value = listTags.value.filter(function (item) {
           return item.name.includes(tag.value);
-        })
+        });
       } else {
         tagsOption.value = false;
       }
@@ -489,15 +520,15 @@ export default {
 
     function onSubmit() {
       console.log("entering onSubmit()...");
-      let departmentCodes = '';
-      destination.value.forEach(item => {
+      let departmentCodes = "";
+      destination.value.forEach((item) => {
         departmentCodes += "," + item.code;
-      })
+      });
       tags.value.forEach((item) => {
         tagNames.value += "," + item;
-      })
+      });
       const news = {
-        id : newsId.value ? newsId.value : null,
+        id: newsId.value ? newsId.value : null,
         avatar: avatar.value ? avatar.value : null,
         avatarUrl: avatarUrl.value,
         type: optionType.value,
@@ -530,7 +561,7 @@ export default {
         });
     }
 
-    function selectTagSuggestion(event){
+    function selectTagSuggestion(event) {
       let tagSelected = event.target.innerHTML;
       if (tagSelected.trim().length > 0 && tagSelected != "") {
         // tagNames.value += "," + tagSelected;
@@ -539,12 +570,12 @@ export default {
       tag.value = "";
     }
 
-    function getObjectFileFromUrl(url){
-      const config = { responseType: 'blob' };
+    function getObjectFileFromUrl(url) {
+      const config = { responseType: "blob" };
       axios
         .get(`${CONFIG.BASE_URL}/api/topics`, config)
         .then((response) => {
-          const file = new File([response.data],"");
+          const file = new File([response.data], "");
           avatar.value = file;
         })
         .catch((e) => {
@@ -552,16 +583,16 @@ export default {
         });
     }
 
-    function resetDepartmentSource(){
-      if(source.value.length > 0){
-        source.value.forEach((s,index) => {
-          let check = destination.value.find((d) =>{
-            if(d.code === s.code) return d;
+    function resetDepartmentSource() {
+      if (source.value.length > 0) {
+        source.value.forEach((s, index) => {
+          let check = destination.value.find((d) => {
+            if (d.code === s.code) return d;
           });
-          if(check != undefined){
+          if (check != undefined) {
             source.value.splice(index, 1);
           }
-        })
+        });
       }
     }
 
@@ -586,10 +617,10 @@ export default {
       optionType,
       brief,
       content,
+      status,
       title,
       avatar,
       avatarUrl,
-      status,
       source,
       destination,
       listTags,
@@ -666,24 +697,24 @@ export default {
   font-weight: bold;
 }
 
-.tags-unorder-list{
+.tags-unorder-list {
   position: absolute;
   z-index: 100;
   width: 100%;
   border: 1px solid #d4d4d4;
   border-top: none;
-  background-color: rgb(255 255 255/var(--tw-bg-opacity));
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   box-shadow: 0 10px 20px rgb(0 0 0 / 8%);
   --tw-bg-opacity: 1;
 
-  .tag-option{
+  .tag-option {
     display: block;
     padding-left: 5%;
     padding-top: 1%;
     padding-bottom: 1%;
   }
 
-  .tag-option:hover{
+  .tag-option:hover {
     background-color: #1982f1;
     color: rgb(250, 247, 247);
   }
