@@ -31,6 +31,7 @@ export default {
     function resetStateBeforeLogout() {
       token.value = '';
       localStorage.clear();
+      navigateTo("/");
     }
 
     function checkAuthentication() {
