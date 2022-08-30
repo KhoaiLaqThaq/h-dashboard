@@ -1046,6 +1046,15 @@ label {
   width: 50px;
 }
 
+.bg-pending {
+  --bs-bg-opacity: 1;
+  background-color: #333333;
+}
+
+.bg-success {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-success-rgb), var(--bs-text-opacity));
+}
 @media only screen and (max-width: 768px) {
 }
 
