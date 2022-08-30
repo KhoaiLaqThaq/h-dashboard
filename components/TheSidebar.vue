@@ -181,6 +181,7 @@ export default {
     };
     const onLoadRouteNameCurrent = () => {
       setRouteNameActive(route.name);
+      checkAuthentication();
     };
     const toggleSubmenu = (e) => {
       document.getElementById(e.id).nextElementSibling.classList.toggle("show");
@@ -229,18 +230,22 @@ export default {
       let jwtTokenStorage = localStorage.getItem("token");
       let expired = localStorage.getItem("expired");
       let diffTime = Math.abs(new Date() - expired);
-
       // Mock expired 30'
       let expiredDiff = 30*60*1000;
 
-      if (diffTime < expiredDiff) {
-        if (jwtTokenStorage) {
-          if (!token) token.value = jwtTokenStorage;
+      if (expired && diffTime < expiredDiff && jwtTokenStorage) {
+        if (!token.value) {
+          token.value = jwtTokenStorage;
         }
-      } else {
-        token.value = 'auth';
-        localStorage.clear();
       }
+      else {
+        resetStateBeforeLogout();
+      }
+    }
+
+    function resetStateBeforeLogout() {
+      token.value = '';
+      localStorage.clear();
     }
 
     return {

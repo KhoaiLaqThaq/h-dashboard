@@ -28,14 +28,39 @@ export default {
       setLayoutDefault();
     });
 
+    function resetStateBeforeLogout() {
+      token.value = '';
+      localStorage.clear();
+    }
+
+    function checkAuthentication() {
+      console.log("check authentication");
+      let jwtTokenStorage = localStorage.getItem("token");
+      let expired = localStorage.getItem("expired");
+      let diffTime = Math.abs(new Date() - expired);
+      // Mock expired 30'
+      let expiredDiff = 30*60*1000;
+
+      if (expired && diffTime < expiredDiff && jwtTokenStorage) {
+        if (!token.value) {
+          token.value = jwtTokenStorage;
+        }
+      }
+      else {
+        resetStateBeforeLogout();
+      }
+    }
+
     return {
       layout,
 
-      setLayoutDefault
+      setLayoutDefault,
+      checkAuthentication
     }
   },
   mounted() {
     this.setLayoutDefault();
+    this.checkAuthentication();
   }
 }
 </script>
