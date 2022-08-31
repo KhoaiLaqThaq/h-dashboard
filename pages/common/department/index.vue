@@ -1,7 +1,13 @@
 <template>
   <div class="mt-3">
-    <div class="d-flex">
+    <div class="d-flex mb-3">
       <TitleHeader :title="titleForm" />
+      <AddButton
+        class="ms-auto"
+        :textSize="'text-small'"
+        :title="btnTitle"
+        :routerPush="routerPush"
+      />
     </div>
 
     <div class="col-12 table-content">

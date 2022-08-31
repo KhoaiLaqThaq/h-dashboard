@@ -30,12 +30,24 @@
         </div>
       </div>
     </div>
+    <hr>
+    <div class="row mb-3">
+      <div class="card box">
+        <div class="card-body">
+          <UseDropZone
+            @changeImage="avatar = $event"
+            :avatarUrl="avatarUrl"
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="row d-flex">
       <div class="col-12 text-right">
         <BaseButton
           class="btn-primary"
           :btnType="'submit'"
-          :name="'Save'"
+          :name="'Lưu'"
           :textSize="'text-small'"
         />
       </div>
@@ -49,14 +61,17 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 
 import TitleHeader from "./common/TitleHeader.vue";
 import BaseButton from "./common/BaseButton.vue";
+import UseDropZone from "~~/components/common/UseDropZone.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
 export default {
-  components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
+  components: { TitleHeader, BaseButton, Form, Field, ErrorMessage, UseDropZone },
   setup() {
     const route = useRoute();
     const departmentId = ref(route.params.id);
+    const avatar = ref(null);
+    const avatarUrl = ref("");
     const department = reactive({
       code: "",
       name: ""
@@ -80,6 +95,7 @@ export default {
           let responseData = response.data;
           department.code = responseData.code;
           department.name = responseData.name;
+          avatarUrl.value = responseData.avatarUrl;
         }).catch((error) => {
           console.log('error: ' + error);
         });
@@ -91,23 +107,28 @@ export default {
       let data = {
         id: departmentId.value,
         code: department.code,
-        name: department.name
+        name: department.name,
+        avatar: avatar.value ? avatar.value : null,
+        avatarUrl: avatarUrl.value
       };
 
-      axios.post(`${CONFIG.BASE_URL}/api/department`, data)
+      const headers = { "Content-Type": "multipart/form-data" };
+      axios.post(`${CONFIG.BASE_URL}/api/department`, data, { headers })
       .then(response => {
         console.log('responseData: ', response.data);
         let responseData = response.data;
         if (responseData) {
-          navigateTo("/department");
+          navigateTo("/common/department");
         }
       }).catch(error => {
         console.log('error: ', error);
       });
     }
     return {
-      // code, name,
+      avatar,
+      avatarUrl,
       department,
+
       getDepartmentById,
       onSubmit,
       validateName
