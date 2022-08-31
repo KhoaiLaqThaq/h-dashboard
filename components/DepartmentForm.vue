@@ -104,14 +104,24 @@ export default {
 
     // call api save
     function onSubmit() {
-      let data = {
-        id: departmentId.value,
-        code: department.code,
-        name: department.name,
-        avatar: avatar.value ? avatar.value : null,
-        avatarUrl: avatarUrl.value
-      };
-
+      let data;
+      if(avatar.value){
+        data = {
+          id: departmentId.value,
+          code: department.code,
+          name: department.name,
+          avatar: avatar.value,
+          avatarUrl: avatarUrl.value
+        };
+      } else {
+        data = {
+          id: departmentId.value,
+          code: department.code,
+          name: department.name,
+          avatarUrl: avatarUrl.value
+        };
+      }
+      
       const headers = { "Content-Type": "multipart/form-data" };
       axios.post(`${CONFIG.BASE_URL}/api/department`, data, { headers })
       .then(response => {
