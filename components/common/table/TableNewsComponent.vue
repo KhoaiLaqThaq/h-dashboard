@@ -2,32 +2,41 @@
   <div class="table-container">
     <div class="tr">
       <div class="th">#</div>
-      <div class="th" v-for="(item, index) in headers" :key="index">{{ item.text }}</div>
+      <div class="th" v-for="(item, index) in headers" :key="index">
+        {{ item.text }}
+      </div>
       <div class="th" v-if="actionEdit || actionDelete">Action</div>
     </div>
 
     <div class="tr" v-for="(item, index) in items" :key="index">
-      <div class="td px-3"><input type="checkbox"></div>
+      <div class="td px-3"><input type="checkbox" /></div>
       <div class="td text-center">{{ index + 1 + page * size }}</div>
       <div class="td">{{ item.title }}</div>
       <div class="td">{{ displayBrief(item.brief) }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
       <div class="td">
-        <template v-if="item.status == 'new'"><span class="badge bg-primary">Thêm mới</span></template>
-        <template v-if="item.status == 'approved'"><span class="text-success">Đã phê duyệt</span></template>
+        <template v-if="item.status == '2'"
+          ><span class="badge bg-pending">Chưa phê duyệt</span></template
+        >
+        <template v-if="item.status == '1'"
+          ><span class="badge bg-success">Đã phê duyệt</span></template
+        >
       </div>
       <td class="td" v-if="actionEdit || actionDelete">
-          <div class="action-group d-flex">
-            <NuxtLink class="cursor-pointer"
-              :to="'/news/form/' + item.id" v-if="actionEdit">
-              <edit-icon /><span class="ms-1">Sửa</span>
-            </NuxtLink>
-            <div class="ms-3 cursor-pointer text-danger">
-              <delete-icon @click="disabledNews(item.id)" />
-              <span class="ms-1">Xóa</span>
-            </div>
+        <div class="action-group d-flex">
+          <NuxtLink
+            class="cursor-pointer"
+            :to="'/news/form/' + item.id"
+            v-if="actionEdit"
+          >
+            <edit-icon /><span class="ms-1">Sửa</span>
+          </NuxtLink>
+          <div class="ms-3 cursor-pointer text-danger">
+            <delete-icon @click="disabledNews(item.id)" />
+            <span class="ms-1">Xóa</span>
           </div>
-        </td>
+        </div>
+      </td>
     </div>
   </div>
 
@@ -98,7 +107,9 @@ export default {
     }
 
     function displayDate(date) {
-      return moment(date).month(date[1] - 1).format('YYYY-MM-DD HH:mm:ss');
+      return moment(date)
+        .month(date[1] - 1)
+        .format("YYYY-MM-DD HH:mm:ss");
     }
 
     return {
@@ -108,5 +119,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>
