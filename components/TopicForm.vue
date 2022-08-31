@@ -88,59 +88,30 @@ export default {
     }
 
     //Call post API topic
-    function addTopic() {
+    function onSubmit() {
       const topic = {
+        id: topicId.value,
         name: name.value,
       };
-      console.log(topic);
       const headers = { "Content-Type": "application/json" };
       axios
         .post(`${CONFIG.BASE_URL}/api/topic`, topic, { headers })
         .then((res) => {
           console.log(res.data);
-          success = true;
+          let responseData = res.data;
+          if (responseData) {
+            navigateTo("/common/topic");
+          }
         })
         .catch((error) => {
           console.log(error);
         });
-    }
-
-    //Call put API topic
-    function editTopic() {
-      const topic = {
-        id: topicId.value,
-        name: name.value,
-      };
-      console.log(topic);
-      const headers = { "Content-Type": "application/json" };
-      axios
-        .put(`${CONFIG.BASE_URL}/api/topic/` + topicId.value, topic, {
-          headers,
-        })
-        .then((res) => {
-          console.log(res.data);
-          success = true;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    function onSubmit() {
-      if (topicId.value) {
-        editTopic();
-      } else {
-        addTopic();
-      }
-      //redirect("/topic");
     }
     return {
       name,
       onSubmit,
       validateName,
-      addTopic,
       success,
-      editTopic,
       callApiGetById,
     };
   },
