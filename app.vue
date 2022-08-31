@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main" class="auto-scroll-y">
     <NuxtLayout :name="layout">
       <!-- <NuxtPage /> -->
     </NuxtLayout>

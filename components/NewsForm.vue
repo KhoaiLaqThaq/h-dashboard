@@ -625,7 +625,7 @@ export default {
     margin-left: 0.2rem;
     margin-bottom: 0.2rem;
     border-radius: 10px;
-    padding: 4px 25px 4px 5px;
+    padding: 5px 25px 5px 5px;
     display: inline-block;
     font-size: 14px;
     font-weight: 500;
