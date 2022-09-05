@@ -289,6 +289,7 @@ import NewsTabletPreviewVue from "~~/components/NewsTabletPreview.vue";
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
 import { newStatus } from "~~/constants/enum.js";
+import { options } from "~~/constants/enum.js";
 // icons
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
@@ -320,12 +321,7 @@ export default {
   },
   data() {
     return {
-      options: [
-        { name: "Loại tin tập đoàn", value: "company" },
-        { name: "Loại tin phòng", value: "department" },
-        { name: "Loại tin hành chính", value: "administrative" },
-        { name: "Tin Hot", value: "hot_news" },
-      ],
+      options: options,
       newStatus: newStatus,
     };
   },
