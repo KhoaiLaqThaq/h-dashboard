@@ -232,31 +232,32 @@
     </div>
     <hr />
 
-    <div class="row mt-3">
-      <div class="col-lg-3 col-sm-12">
-        <div class="form-floating">
-          <div>
-            <label>Trạng thái <span class="text-danger">*</span></label>
-          </div>
-          <Field
-            as="select"
-            name="status"
-            v-model="status"
-            class="form-select box"
-            required="required"
-            :value="status"
-            :rules="validateField"
+    <div v-if="!showStatus" class="col-lg-3 col-sm-12">
+      <div class="form-floating">
+        <div>
+          <label
+            >Trạng thái {{ showStatus }}
+            <span class="text-danger">*</span></label
           >
-            <option
-              v-for="(status, index) in newStatus"
-              :key="index"
-              :value="status.value"
-            >
-              {{ status.name }}
-            </option>
-            <ErrorMessage name="topic" class="text-danger" />
-          </Field>
         </div>
+        <Field
+          as="select"
+          name="status"
+          v-model="status"
+          class="form-select box"
+          required="required"
+          :value="status"
+          :rules="validateField"
+        >
+          <option
+            v-for="(status, index) in newStatus"
+            :key="index"
+            :value="status.value"
+          >
+            {{ status.name }}
+          </option>
+          <ErrorMessage name="topic" class="text-danger" />
+        </Field>
       </div>
     </div>
   </Form>
@@ -288,6 +289,7 @@ import NewsTabletPreviewVue from "~~/components/NewsTabletPreview.vue";
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
 import { newStatus } from "~~/constants/enum.js";
+import { options } from "~~/constants/enum.js";
 // icons
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
@@ -319,12 +321,7 @@ export default {
   },
   data() {
     return {
-      options: [
-        { name: "Loại tin tập đoàn", value: "company" },
-        { name: "Loại tin phòng", value: "department" },
-        { name: "Loại tin hành chính", value: "administrative" },
-        { name: "Tin Hot", value: "hot_news" },
-      ],
+      options: options,
       newStatus: newStatus,
     };
   },
@@ -345,6 +342,7 @@ export default {
         ? "Giao diện chỉnh sửa tin tức"
         : "Giao diện thêm mới tin tức"
     );
+    const showStatus = ref(newsId.value);
 
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
@@ -634,6 +632,7 @@ export default {
       listTags,
       tagsOption,
       listTagsForSelect,
+      showStatus,
       // function
       addTags,
       removeTag,
