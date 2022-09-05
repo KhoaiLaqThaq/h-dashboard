@@ -232,31 +232,32 @@
     </div>
     <hr />
 
-    <div class="row mt-3">
-      <div class="col-lg-3 col-sm-12">
-        <div class="form-floating">
-          <div>
-            <label>Trạng thái <span class="text-danger">*</span></label>
-          </div>
-          <Field
-            as="select"
-            name="status"
-            v-model="status"
-            class="form-select box"
-            required="required"
-            :value="status"
-            :rules="validateField"
+    <div v-if="!showStatus" class="col-lg-3 col-sm-12">
+      <div class="form-floating">
+        <div>
+          <label
+            >Trạng thái {{ showStatus }}
+            <span class="text-danger">*</span></label
           >
-            <option
-              v-for="(status, index) in newStatus"
-              :key="index"
-              :value="status.value"
-            >
-              {{ status.name }}
-            </option>
-            <ErrorMessage name="topic" class="text-danger" />
-          </Field>
         </div>
+        <Field
+          as="select"
+          name="status"
+          v-model="status"
+          class="form-select box"
+          required="required"
+          :value="status"
+          :rules="validateField"
+        >
+          <option
+            v-for="(status, index) in newStatus"
+            :key="index"
+            :value="status.value"
+          >
+            {{ status.name }}
+          </option>
+          <ErrorMessage name="topic" class="text-danger" />
+        </Field>
       </div>
     </div>
   </Form>
@@ -345,6 +346,7 @@ export default {
         ? "Giao diện chỉnh sửa tin tức"
         : "Giao diện thêm mới tin tức"
     );
+    const showStatus = ref(newsId.value);
 
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
@@ -628,6 +630,7 @@ export default {
       listTags,
       tagsOption,
       listTagsForSelect,
+      showStatus,
       // function
       addTags,
       removeTag,
