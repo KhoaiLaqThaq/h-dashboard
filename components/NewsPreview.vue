@@ -1,6 +1,6 @@
 <template>
   <div
-    class="modal fade"
+    class="modal fade fontMavin"
     id="newsPreview"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
@@ -30,7 +30,11 @@
             <div class="previews-content auto-scroll-y">
               <div class="avatar mb-3">
                 <img v-if="avatarUrl" :src="avatarUrl" alt="" />
-                <img v-if="!avatarUrl" src="~~/assets/images/avatar-default.jpg" alt="" />
+                <img
+                  v-if="!avatarUrl"
+                  src="~~/assets/images/avatar-default.jpg"
+                  alt=""
+                />
               </div>
               <div class="title mb-3 px-3">{{ title }}</div>
               <div class="info d-flex mb-3 px-3">
@@ -93,24 +97,29 @@ export default {
   },
   props: ["title", "avatarUrl", "content", "createdDate"],
   setup(props) {
-    const displayDate = (createdDate) => moment(createdDate).month(createdDate[1] - 1).format('YYYY-MM-DD HH:mm:ss');
+    const displayDate = (createdDate) =>
+      moment(createdDate)
+        .month(createdDate[1] - 1)
+        .format("YYYY-MM-DD HH:mm:ss");
 
-    return {displayDate}
+    return { displayDate };
   },
   watch: {
-    content: function(newContent, oldContent) {
-      document.getElementById('showContent').innerHTML = newContent;
-    }
-  }
+    content: function (newContent, oldContent) {
+      document.getElementById("showContent").innerHTML = newContent;
+    },
+  },
 };
 </script>
 <style lang="scss">
 pre {
   white-space: pre-wrap;
-  font-family: 'Roboto,sans-serif';
+  font-family: "Roboto,sans-serif";
   img {
     width: 100%;
   }
 }
-
+.fontMavin {
+  font-family: "Roboto,sans-serif";
+}
 </style>
