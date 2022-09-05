@@ -107,6 +107,7 @@ export default {
 <style lang="scss">
 pre {
   white-space: pre-wrap;
+  font-family: 'Roboto,sans-serif';
   img {
     width: 100%;
   }

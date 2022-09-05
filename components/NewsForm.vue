@@ -351,7 +351,7 @@ export default {
     const avatarUrl = ref("");
     const title = ref("");
     const brief = ref("");
-    const status = ref(0);
+    const status = ref(1);
     const content = ref(
       "<br/><br/><p>Nội dung bài viết ở đây..</p><br/><br/><br/>"
     );
@@ -408,30 +408,32 @@ export default {
 
     watch(newsExist, () => {
       if (newsExist.value) {
-        title.value = newsExist.value.title;
-        type.value = newsExist.value.type;
-        optionType.value = newsExist.value.type;
-        topic.value = newsExist.value.topic.id;
-        createdDate.value = newsExist.value.createdDate;
-        brief.value = newsExist.value.brief;
-        content.value = newsExist.value.content;
-        avatarUrl.value = newsExist.value.avatarUrl;
-        commentTotal.value = newsExist.value.commentTotal;
-        likeTotal.value = newsExist.value.likeTotal;
-        viewTotal.value = newsExist.value.viewTotal;
-        createdDateString.value = newsExist.value.displayCreatedDate;
-        createdBy.value = newsExist.value.createdBy;
+        let data = newsExist.value;
+        title.value = data.title;
+        type.value = data.type;
+        optionType.value = data.type;
+        topic.value = data.topic.id;
+        createdDate.value = data.createdDate;
+        brief.value = data.brief;
+        content.value = data.content;
+        avatarUrl.value = data.avatarUrl;
+        commentTotal.value = data.commentTotal;
+        likeTotal.value = data.likeTotal;
+        viewTotal.value = data.viewTotal;
+        createdDateString.value = data.displayCreatedDate;
+        createdBy.value = data.createdBy;
+        status.value = data.status;
         if (avatarUrl != null) {
           getObjectFileFromUrl(avatarUrl);
         }
-        if (newsExist.value.tags.length > 0) {
-          newsExist.value.tags.forEach((e) => {
+        if (data.tags.length > 0) {
+          data.tags.forEach((e) => {
             // tagNames.value += "," + e.name;
             tags.value.push(e.name);
           });
         }
-        if (newsExist.value.departments.length > 0) {
-          destination.value = newsExist.value.departments;
+        if (data.departments.length > 0) {
+          destination.value = data.departments;
           resetDepartmentSource();
         }
       }
@@ -535,7 +537,7 @@ export default {
         title: title.value,
         brief: brief.value,
         content: content.value,
-        status: 2,
+        status: status.value,
         topicId: topic.value,
         tagNames: tagNames.value,
         commentTotal: commentTotal.value,
