@@ -15,10 +15,10 @@
       <div class="td">{{ displayBrief(item.brief) }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
       <div class="td">
-        <template v-if="item.status == '2'"
+        <template v-if="item.status == '1'"
           ><span class="badge bg-pending">Chưa phê duyệt</span></template
         >
-        <template v-if="item.status == '1'"
+        <template v-if="item.status == '2'"
           ><span class="badge bg-success">Đã phê duyệt</span></template
         >
       </div>
