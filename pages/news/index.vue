@@ -23,6 +23,10 @@
         :actionDelete="false"
         :page="page"
         :size="size"
+        :sortField="sortField"
+        :sortDirection="sortDirection"
+        @change-sort-direction="sortDirection = $event"
+        @change-sort-field="changeSortField($event)"
       />
 
       <pagination
@@ -77,15 +81,17 @@ export default {
     const last = ref(false);
     const content = ref([]);
     const keyword = ref('');
+    const sortField = ref('id');
+    const sortDirection = ref(true);
 
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
 
     const headers = [
-      { text: "STT", value: "no" },
+      { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
-      { text: "Mô tả ngắn", value: "sub_desc" },
-      { text: "Ngày tạo", value: "created_date" },
+      { text: "Mô tả ngắn", value: "brief" },
+      { text: "Ngày tạo", value: "createdDate" },
       { text: "Trạng thái", value: "status" },
     ];
 
@@ -104,7 +110,9 @@ export default {
       let criteria = {
         page: page.value,
         size: size.value,
-        keyword: keyword.value
+        keyword: keyword.value,
+        sortField: sortField.value,
+        sortDirection: sortDirection.value,
       };
 
       // TODO: Call api
@@ -120,7 +128,9 @@ export default {
         });
     }
 
-    watch([page, size], () => {
+    const changeSortField = (fieldValue) => sortField.value = fieldValue;
+
+    watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
     });
 
@@ -138,8 +148,11 @@ export default {
       last,
       content,
       keyword,
+      sortField,
+      sortDirection,
 
-      searchCallApi
+      searchCallApi,
+      changeSortField
     };
   },
   created() {
