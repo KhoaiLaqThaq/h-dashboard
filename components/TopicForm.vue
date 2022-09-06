@@ -21,7 +21,7 @@
         <BaseButton
           class="btn-primary ms-auto"
           :btnType="'submit'"
-          :name="'Save'"
+          :name="'Lưu'"
           :textSize="'text-small'"
         />
       </div>

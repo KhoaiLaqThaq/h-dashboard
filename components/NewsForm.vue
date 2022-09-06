@@ -232,13 +232,10 @@
     </div>
     <hr />
 
-    <div v-if="!showStatus" class="col-lg-3 col-sm-12">
+    <div v-if="showStatus" class="col-lg-3 col-sm-12">
       <div class="form-floating">
         <div>
-          <label
-            >Trạng thái {{ showStatus }}
-            <span class="text-danger">*</span></label
-          >
+          <label>Trạng thái <span class="text-danger">*</span></label>
         </div>
         <Field
           as="select"
@@ -247,7 +244,6 @@
           class="form-select box"
           required="required"
           :value="status"
-          :rules="validateField"
         >
           <option
             v-for="(status, index) in newStatus"
