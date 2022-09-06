@@ -5,7 +5,7 @@
         {{ item.text }}
       </div>
       <div class="th text-center" v-if="actionEdit || actionDelete">
-        Actions
+        Hành động
       </div>
     </div>
     <div class="tr" v-for="(item, index) in items" :key="index">

@@ -37,10 +37,10 @@ export default {
   },
   setup() {
     const tableHeader = [
-      { text: "No", value: "id" },
-      { text: "Name", value: "paramName" },
-      { text: "Value", value: "paramValue" },
-      { text: "Description", value: "description" },
+      { text: "STT", value: "id" },
+      { text: "Tên tham số", value: "paramName" },
+      { text: "Giá trị", value: "paramValue" },
+      { text: "Ý nghĩa", value: "description" },
     ];
     const systemParams = ref([]);
 

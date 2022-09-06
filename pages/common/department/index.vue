@@ -42,9 +42,9 @@ export default {
   },
   setup() {
     const tableHeader = [
-      { text: "No", value: "no" },
-      { text: "Code", value: "code" },
-      { text: "Name", value: "name" },
+      { text: "STT", value: "no" },
+      { text: "Mã đơn vị thành viên", value: "code" },
+      { text: "Tên đơn vị thành viên", value: "name" },
     ];
     const departments = ref([]);
 

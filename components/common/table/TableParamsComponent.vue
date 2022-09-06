@@ -5,7 +5,7 @@
         {{ item.text }}
       </div>
       <div class="ms-0 me-0 text-center th" v-if="actionEdit || actionDelete">
-        Actions
+        Hành động
       </div>
     </div>
 

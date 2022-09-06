@@ -3,7 +3,7 @@
     <div class="tr">
       <div class="th"><input type="checkbox" @click="selectAllBox()"></div>
       <div class="th" v-for="(item, index) in headers" :key="index">{{ item.text }}</div>
-      <div class="th" v-if="actionEdit || actionDelete">Action</div>
+      <div class="th" v-if="actionEdit || actionDelete">Hàng động</div>
     </div>
 
     <div class="tr" v-for="(item, index) in items" :key="index">

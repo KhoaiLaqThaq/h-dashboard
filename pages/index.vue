@@ -1,17 +1,17 @@
 <template>
   <div class="row">
-    <div class="col-lg-9 col-md-12 pt-4">
-      <h2 class="font-medium text-lg lucide">General Reports</h2>
+    <div class="col-12 pt-4">
+      <h2 class="font-medium text-lg lucide">Báo cáo chung</h2>
       <PreviewReport />
 
       <!-- other reports -->
     </div>
 
     <!-- top 5 hot news -->
-    <div class="col-lg-3 col-md-12 container-statistic pt-4 pe-0">
+    <!-- <div class="col-lg-3 col-md-12 container-statistic pt-4 pe-0">
       <h2 class="font-medium text-lg lucide">Hot news</h2>
       <HotNewsStatistic :hotNews="hotNews" />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -29,7 +29,7 @@ export default {
     const hotNews = ref([]);
 
     function addData(data) {
-      var item = {
+      let item = {
         title: data.title,
         author: data.createdBy,
         brief: data.brief,
