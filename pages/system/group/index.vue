@@ -43,8 +43,8 @@ export default {
   },
   setup() {
     const tableHeader = [
-      { text: "No", value: "no" },
-      { text: "Name", value: "name" },
+      { text: "STT", value: "no" },
+      { text: "Tên nhóm quyền", value: "name" },
     ];
 
     const topics = ref([

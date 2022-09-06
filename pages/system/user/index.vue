@@ -77,13 +77,13 @@ export default {
     const last = ref(false);
     //const currentPage = ref(0);
     const headers = [
-      { text: "No", value: "no" },
-      { text: "Fullname", value: "name" },
+      { text: "STT", value: "no" },
+      { text: "Họ tên đầy đủ", value: "name" },
       { text: "Email", value: "email" },
-      { text: "Firstname", value: "first_name" },
-      { text: "Lastname", value: "last_name" },
-      { text: "Age", value: "age" },
-      { text: "Role", value: "role" },
+      { text: "Họ", value: "first_name" },
+      { text: "Tên", value: "last_name" },
+      { text: "Tuổi", value: "age" },
+      { text: "Quyền", value: "role" },
     ];
     const items = ref([]);
     const tempItems = [usersData, usersData1, usersData2];

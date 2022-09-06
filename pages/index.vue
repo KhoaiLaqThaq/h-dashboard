@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 pt-4">
-      <h2 class="font-medium text-lg lucide">General Reports</h2>
+      <h2 class="font-medium text-lg lucide">Báo cáo chung</h2>
       <PreviewReport />
 
       <!-- other reports -->
