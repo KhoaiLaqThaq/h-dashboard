@@ -17,17 +17,19 @@
 import TheFooter from '~~/components/TheFooter.vue'
 import TheTopbar from '~~/components/TheTopbar.vue'
 import TheSidebar from '~~/components/TheSidebar.vue'
+import Message from '~~/components/common/Message.vue';
 
 export default {
-    components: [
-        TheTopbar,
-        TheSidebar,
-        TheFooter
-    ],
+    components: {
+    TheTopbar,
+    TheSidebar,
+    TheFooter,
+    Message
+},
     data() {
         return {
-            colorTheme: 'primary_theme'
-        }
+            colorTheme: "primary_theme"
+        };
     }
 }
 </script>
