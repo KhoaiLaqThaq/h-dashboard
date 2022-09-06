@@ -89,7 +89,7 @@
             </option>
             <ErrorMessage name="topic" class="text-danger" />
           </Field>
-          <label>Chủ đề <span class="text-danger">*</span></label>
+          <label>Chuyên mục <span class="text-danger">*</span></label>
         </div>
       </div>
 
