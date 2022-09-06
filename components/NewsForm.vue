@@ -100,7 +100,7 @@
             :class-attr="'border-none'"
             :name-attr="'createdDate'"
             :show-bottom-button="true"
-            :value-attr="createdDate"
+            :value-attr="displayDate(createdDate)"
             :locale="locale"
           />
           <label>Ngày viết <span class="text-danger">*</span></label>
@@ -263,7 +263,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
-
+import moment from "moment";
 import DualListBox from "~~/components/DualListBox.vue";
 //import "dual-listbox-vue/dist/dual-listbox.css";
 
@@ -445,7 +445,7 @@ export default {
     });
 
     const locale = {
-      format: "YYYY/MM/DD",
+      format: "DD/MM/YYYY",
       weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
       startsWeeks: 0,
@@ -453,6 +453,12 @@ export default {
       clearBtn: "Clear",
       closeBtn: "Close",
     };
+
+    function displayDate(value) {
+      return moment(value)
+        .month(value[1] - 1)
+        .format("DD/MM/YYYY");
+    }
 
     function uploader(editor) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
@@ -633,6 +639,7 @@ export default {
       callApiGetById,
       callApiGetAllTags,
       selectTagSuggestion,
+      displayDate,
     };
   },
   created() {
