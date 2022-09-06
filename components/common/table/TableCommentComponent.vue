@@ -1,13 +1,22 @@
 <template>
   <div class="table-container">
     <div class="tr">
-      <div class="th"><input type="checkbox" @click="selectAllBox()"></div>
-      <div class="th" v-for="(item, index) in headers" :key="index">{{ item.text }}</div>
+      <div class="th"><input type="checkbox" @click="selectAllBox()" /></div>
+      <div class="th" v-for="(item, index) in headers" :key="index">
+        {{ item.text }}
+      </div>
       <div class="th" v-if="actionEdit || actionDelete">Hàng động</div>
     </div>
 
     <div class="tr" v-for="(item, index) in items" :key="index">
-      <div class="td px-3"><input type="checkbox" :id="'check' + item.id" @click="countSelectedCheckBox()" class="boxCheck"></div>
+      <div class="td px-3">
+        <input
+          type="checkbox"
+          :id="'check' + item.id"
+          @click="countSelectedCheckBox()"
+          class="boxCheck"
+        />
+      </div>
       <div class="td">{{ index + 1 + page * size }}</div>
       <div class="td">{{ item.newsTitle }}</div>
       <div class="td">{{ displayBrief(item.content) }}</div>
@@ -15,17 +24,26 @@
       <div class="td">{{ displayDate(item.createdDate) }}</div>
       <div class="td">
         <div class="form-check form-switch">
-          <input type="checkbox" class="form-check-input" :checked="item.enabled" role="switch" @click="changeCommentStatus(item.id)"/>
+          <input
+            type="checkbox"
+            class="form-check-input"
+            :checked="item.enabled"
+            role="switch"
+            @click="changeCommentStatus(item.id)"
+          />
         </div>
       </div>
       <td class="td">
-          <div class="action-group d-flex">
-            <div class="ms-3 cursor-pointer text-danger">
-              <delete-icon @click="disabledNews(item.id)" />
-              <span class="ms-1">Xóa</span>
-            </div>
+        <div class="action-group d-flex">
+          <div
+            class="ms-3 cursor-pointer text-danger"
+            @click="disableComment(item.id)"
+          >
+            <delete-icon />
+            <span class="ms-1">Xóa</span>
           </div>
-        </td>
+        </div>
+      </td>
     </div>
   </div>
 </template>
@@ -37,14 +55,22 @@ import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 
 import CONFIG from "~~/config";
 import axios from "axios";
-import { displayBrief } from '~~/constants/format-string.js';
+import { displayBrief } from "~~/constants/format-string.js";
 
 export default {
   components: {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "reCallApi"],
+  props: [
+    "headers",
+    "items",
+    "actionEdit",
+    "actionDelete",
+    "page",
+    "size",
+    "reCallApi",
+  ],
   setup() {
     const checkedAll = ref(false);
     const listSelected = ref([]);
@@ -57,7 +83,21 @@ export default {
     //   return brief;
     // }
 
-    function changeCommentStatus(id){
+    function disableComment(id) {
+      if (confirm("Bạn có muốn xóa bình luận này?")) {
+        axios
+          .delete(`${CONFIG.BASE_URL}/api/comment/${id}`)
+          .then((response) => {
+            console.log(response.data);
+            location.reload();
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      }
+    }
+
+    function changeCommentStatus(id) {
       axios
         .get(`${CONFIG.BASE_URL}/api/comment/enable/${id}`)
         .then((response) => {
@@ -68,24 +108,24 @@ export default {
         });
     }
 
-    function selectAllBox(){
+    function selectAllBox() {
       checkedAll.value = !checkedAll.value;
       let list = document.getElementsByClassName("boxCheck");
-      for(let e of list){
-        if(checkedAll.value){
+      for (let e of list) {
+        if (checkedAll.value) {
           document.getElementById(e.id).checked = true;
         } else {
           document.getElementById(e.id).checked = false;
         }
       }
       countSelectedCheckBox();
-    };
+    }
 
-    function countSelectedCheckBox(){
+    function countSelectedCheckBox() {
       listSelected.value = [];
       let list = document.getElementsByClassName("boxCheck");
-      for(let e of list){
-        if(e.checked == true){
+      for (let e of list) {
+        if (e.checked == true) {
           let rowId = parseInt(e.id.substring(5));
           listSelected.value.push(rowId);
         }
@@ -94,16 +134,18 @@ export default {
 
     function displayDate(date) {
       if (date)
-        return moment(date).month(date[1] - 1).format('YYYY-MM-DD HH:mm:ss');
-      return '';
+        return moment(date)
+          .month(date[1] - 1)
+          .format("YYYY-MM-DD HH:mm:ss");
+      return "";
     }
 
-    function changeMultiStatus(){
+    function changeMultiStatus() {
       if (listSelected.value.length > 0) {
-        let listIds = '';
-        listSelected.value.forEach(item => listIds += "," + item);
+        let listIds = "";
+        listSelected.value.forEach((item) => (listIds += "," + item));
         const commentDto = {
-          listCommentIds: listIds
+          listCommentIds: listIds,
         };
 
         axios
@@ -111,7 +153,7 @@ export default {
           .then((res) => {
             this.reCallApi();
             let list = document.getElementsByClassName("boxCheck");
-            for(let e of list){
+            for (let e of list) {
               document.getElementById(e.id).checked = false;
             }
             listSelected.value = [];
@@ -130,13 +172,13 @@ export default {
       selectAllBox,
       countSelectedCheckBox,
       changeMultiStatus,
+      disableComment,
     };
-  }
+  },
 };
 </script>
 <style lang="scss">
-  .div-center{
-    margin: auto;
-  }
-
+.div-center {
+  margin: auto;
+}
 </style>
