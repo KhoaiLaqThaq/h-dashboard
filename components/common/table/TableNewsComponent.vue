@@ -15,7 +15,7 @@
       <div class="td">{{ item.title }}</div>
       <div class="td">{{ displayBrief(item.brief) }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
-      <div class="td">
+      <div class="td px-4">
         <template v-if="item.status == '1'"
           ><span class="badge bg-pending">Chưa phê duyệt</span></template
         >
@@ -97,7 +97,7 @@ export default {
 
     function resetOtherColumns(idSelector) {
       let otherSelectors = document.getElementsByClassName('th');
-      for (let i = 0; i < otherSelectors.length; i++) {
+      for (let i = 0; i < otherSelectors.length - 1; i++) {
         const element = otherSelectors[i];
         if (element.id != idSelector) {
           element.classList.add('sorting');

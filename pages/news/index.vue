@@ -1,46 +1,84 @@
 <template>
-  <div class="content-news mt-3">
-    <div class="d-flex">
-      <TitleHeader :title="title" />
-      <!-- <AddButton class="ms-auto" :title="btnTitle" :routerPush="routerPush" /> -->
-    </div>
-    <div class="d-flex mt-3">
-      <AddButton
-        :textSize="'text-small'"
-        :title="btnTitle"
-        :routerPush="routerPush"
-      />
-      <div class="ms-auto input-suggest__event">
-        <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
-        <span class="btn-suggest">Enter</span>
+  <div class="mt-3">
+    <div class="card">
+      <div class="card-header search-header">
+        <h6 class="card-title">Tìm kiếm</h6>
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="searchCallApi()">
+          <div class="row">
+            <div class="col-md-4">
+              <input
+                type="text"
+                v-model="keyword"
+                class="form-control pr-5"
+                placeholder="Tìm kiếm từ khóa..."
+              />
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                v-model="departmentName"
+                class="form-control pr-5"
+                placeholder="Tìm kiếm đơn vị thành viên..."
+              />
+            </div>
+            <div class="col-md-4">
+              <button
+                type="submit"
+                class="btn btn-secondary text-small"
+              >
+                Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="table-content mt-3 radius-20">
-      <table-news-component
-        :headers="headers"
-        :items="content"
-        :actionEdit="true"
-        :actionDelete="false"
-        :page="page"
-        :size="size"
-        :sortField="sortField"
-        :sortDirection="sortDirection"
-        @change-sort-direction="sortDirection = $event"
-        @change-sort-field="changeSortField($event)"
-      />
 
-      <pagination
-        :page="page"
-        :size="size"
-        :number="number"
-        :numberOfElements="numberOfElements"
-        :totalElements="totalElements"
-        :totalPages="totalPages"
-        :first="first"
-        :last="last"
-        @change-page="page = $event"
-        @change-size="size = $event"
-      />
+    <div class="content-news">
+      <div class="d-flex">
+        <TitleHeader :title="title" />
+        <AddButton
+          :textSize="'text-small'"
+          :title="btnTitle"
+          :routerPush="routerPush"
+          class="ms-auto"
+        />
+      </div>
+      <!-- <div class="d-flex mt-3">
+        <div class="ms-auto input-suggest__event">
+          <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
+          <span class="btn-suggest">Enter</span>
+        </div>
+      </div> -->
+      <div class="table-content mt-3 radius-20">
+        <table-news-component
+          :headers="headers"
+          :items="content"
+          :actionEdit="true"
+          :actionDelete="false"
+          :page="page"
+          :size="size"
+          :sortField="sortField"
+          :sortDirection="sortDirection"
+          @change-sort-direction="sortDirection = $event"
+          @change-sort-field="changeSortField($event)"
+        />
+
+        <pagination
+          :page="page"
+          :size="size"
+          :number="number"
+          :numberOfElements="numberOfElements"
+          :totalElements="totalElements"
+          :totalPages="totalPages"
+          :first="first"
+          :last="last"
+          @change-page="page = $event"
+          @change-size="size = $event"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -81,6 +119,7 @@ export default {
     const last = ref(false);
     const content = ref([]);
     const keyword = ref('');
+    const departmentName = ref('');
     const sortField = ref('id');
     const sortDirection = ref(true);
 
@@ -111,6 +150,7 @@ export default {
         page: page.value,
         size: size.value,
         keyword: keyword.value,
+        departmentName: departmentName.value,
         sortField: sortField.value,
         sortDirection: sortDirection.value,
       };
@@ -150,6 +190,7 @@ export default {
       keyword,
       sortField,
       sortDirection,
+      departmentName,
 
       searchCallApi,
       changeSortField
