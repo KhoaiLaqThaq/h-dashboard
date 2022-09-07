@@ -46,12 +46,6 @@
           class="ms-auto"
         />
       </div>
-      <!-- <div class="d-flex mt-3">
-        <div class="ms-auto input-suggest__event">
-          <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
-          <span class="btn-suggest">Enter</span>
-        </div>
-      </div> -->
       <div class="table-content mt-3 radius-20">
         <table-news-component
           :headers="headers"
@@ -168,7 +162,10 @@ export default {
         });
     }
 
-    const changeSortField = (fieldValue) => sortField.value = fieldValue;
+    const changeSortField = (fieldValue) => {
+      console.log('change sort field', fieldValue);
+      sortField.value = fieldValue;
+    }
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
