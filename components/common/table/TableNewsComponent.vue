@@ -1,20 +1,21 @@
 <template>
   <div class="table-container">
     <div class="tr">
-      <div class="th">#</div>
-      <div class="th" v-for="(item, index) in headers" :key="index">
+      <!-- <div class="th">#</div> -->
+      <div class="th sorting" :id="item.value" v-for="(item, index) in headers" :key="index"
+        @click="searchCondition(item.value)">
         {{ item.text }}
       </div>
       <div class="th" v-if="actionEdit || actionDelete">Hành động</div>
     </div>
 
     <div class="tr" v-for="(item, index) in items" :key="index">
-      <div class="td px-3"><input type="checkbox" /></div>
+      <!-- <div class="td px-3"><input type="checkbox" /></div> -->
       <div class="td text-center">{{ index + 1 + page * size }}</div>
       <div class="td">{{ item.title }}</div>
       <div class="td">{{ displayBrief(item.brief) }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
-      <div class="td">
+      <div class="td px-4">
         <template v-if="item.status == '1'"
           ><span class="badge bg-pending">Chưa phê duyệt</span></template
         >
@@ -39,53 +40,9 @@
       </td>
     </div>
   </div>
-
-  <!-- <table class="table table-custom table-unhover">
-    <thead>
-      <tr>
-        <th class="th-primary px-3">#</th>
-        <th class="th-primary" v-for="(item, index) in headers" :key="index">
-          {{ item.text }}
-        </th>
-        <th class="text-center px-3 th-primary" v-if="actionEdit || actionDelete">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in items" :key="index">
-        <td class="px-3"><input type="checkbox"></td>
-        <td class="text-center">{{ index + 1 + page * size }}</td>
-        <td>{{ item.title }}</td>
-        <td>{{ displayBrief(item.brief) }}</td>
-        <td>{{ displayDate(item.createdDate) }}</td>
-        <td>
-          <template v-if="item.status == 'new'"
-            ><span class="badge bg-primary">Thêm mới</span></template
-          >
-          <template v-if="item.status == 'approved'"
-            ><span class="text-success">Đã phê duyệt</span></template
-          >
-        </td>
-        <td class="px-3" v-if="actionEdit || actionDelete">
-          <div class="d-flex">
-            <div class="ms-auto cursor-pointer" v-if="actionEdit">
-              <NuxtLink :to="'/news/form/' + item.id" class="d-flex"
-                ><edit-icon /><span class="ms-1">Edit</span></NuxtLink
-              >
-            </div>
-            <div
-              class="d-flex me-auto cursor-pointer ms-3 text-danger"
-              v-if="actionDelete"
-            >
-              <delete-icon @click="disabledNews(item.id)" />
-              <span class="ms-1">Hide</span>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table> -->
 </template>
 <script>
+import { ref } from 'vue';
 import moment from "moment";
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
@@ -96,8 +53,20 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
-  setup() {
+  props: [
+    "headers", 
+    "items", 
+    "actionEdit", 
+    "actionDelete", 
+    "page", 
+    "size", 
+    "sortField", 
+    "sortDirection"
+  ],
+  setup(props, { emit }) {
+    const sortField = ref(props.sortField);
+    const sortDirection = ref(props.sortDirection);
+
     function displayBrief(brief) {
       let maxLength = 125;
       if (brief.length > maxLength) {
@@ -106,15 +75,41 @@ export default {
       return brief;
     }
 
-    function displayDate(date) {
-      return moment(date)
-        .month(date[1] - 1)
-        .format("YYYY-MM-DD HH:mm:ss");
+    const displayDate = (date) => moment(date).month(date[1] - 1).format("YYYY-MM-DD HH:mm:ss");
+
+    function searchCondition(fieldValue) {
+      if (sortField.value === fieldValue) {
+        // change sort direction
+        sortDirection.value = !sortDirection.value
+        emit('change-sort-direction', sortDirection.value);
+      } else {
+        // change sort field & reset sort direction
+        sortField.value = fieldValue;
+        emit('change-sort-field', fieldValue);
+      }
+      // change ui
+      let fieldSet = document.getElementById(fieldValue);
+        fieldSet.classList.remove('sorting', sortDirection.value ? 'sorting_asc':'sorting_desc');
+        fieldSet.classList.add(sortDirection.value ? 'sorting_desc':'sorting_asc');
+        // reset other columns
+        resetOtherColumns(fieldValue);
+    }
+
+    function resetOtherColumns(idSelector) {
+      let otherSelectors = document.getElementsByClassName('th');
+      for (let i = 0; i < otherSelectors.length - 1; i++) {
+        const element = otherSelectors[i];
+        if (element.id != idSelector) {
+          element.classList.add('sorting');
+          element.classList.remove('sorting_desc', 'sorting_asc');
+        }
+      }
     }
 
     return {
       displayBrief,
       displayDate,
+      searchCondition
     };
   },
 };

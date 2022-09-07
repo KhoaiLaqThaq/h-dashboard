@@ -13,6 +13,7 @@
         :headers="tableHeader"
         :items="topics"
         :actionEdit="true"
+        :actionDelete="true"
         :page="page"
         :size="size"
       />

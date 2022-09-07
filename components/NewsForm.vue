@@ -89,7 +89,7 @@
             </option>
             <ErrorMessage name="topic" class="text-danger" />
           </Field>
-          <label>Chủ đề <span class="text-danger">*</span></label>
+          <label>Chuyên mục <span class="text-danger">*</span></label>
         </div>
       </div>
 
@@ -166,7 +166,7 @@
             <div class="card radius-unset box">
               <div class="card-body">
                 <UseDropZone
-                  @changeImage="avatar = $event"
+                  @change-image="changeImage($event)"
                   :avatarUrl="avatarUrl"
                 />
               </div>
@@ -194,28 +194,8 @@
     <div class="row">
       <div class="col-lg-12 col-sm-12">
         <div class="form-floating">
-          <!-- <Field
-            as="select"
-            name="type"
-            v-model="units"
-            class="form-select box"
-            required="required"
-            :value="type"
-            :rules="validateField"
-          >
-            <option
-              v-for="(option, index) in options"
-              :key="index"
-              :value="option"
-            >
-              {{ option }}
-            </option>
-            <ErrorMessage name="type" class="text-danger" />
-          </Field> -->
           <div>
-            <label
-              >Phân phối phòng ban <span class="text-danger">*</span></label
-            >
+            <label>Phân phối phòng ban <span class="text-danger">*</span></label>
           </div>
 
           <div>
@@ -325,24 +305,18 @@ export default {
     onChangeList: function ({ source, destination }) {
       this.source = source;
       this.destination = destination;
-      console.log(source);
-      console.log(destination);
     },
   },
   setup() {
     const route = useRoute();
     const newsId = ref(route.params.id);
     const newsExist = ref({});
-    const titleForm = ref(
-      newsId.value
-        ? "Giao diện chỉnh sửa tin tức"
-        : "Giao diện thêm mới tin tức"
-    );
+    const titleForm = ref(newsId.value? "Giao diện chỉnh sửa tin tức": "Giao diện thêm mới tin tức");
     const showStatus = ref(newsId.value);
-
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
     const avatarUrl = ref("");
+    const isChangedAvatar = ref(false);
     const title = ref("");
     const brief = ref("");
     const status = ref(1);
@@ -392,9 +366,8 @@ export default {
       axios
         .get(`${CONFIG.BASE_URL}/api/tags`)
         .then((response) => {
-          if (response) {
+          if (response.data) {
             listTags.value = response.data;
-            console.log(listTags.value);
           }
         })
         .catch((error) => console.log(error));
@@ -433,6 +406,12 @@ export default {
       }
     });
 
+    const changeImage = (imageNew) => {
+      console.log('============> Change avatar image')
+      avatar.value = imageNew;
+      isChangedAvatar.value = true;
+    };
+
     watch(tag, () => {
       if (tag.value.trim().length > 0) {
         tagsOption.value = true;
@@ -454,11 +433,7 @@ export default {
       closeBtn: "Close",
     };
 
-    function displayDate(value) {
-      return moment(value)
-        .month(value[1] - 1)
-        .format("DD/MM/YYYY");
-    }
+    const displayDate = (value) => moment(value).month(value[1] - 1).format("DD/MM/YYYY");
 
     function uploader(editor) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
@@ -476,16 +451,11 @@ export default {
     }
 
     // TODO: Remove tag
-    const removeTag = (index) => {
-      let tagName = tags.value[index];
-      console.log(tagName);
-      tags.value.splice(index, 1);
-    };
+    const removeTag = (index) => tags.value.splice(index, 1);
 
     // TODO: call API get lisTopics
     function getListTopic() {
-      axios
-        .get(`${CONFIG.BASE_URL}/api/topics`)
+      axios.get(`${CONFIG.BASE_URL}/api/topics`)
         .then((response) => {
           const data = response.data;
           topics.value = data;
@@ -502,9 +472,10 @@ export default {
         .get(`${CONFIG.BASE_URL}/api/departments`)
         .then((response) => {
           const data = response.data;
-          source.value = data;
-          console.log(data);
-          resetDepartmentSource();
+          if (data) {
+            source.value = data;
+            resetDepartmentSource();
+          }
         })
         .catch((e) => {
           console.log(e.toString());
@@ -532,7 +503,7 @@ export default {
       const news = {
         id: newsId.value ? newsId.value : null,
         avatar: avatar.value ? avatar.value : null,
-        avatarUrl: avatarUrl.value,
+        avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
         type: optionType.value,
         title: title.value,
         brief: brief.value,
@@ -547,14 +518,10 @@ export default {
         createdDateString: newsId.value ? createdDateString.value : null,
         departmentCodes: departmentCodes,
       };
-      console.log(news);
-
       const headers = { "Content-Type": "multipart/form-data" };
-      axios
-        .post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
+      axios.post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
         .then((res) => {
           let responseData = res.data;
-          console.log(res.data);
           alert(responseData.code + " " + responseData.message);
           navigateTo("/news");
         })
@@ -574,8 +541,7 @@ export default {
 
     function getObjectFileFromUrl(url) {
       const config = { responseType: "blob" };
-      axios
-        .get(`${CONFIG.BASE_URL}/api/topics`, config)
+      axios.get(`${CONFIG.BASE_URL}/api/topics`, config)
         .then((response) => {
           const file = new File([response.data], "");
           avatar.value = file;
@@ -640,6 +606,7 @@ export default {
       callApiGetAllTags,
       selectTagSuggestion,
       displayDate,
+      changeImage
     };
   },
   created() {
