@@ -433,7 +433,12 @@ export default {
       closeBtn: "Close",
     };
 
-    const displayDate = (value) => moment(value).month(value[1] - 1).format("DD/MM/YYYY");
+    const displayDate = (value) => {
+      if (value) {
+        return moment(value).month(value[1] - 1).format("DD/MM/YYYY");
+      }
+      return "Không xác định";
+    }
 
     function uploader(editor) {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
