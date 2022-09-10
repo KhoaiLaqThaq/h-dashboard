@@ -18,21 +18,37 @@
           </div>
 
           <div class="text-secondary">
-              <p>Email: <strong>{{ mockAccount.email }}</strong></p>
-              <p>Password: <strong>{{ mockAccount.password }}</strong></p>
+            <p>
+              Email: <strong>{{ mockAccount.email }}</strong>
+            </p>
+            <p>
+              Password: <strong>{{ mockAccount.password }}</strong>
+            </p>
           </div>
 
           <form @submit.prevent="login()">
             <div class="form-group mb-3">
               <label for="emailaddress">Địa chỉ Email</label>
-              <input class="form-control" type="email" id="emailaddress" placeholder="Nhập địa chỉ email" v-model="email" />
+              <input
+                class="form-control"
+                type="email"
+                id="emailaddress"
+                placeholder="Nhập địa chỉ email"
+                v-model="email"
+              />
               <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group mb-3">
               <label for="password">Mật khẩu</label>
               <div class="input-group input-group-merge">
-                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" v-model="password"/>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Nhập mật khẩu"
+                  v-model="password"
+                />
 
                 <div class="input-group-append" data-password="false">
                   <div class="input-group-text" style="height: 100%">
@@ -45,8 +61,15 @@
 
             <div class="form-group mb-3">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked />
-                <label class="custom-control-label" for="checkbox-signin">Ghi nhớ tài khoản</label>
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="checkbox-signin"
+                  checked
+                />
+                <label class="custom-control-label" for="checkbox-signin"
+                  >Ghi nhớ tài khoản</label
+                >
               </div>
             </div>
 
@@ -67,21 +90,27 @@
   </div>
 </template>
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive } from "vue";
+
 export default {
   setup() {
-    const email = ref('');
-    const password = ref('');
+    const { $showToast } = useNuxtApp();
+    const email = ref("");
+    const password = ref("");
     const mockAccount = reactive({
       email: "admin@gmail.com",
-      password: "123456"
+      password: "123456",
     });
     const token = useToken();
 
     function login(e) {
       if (email.value != "" && password.value != "") {
-        if (email.value == mockAccount.email && password.value == mockAccount.password) {
+        if (
+          email.value == mockAccount.email &&
+          password.value == mockAccount.password
+        ) {
           // this.$router.push({ path: "/" });
+          $showToast("Đăng nhập thành công", "success", 2000);
           token.value = "Bearer " + email.value + "_" + password.value;
           localStorage.setItem("token", token.value);
           localStorage.setItem("expired", new Date().getTime());
@@ -90,14 +119,15 @@ export default {
     }
 
     return {
-      email, password,
+      email,
+      password,
       mockAccount,
 
-      login
-    }
+      login,
+    };
   },
-  mounted(){
-    this.tokenState = '';
-  }
+  mounted() {
+    this.tokenState = "";
+  },
 };
 </script>

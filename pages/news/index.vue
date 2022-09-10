@@ -24,10 +24,7 @@
               />
             </div>
             <div class="col-md-4">
-              <button
-                type="submit"
-                class="btn btn-secondary text-small"
-              >
+              <button type="submit" class="btn btn-secondary text-small">
                 Tìm kiếm
               </button>
             </div>
@@ -112,9 +109,9 @@ export default {
     const first = ref(false);
     const last = ref(false);
     const content = ref([]);
-    const keyword = ref('');
-    const departmentName = ref('');
-    const sortField = ref('id');
+    const keyword = ref("");
+    const departmentName = ref("");
+    const sortField = ref("id");
     const sortDirection = ref(true);
 
     const itemsSelected = ref([]);
@@ -139,7 +136,7 @@ export default {
     }
 
     // call api
-    function searchCallApi() {
+    function nsearchCallApi() {
       let criteria = {
         page: page.value,
         size: size.value,
@@ -163,9 +160,9 @@ export default {
     }
 
     const changeSortField = (fieldValue) => {
-      console.log('change sort field', fieldValue);
+      console.log("change sort field", fieldValue);
       sortField.value = fieldValue;
-    }
+    };
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
@@ -190,7 +187,7 @@ export default {
       departmentName,
 
       searchCallApi,
-      changeSortField
+      changeSortField,
     };
   },
   created() {
@@ -202,7 +199,7 @@ export default {
 <style lang="scss">
 .input-suggest__event {
   position: relative;
-  
+
   .btn-suggest {
     position: absolute;
     top: 0.25rem;
@@ -211,10 +208,8 @@ export default {
     padding: 2px 4px;
     border-radius: 4px;
     background-color: rgb(168, 167, 167);
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: bold;
   }
-
 }
-
 </style>
