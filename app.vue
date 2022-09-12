@@ -10,10 +10,16 @@
 import { ref, watch } from 'vue';
 import "bootstrap";
 
+import VueJwtDecode from 'vue-jwt-decode';
+import camelcaseKeys from 'camelcase-keys';
+
 export default {
   setup() {
     const layout = useLayoutActive();
     const token = useToken();
+    const header = useHeader();
+    const client = useKeycloakClient();
+    const currentRole = useCurrentRole();
 
     const setLayoutDefault = () => {
       if (token.value) {
@@ -24,7 +30,6 @@ export default {
     }
 
     watch([token], () => {
-      console.log("listener event change state");
       setLayoutDefault();
     });
 
@@ -35,20 +40,45 @@ export default {
     }
 
     function checkAuthentication() {
-      console.log("check authentication");
       let jwtTokenStorage = localStorage.getItem("token");
-      let expired = localStorage.getItem("expired");
-      let diffTime = Math.abs(new Date() - expired);
-      // Mock expired 30'
-      let expiredDiff = 30*60*1000;
+      let expired = localStorage.getItem("exp");
+      let time = localStorage.getItem("time");
 
-      if (expired && diffTime < expiredDiff && jwtTokenStorage) {
-        if (!token.value) {
-          token.value = jwtTokenStorage;
+      // TODO: Tính toán thời gian request hết hạn chưa.
+      if (time && expired) {
+        let diffTime = Math.abs(new Date().getTime() - time);
+        if (diffTime < (expired * 1000)) {
+          if (jwtTokenStorage && !token.value) {
+            token.value = jwtTokenStorage;
+             // check header global state
+            if (!header.value) header.value = `Bearer ${jwtTokenStorage}`;
+
+            // set role current
+            let decode = VueJwtDecode.decode(jwtTokenStorage);
+            let tokenKeys = camelCaseTokenKeys(decode);
+            setStateAfterDecodeToken(tokenKeys);
+          }
         }
-      }
-      else {
+      } else {
         resetStateBeforeLogout();
+      }
+    }
+
+    const camelCaseTokenKeys = (decode) => camelcaseKeys(decode);
+
+    function setStateAfterDecodeToken(jwtTokenKeys) {
+      // set current Role
+      if (jwtTokenKeys) {
+        // set lại client
+        console.log('keycloak client: ', jwtTokenKeys.azp);
+        if (localStorage.getItem('kclient') && !client.value) {
+          client.value = jwtTokenKeys.azp;
+        }
+
+        if (!currentRole.value) {
+          currentRole.value = jwtTokenKeys.resource_access[client.value].roles;
+        }
+        console.log(currentRole.value);
       }
     }
 

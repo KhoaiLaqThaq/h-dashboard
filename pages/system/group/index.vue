@@ -13,12 +13,6 @@
         :size="size"
         :routerPush="routerPush"
       />
-      <pagination
-        :page="page"
-        :size="size"
-        @change-page="page = $event"
-        @change-size="size = $event"
-      />
     </div>
   </div>
 </template>

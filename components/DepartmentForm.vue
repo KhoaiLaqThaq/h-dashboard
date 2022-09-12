@@ -35,7 +35,7 @@
       <div class="card box">
         <div class="card-body">
           <UseDropZone
-            @changeImage="avatar = $event"
+            @change-image="changeImage($event)"
             :avatarUrl="avatarUrl"
           />
         </div>
@@ -72,6 +72,7 @@ export default {
     const departmentId = ref(route.params.id);
     const avatar = ref(null);
     const avatarUrl = ref("");
+    const isChangedAvatar = ref(false);
     const department = reactive({
       code: "",
       name: ""
@@ -111,14 +112,14 @@ export default {
           code: department.code,
           name: department.name,
           avatar: avatar.value,
-          avatarUrl: avatarUrl.value
+          avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
         };
       } else {
         data = {
           id: departmentId.value,
           code: department.code,
           name: department.name,
-          avatarUrl: avatarUrl.value
+          avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
         };
       }
       
@@ -134,6 +135,13 @@ export default {
         console.log('error: ', error);
       });
     }
+
+    const changeImage = (imageNew) => {
+      console.log('============> Change avatar image')
+      avatar.value = imageNew;
+      isChangedAvatar.value = true;
+    };
+
     return {
       avatar,
       avatarUrl,
@@ -141,7 +149,8 @@ export default {
 
       getDepartmentById,
       onSubmit,
-      validateName
+      validateName,
+      changeImage
     };
   },
   mounted() {
