@@ -5,7 +5,7 @@
       <div class="th" v-for="(item, index) in headers" :key="index">
         {{ item.text }}
       </div>
-      <div class="th" v-if="actionEdit || actionDelete">Hàng động</div>
+      <div class="th" v-if="actionEdit || actionDelete">Hành động</div>
     </div>
 
     <div class="tr" v-for="(item, index) in items" :key="index">

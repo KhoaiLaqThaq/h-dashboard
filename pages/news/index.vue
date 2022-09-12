@@ -159,10 +159,7 @@ export default {
         });
     }
 
-    const changeSortField = (fieldValue) => {
-      console.log("change sort field", fieldValue);
-      sortField.value = fieldValue;
-    };
+    const changeSortField = (fieldValue) => (sortField.value = fieldValue);
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();

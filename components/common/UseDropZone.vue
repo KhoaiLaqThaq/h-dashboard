@@ -41,7 +41,7 @@ export default {
                 let previewImage = URL.createObjectURL(acceptFiles[0]);
                 document.getElementById('preview').src = previewImage;
 
-                emit('changeImage', acceptFiles[0]);
+                emit('change-image', acceptFiles[0]);
                 document.getElementsByClassName('drag-box')[0].classList.add('d-none');
                 document.getElementsByClassName('previews')[0].classList.add('d-block');
                 document.getElementsByClassName('previews')[0].classList.remove('d-none');
