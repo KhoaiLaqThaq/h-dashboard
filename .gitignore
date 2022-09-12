@@ -9,3 +9,9 @@ dist
 .history
 package-lock.json
 yarn.lock
+.vite/deps/_metadata.json
+.vite/deps/package.json
+.vite/deps/ufo.js
+.vite/deps/ufo.js.map
+.vite/deps/vue.js
+.vite/deps/vue.js.map
