@@ -33,6 +33,7 @@ export default {
         ComputerIcon, PostIcon, UserIcon, IconCommunity
     },
     setup() {
+        const header = useHeader();
         const reports = ref([
             { percent: 133, amount: 1225, name: 'Views', type: 1 },
             { percent: 25, amount: 5, name: 'News ', type: 2 },
@@ -54,8 +55,12 @@ export default {
 
         // call api
         function searchCallApi() {
+            let tokenHeader = {
+                'Authorization': header.value,
+                'Content-Type': 'application/json'
+            };
         axios
-            .get(`${CONFIG.BASE_URL}/api/report/preview`)
+            .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/report/preview`, {headers: tokenHeader})
             .then((response) => {
                 const data = response.data;
                 setData(data);

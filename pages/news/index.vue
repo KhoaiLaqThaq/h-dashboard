@@ -8,29 +8,45 @@
         <form @submit.prevent="searchCallApi()">
           <div class="row">
             <div class="col-md-4">
-              <input
-                type="text"
-                v-model="keyword"
-                class="form-control pr-5"
-                placeholder="Tìm kiếm từ khóa..."
-              />
+              <div class="form-floating mb-3">
+                <input type="text" v-model="keyword"  id="keyword" class="form-control pr-5"/>
+                <label for="keyword">Tìm kiếm từ khóa...</label>
+              </div>
             </div>
             <div class="col-md-4">
-              <input
-                type="text"
-                v-model="departmentName"
-                class="form-control pr-5"
-                placeholder="Tìm kiếm đơn vị thành viên..."
-              />
+              <div class="form-floating mb-3">
+                <input type="text" v-model="departmentName"  id="departmentName" class="form-control pr-5"/>
+                <label for="departmentName">Tìm kiếm đơn vị thành viên...</label>
+              </div>
             </div>
             <div class="col-md-4">
+              <div class="form-floating">
+                <select
+                  v-model="status"
+                  class="form-select"
+                >
+                  <option
+                    v-for="(status, index) in newStatus"
+                    :key="index"
+                    :value="status.value"
+                  >
+                    {{ status.name }}
+                  </option>
+                </select>
+                <label for="floatingSelect">Tìm kiếm theo trạng thái...</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ms-auto">
+             <div class="col-12 text-right">
               <button
                 type="submit"
                 class="btn btn-secondary text-small"
               >
                 Tìm kiếm
               </button>
-            </div>
+             </div>
           </div>
         </form>
       </div>
@@ -82,6 +98,7 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import TableNewsComponent from "~~/components/common/table/TableNewsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
+import { newStatus } from "~~/constants/enum.js";
 
 import CONFIG from "~~/config";
 import axios from "axios";
@@ -100,6 +117,7 @@ export default {
       routerPush: "/news/form",
       title: "Danh sách tin tức",
       btnTitle: "Thêm mới",
+      newStatus: newStatus,
     };
   },
   setup() {
@@ -114,6 +132,7 @@ export default {
     const content = ref([]);
     const keyword = ref('');
     const departmentName = ref('');
+    const status = ref('');
     const sortField = ref('id');
     const sortDirection = ref(true);
 
@@ -145,6 +164,7 @@ export default {
         size: size.value,
         keyword: keyword.value,
         departmentName: departmentName.value,
+        status: status.value,
         sortField: sortField.value,
         sortDirection: sortDirection.value,
       };
@@ -188,6 +208,7 @@ export default {
       sortField,
       sortDirection,
       departmentName,
+      status,
 
       searchCallApi,
       changeSortField

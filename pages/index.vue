@@ -27,6 +27,7 @@ export default {
   },
   setup() {
     const hotNews = ref([]);
+    const header = useHeader();
 
     function addData(data) {
       let item = {
@@ -42,8 +43,12 @@ export default {
 
     // call api
     function searchCallApi() {
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       axios
-        .get(`${CONFIG.BASE_URL}/api/news/hot`)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/hot`, {headers: tokenHeader})
         .then((response) => {
           const data = response.data;
           data.forEach((e) => {

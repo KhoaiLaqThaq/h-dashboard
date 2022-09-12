@@ -309,7 +309,7 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const newsId = ref(route.params.id);
+    const newsId = ref(route.params && route.params.id);
     const newsExist = ref({});
     const titleForm = ref(newsId.value? "Giao diện chỉnh sửa tin tức": "Giao diện thêm mới tin tức");
     const showStatus = ref(newsId.value);
@@ -348,6 +348,7 @@ export default {
 
     // call api getById
     function callApiGetById() {
+      console.log(newsId.value);
       if (newsId.value) {
         console.log("entering callApiGetById()...", newsId.value);
         axios
@@ -379,7 +380,7 @@ export default {
         title.value = data.title;
         type.value = data.type;
         optionType.value = data.type;
-        topic.value = data.topic.id;
+        topic.value = data.topic && data.topic.id;
         createdDate.value = data.createdDate;
         brief.value = data.brief;
         content.value = data.content;
