@@ -142,8 +142,6 @@ export default {
     const sortField = ref("id");
     const sortDirection = ref(true);
 
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
     const headers = [
       { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
@@ -198,8 +196,6 @@ export default {
 
     return {
       headers,
-      itemsSelected,
-      themeColor,
       page,
       size,
       number,
