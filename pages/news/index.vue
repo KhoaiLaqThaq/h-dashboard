@@ -39,14 +39,14 @@
           </div>
 
           <div class="row ms-auto">
-             <div class="col-12 text-right">
+            <div class="col-12 text-right">
               <button
                 type="submit"
                 class="btn btn-secondary text-small"
               >
                 Tìm kiếm
               </button>
-             </div>
+            </div>
           </div>
         </form>
       </div>
@@ -136,9 +136,6 @@ export default {
     const sortField = ref('id');
     const sortDirection = ref(true);
 
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
-
     const headers = [
       { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
@@ -158,7 +155,7 @@ export default {
     }
 
     // call api
-    function nsearchCallApi() {
+    function searchCallApi() {
       let criteria = {
         page: page.value,
         size: size.value,
@@ -193,8 +190,6 @@ export default {
 
     return {
       headers,
-      itemsSelected,
-      themeColor,
       page,
       size,
       number,
