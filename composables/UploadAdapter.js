@@ -38,7 +38,7 @@ export default class UploadAdapter {
     _initRequest() {
         const xhr = this.xhr = new XMLHttpRequest();
 
-        xhr.open( 'POST', `${CONFIG.BASE_URL}/api/image/upload/path`, true );
+        xhr.open( 'POST', `${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/image/upload/path`, true );
     }
 
     // Initializes XMLHttpRequest listeners.

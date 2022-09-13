@@ -135,6 +135,7 @@ export default {
     const status = ref('');
     const sortField = ref('id');
     const sortDirection = ref(true);
+    const header = useHeader();
 
     const headers = [
       { text: "STT", value: "id" },
@@ -166,9 +167,13 @@ export default {
         sortDirection: sortDirection.value,
       };
 
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/api/news/list`, criteria)
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`, criteria, {headers: tokenHeader})
         .then((response) => {
           // console.log(response.data);
           const data = response.data;
