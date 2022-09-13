@@ -23,9 +23,10 @@
         <a
           class="nav-link side-menu cursor-pointer"
           title="Quản lý chung"
-          @click="toggleSubmenu(system)"
+          @click="toggleSubmenu('system')"
           id="system"
           ref="system"
+          :v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_SYSTEM'])"
         >
           <div class="side-menu__icon"><IconTooling /></div>
           <span class="side-menu__title pl-1"> Quản lý hệ thống</span>
@@ -37,6 +38,7 @@
               class="side-menu"
               aria-label="group"
               :class="{ active: routeNameActive == 'group' }"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_GROUP_USER_VIEW'])"
             >
               <div class="side-menu__icon"><IconGroup /></div>
               <span class="side-menu__title pl-1"> Nhóm người dùng</span>
@@ -49,6 +51,7 @@
               aria-label="user"
               :class="{ active: routeNameActive == 'user' }"
               title="Quản lý người dùng"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_USER_VIEW'])"
             >
               <div class="side-menu__icon"><UserIcon /></div>
               <span class="side-menu__title pl-1"> Người dùng</span>
@@ -61,6 +64,7 @@
               aria-label="systemParams"
               :class="{ active: routeNameActive == 'systemParams' }"
               title="Quản lý tham số hệ thống"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_SYS_PARAM_VIEW'])"
             >
               <div class="side-menu__icon"><ComputerIcon /></div>
               <span class="side-menu__title pl-1"> Tham số hệ thống</span>
@@ -73,9 +77,10 @@
         <a
           class="nav-link side-menu cursor-pointer"
           title="Quản lý chung"
-          @click="toggleSubmenu(common)"
+          @click="toggleSubmenu('common')"
           id="common"
           ref="common"
+          v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_COMMON'])"
         >
           <div class="side-menu__icon"><IconCommunity /></div>
           <span class="side-menu__title pl-1"> Quản lý chung</span>
@@ -88,6 +93,7 @@
               aria-label="department"
               :class="{ active: routeNameActive == 'department' }"
               title="Quản lý đơn vị thành viên"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_DEPARTMENT_VIEW'])"
             >
               <div class="side-menu__icon"><IconUnit /></div>
               <span class="side-menu__title pl-1"> Đơn vị thành viên</span>
@@ -101,6 +107,7 @@
               aria-label="topic"
               :class="{ active: routeNameActive == 'topic' }"
               title="Quản lý chủ đề"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_TOPIC_VIEW'])"
             >
               <div class="side-menu__icon"><IconTopic /></div>
               <span class="side-menu__title pl-1"> Chuyên mục</span>
@@ -113,6 +120,7 @@
               aria-label="comment"
               :class="{ active: routeNameActive == 'comment' }"
               title="Quản lý bình luận"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_COMMENT_VIEW'])"
             >
               <div class="side-menu__icon"><IconComment /></div>
               <span class="side-menu__title">Quản lý bình luận</span>
@@ -126,6 +134,7 @@
           class="side-menu"
           :class="{ active: routeNameActive == 'news' }"
           title="Quản lý tin tức"
+          v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_NEWS_VIEW'])"
         >
           <div class="side-menu__icon"><PostIcon /></div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
@@ -152,6 +161,9 @@ import IconTooling from "~~/assets/images/icons/IconTooling.vue";
 import IconComment from "~~/assets/images/icons/IconComment.vue";
 import ComputerIcon from "~~/assets/images/icons/ComputerIcon.vue";
 
+import VueJwtDecode from 'vue-jwt-decode';
+import camelcaseKeys from 'camelcase-keys';
+
 export default {
   components: {
     UserIcon,
@@ -172,9 +184,15 @@ export default {
     const routeNameState = useRouteActive();
     const common = ref(null);
     const system = ref(null);
+    const roles = ref(null);
     // TODO: define submenu
     const routeSubMenu = ref("common, system"); // common, system
+
+    // TODO: to call state global
     const token = useToken();
+    const header = useHeader();
+    const client = useKeycloakClient();
+    const currentRole = useCurrentRole();
 
     const resetRouteNameState = () => {
       routeNameState.value = null;
@@ -184,7 +202,8 @@ export default {
       checkAuthentication();
     };
     const toggleSubmenu = (e) => {
-      document.getElementById(e.id).nextElementSibling.classList.toggle("show");
+      console.log("selector: ", e);
+      document.getElementById(e).nextElementSibling.classList.toggle("show");
     };
 
     function setRouteNameActive(to) {
@@ -226,20 +245,44 @@ export default {
     }
 
     // check token
-    function checkAuthentication() {
+    function checkAuthentication(toRoute) {
       let jwtTokenStorage = localStorage.getItem("token");
-      let expired = localStorage.getItem("expired");
-      let diffTime = Math.abs(new Date() - expired);
-      // Mock expired 30'
-      let expiredDiff = 30*60*1000;
+      let expired = localStorage.getItem("exp");
+      let time = localStorage.getItem("time");
 
-      if (expired && diffTime < expiredDiff && jwtTokenStorage) {
-        if (!token.value) {
-          token.value = jwtTokenStorage;
+      // TODO: Tính toán thời gian request hết hạn chưa.
+      if (time && expired) {
+        let diffTime = Math.abs(new Date().getTime() - time);
+        if (diffTime < (expired * 1000)) {
+          if (jwtTokenStorage && !token.value) {
+            token.value = jwtTokenStorage;
+          }
+          // check header global state
+          if (!header.value) header.value = `Bearer ${jwtTokenStorage}`;
+          // set role current to check sidebar;
+          let decode = VueJwtDecode.decode(jwtTokenStorage);
+          let tokenKeys = camelCaseTokenKeys(decode);
+          setStateAfterDecodeToken(tokenKeys)
         }
-      }
-      else {
+      } else {
+        console.log("----------reset state with logout");
         resetStateBeforeLogout();
+      }
+    }
+    
+    function setStateAfterDecodeToken(jwtTokenKeys) {
+      // set current Role
+      if (jwtTokenKeys) {
+        // set lại client
+        // console.log('keycloak client: ', jwtTokenKeys.azp);
+        if (localStorage.getItem('kclient') && !client.value) {
+          client.value = jwtTokenKeys.azp;
+        }
+
+        if (!currentRole.value) {
+          currentRole.value = jwtTokenKeys.resourceAccess[client.value].roles;
+        }
+        roles.value = currentRole.value;
       }
     }
 
@@ -249,16 +292,38 @@ export default {
       navigateTo("/");
     }
 
+    // TODO: Kiem tra quyen chuc nang show/hide sidebar
+    function checkSidebarAuthority(roleItems) {
+      let roleCurrents = roles.value && currentRole.value;
+      if (!roleCurrents) roleCurrents = getRolesAfterDecode();
+
+      if (roleCurrents && roleItems) {
+        for (let i = 0; i < roleItems.length; i++) {
+          if (roleCurrents.includes(roleItems[i])) 
+            return true;
+        }
+        return false;
+      }
+    }
+
+    const getRolesAfterDecode = () => {
+      let decodeToken = VueJwtDecode.decode(localStorage.getItem("token"));
+      return decodeToken.resource_access[client.value].roles;
+    }
+    const camelCaseTokenKeys = (decode) => camelcaseKeys(decode);
+
     return {
       routeNameActive,
       common,
       system,
+      roles,
 
       toggleSubmenu,
       resetRouteNameState,
       setRouteNameActive,
       onLoadRouteNameCurrent,
-      checkAuthentication
+      checkAuthentication,
+      checkSidebarAuthority
     };
   },
   watch: {
@@ -267,7 +332,7 @@ export default {
       handler(to, from) {
         this.resetRouteNameState();
         this.setRouteNameActive(to.name);
-        this.checkAuthentication();
+        this.checkAuthentication(to);
       },
     },
   },
