@@ -100,23 +100,26 @@ export default {
     }
 
     function saveInforLogin(responseData) {
-      let accessToken = responseData.data?.access_token;
+      let accessToken = responseData.data;
       let decode = VueJwtDecode.decode(accessToken);
       
       if (decode) {
         console.log('====> Decode jwt: ' + decode);
-        let roles = decode.resource_access[decode.azp].roles;
+        let k6kClient = decode.azp;
+        let roles = decode.resource_access[k6kClient].roles;
+        let expiresIn = decode.exp - decode.iat;
         console.log('roles: ', roles);
+        console.log('expiresIn: ', expiresIn);
         
         // set global state
-        client.value = decode.azp;
+        client.value = k6kClient;
         token.value = accessToken;
-        header.value = `Bearer ${accessToken}`;
+        header.value = `Bearer ${responseData}`;
         currentRole.value = roles;
         // set localStorage
-        localStorage.setItem("kclient", decode.azp);
+        localStorage.setItem("kclient", k6kClient);
         localStorage.setItem("token", accessToken);
-        localStorage.setItem("exp", responseData.data?.expires_in);
+        localStorage.setItem("exp", expiresIn);
         localStorage.setItem("time", new Date().getTime());
       }
     }
