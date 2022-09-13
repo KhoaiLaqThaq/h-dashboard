@@ -346,13 +346,18 @@ export default {
     const tagsOption = ref(false);
     let listTagsForSelect = ref([]);
 
+    const header = useHeader();
     // call api getById
     function callApiGetById() {
       console.log(newsId.value);
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       if (newsId.value) {
         console.log("entering callApiGetById()...", newsId.value);
         axios
-          .get(`${CONFIG.BASE_URL}/api/news/${newsId.value}`)
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/${newsId.value}`, {headers: tokenHeader})
           .then((response) => {
             if (response) {
               newsExist.value = response.data;
@@ -364,8 +369,12 @@ export default {
 
     function callApiGetAllTags() {
       console.log("entering callApiGetAllTags...");
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       axios
-        .get(`${CONFIG.BASE_URL}/api/tags`)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/tags`, {headers: tokenHeader})
         .then((response) => {
           if (response.data) {
             listTags.value = response.data;
@@ -461,7 +470,11 @@ export default {
 
     // TODO: call API get lisTopics
     function getListTopic() {
-      axios.get(`${CONFIG.BASE_URL}/api/topics`)
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, {headers: tokenHeader})
         .then((response) => {
           const data = response.data;
           topics.value = data;
@@ -474,8 +487,12 @@ export default {
 
     // TODO: call API get listDepartments
     function getListDepartments() {
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       axios
-        .get(`${CONFIG.BASE_URL}/api/departments`)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, {headers: tokenHeader})
         .then((response) => {
           const data = response.data;
           if (data) {
@@ -524,7 +541,10 @@ export default {
         createdDateString: newsId.value ? createdDateString.value : null,
         departmentCodes: departmentCodes,
       };
-      const headers = { "Content-Type": "multipart/form-data" };
+      let headers = { 
+        'Authorization': header.value,
+        "Content-Type": "multipart/form-data" 
+      };
       axios.post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
         .then((res) => {
           let responseData = res.data;
@@ -546,8 +566,12 @@ export default {
     }
 
     function getObjectFileFromUrl(url) {
-      const config = { responseType: "blob" };
-      axios.get(`${CONFIG.BASE_URL}/api/topics`, config)
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json',
+        //responseType: "blob"
+      };
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, {headers: tokenHeader})
         .then((response) => {
           const file = new File([response.data], "");
           avatar.value = file;

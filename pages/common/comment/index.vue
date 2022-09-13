@@ -135,6 +135,8 @@ export default {
       { text: "Trạng thái", value: "status" },
     ];
 
+    const header = useHeader();
+
     function setPagination(comment) {
       content.value = comment.content;
       page.value = comment.page;
@@ -154,10 +156,13 @@ export default {
         createdBy: createdBy.value,
         content: commentContent.value,
       };
-
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/api/comments`, criteria)
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments`, criteria, {headers: tokenHeader})
         .then((response) => {
           console.log(response.data);
           const data = response.data;

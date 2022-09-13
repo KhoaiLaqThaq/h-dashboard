@@ -50,6 +50,7 @@ export default {
     const size = ref(10);
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
+    const header = useHeader();
 
     function setPagination(data) {
       topics.value = data;
@@ -60,17 +61,20 @@ export default {
         page: page.value,
         size: size.value,
       };
-
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       // TODO: Call api
       axios
-        .get(`${CONFIG.BASE_URL}/api/topics`, criteria)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, {headers: tokenHeader})
         .then((response) => {
           //   console.log(response.data);
           const data = response.data;
           setPagination(data);
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e);
         });
     }
 

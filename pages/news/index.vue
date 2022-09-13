@@ -9,22 +9,31 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-floating mb-3">
-                <input type="text" v-model="keyword"  id="keyword" class="form-control pr-5"/>
+                <input
+                  type="text"
+                  v-model="keyword"
+                  id="keyword"
+                  class="form-control pr-5"
+                />
                 <label for="keyword">Tìm kiếm từ khóa...</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating mb-3">
-                <input type="text" v-model="departmentName"  id="departmentName" class="form-control pr-5"/>
-                <label for="departmentName">Tìm kiếm đơn vị thành viên...</label>
+                <input
+                  type="text"
+                  v-model="departmentName"
+                  id="departmentName"
+                  class="form-control pr-5"
+                />
+                <label for="departmentName"
+                  >Tìm kiếm đơn vị thành viên...</label
+                >
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating">
-                <select
-                  v-model="status"
-                  class="form-select"
-                >
+                <select v-model="status" class="form-select">
                   <option
                     v-for="(status, index) in newStatus"
                     :key="index"
@@ -40,10 +49,7 @@
 
           <div class="row ms-auto">
             <div class="col-12 text-right">
-              <button
-                type="submit"
-                class="btn btn-secondary text-small"
-              >
+              <button type="submit" class="btn btn-secondary text-small">
                 Tìm kiếm
               </button>
             </div>
@@ -130,12 +136,12 @@ export default {
     const first = ref(false);
     const last = ref(false);
     const content = ref([]);
-    const keyword = ref('');
-    const departmentName = ref('');
-    const status = ref('');
-    const sortField = ref('id');
+    const keyword = ref("");
+    const departmentName = ref("");
+    const status = ref("");
+    const sortField = ref("id");
     const sortDirection = ref(true);
-
+    const header = useHeader();
     const headers = [
       { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
@@ -165,10 +171,18 @@ export default {
         sortField: sortField.value,
         sortDirection: sortDirection.value,
       };
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json',
+      };
 
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/api/news/list`, criteria)
+        .post(
+          `${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`,
+          criteria,
+          { headers: tokenHeader }
+        )
         .then((response) => {
           // console.log(response.data);
           const data = response.data;
