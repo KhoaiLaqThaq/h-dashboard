@@ -125,11 +125,11 @@ export default {
       currentUser,
       errorMessage,
 
-      login
-    }
+      login,
+    };
   },
-  mounted(){
-    this.tokenState = '';
-  }
+  mounted() {
+    this.tokenState = "";
+  },
 };
 </script>

@@ -39,14 +39,14 @@
           </div>
 
           <div class="row ms-auto">
-             <div class="col-12 text-right">
+            <div class="col-12 text-right">
               <button
                 type="submit"
                 class="btn btn-secondary text-small"
               >
                 Tìm kiếm
               </button>
-             </div>
+            </div>
           </div>
         </form>
       </div>
@@ -136,9 +136,6 @@ export default {
     const sortField = ref('id');
     const sortDirection = ref(true);
 
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
-
     const headers = [
       { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
@@ -183,9 +180,9 @@ export default {
     }
 
     const changeSortField = (fieldValue) => {
-      console.log('change sort field', fieldValue);
+      console.log("change sort field", fieldValue);
       sortField.value = fieldValue;
-    }
+    };
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
@@ -193,8 +190,6 @@ export default {
 
     return {
       headers,
-      itemsSelected,
-      themeColor,
       page,
       size,
       number,
@@ -211,7 +206,7 @@ export default {
       status,
 
       searchCallApi,
-      changeSortField
+      changeSortField,
     };
   },
   created() {
@@ -223,7 +218,7 @@ export default {
 <style lang="scss">
 .input-suggest__event {
   position: relative;
-  
+
   .btn-suggest {
     position: absolute;
     top: 0.25rem;
@@ -232,10 +227,8 @@ export default {
     padding: 2px 4px;
     border-radius: 4px;
     background-color: rgb(168, 167, 167);
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: bold;
   }
-
 }
-
 </style>
