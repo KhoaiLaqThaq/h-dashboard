@@ -274,7 +274,6 @@ export default {
       // set current Role
       if (jwtTokenKeys) {
         // set lại client
-        // console.log('keycloak client: ', jwtTokenKeys.azp);
         if (localStorage.getItem('kclient') && !client.value) {
           client.value = jwtTokenKeys.azp;
         }
