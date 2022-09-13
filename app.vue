@@ -70,7 +70,6 @@ export default {
       // set current Role
       if (jwtTokenKeys) {
         // set lại client
-        console.log('keycloak client: ', jwtTokenKeys.azp);
         if (localStorage.getItem('kclient') && !client.value) {
           client.value = jwtTokenKeys.azp;
         }
@@ -78,7 +77,6 @@ export default {
         if (!currentRole.value) {
           currentRole.value = jwtTokenKeys.resource_access[client.value].roles;
         }
-        console.log(currentRole.value);
       }
     }
 
