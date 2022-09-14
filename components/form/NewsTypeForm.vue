@@ -1,13 +1,32 @@
 <template>
   <Form @submit="onSubmit()">
     <div class="row mt-3">
+      
+      <div class="col-4">
+        <!-- title -->
+        <div class="form-floating mb-3">
+          <Field
+            type="text"
+            class="form-control box"
+            v-model="newsType.code"
+            name="code"
+            :rules="validateName"
+          />
+
+          <div class="mt-1 p-1">
+            <ErrorMessage name="code" class="text-danger" />
+          </div>
+
+          <label for="">Mã loại tin tức <span class="text-danger">*</span></label>
+        </div>
+      </div>
       <div class="col-8">
         <!-- title -->
         <div class="form-floating mb-3">
           <Field
             type="text"
             class="form-control box"
-            v-model="name"
+            v-model="newsType.name"
             name="name"
             :rules="validateName"
           />
@@ -18,6 +37,10 @@
 
           <label for="">Tên loại tin tức <span class="text-danger">*</span></label>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 ms-auto">
         <BaseButton
           class="btn-primary ms-auto"
           :btnType="'submit'"
@@ -29,9 +52,9 @@
   </Form>
 </template>
 <script>
-import { ref } from "vue";
-import TitleHeader from "./common/TitleHeader.vue";
-import BaseButton from "./common/BaseButton.vue";
+import { ref, reactive } from "vue";
+import TitleHeader from "~~/components/common/TitleHeader.vue";
+import BaseButton from "~~/components/common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRoute } from "vue-router";
 
@@ -47,19 +70,26 @@ export default {
   },
   setup(props) {
     const route = useRoute();
-    const name = ref("");
+    const newsType = reactive({
+      code: "",
+      name: ""
+    });
+    
     const typeId = ref(route.params.id);
     const typeExist = ref({});
     let success = false;
-  const header = useHeader();
+    const header = useHeader();
+
+    let tokenHeader = {
+          'Authorization': header.value,
+          'Content-Type': 'application/json'
+        };
+
     // call api getById
     function callApiGetById() {
       if (typeId.value) {
         console.log("entering callApiGetById()...", typeId.value);
-        let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
+        
         axios
           .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType/${typeId.value}`, {headers: tokenHeader})
           .then((response) => {
@@ -73,7 +103,8 @@ export default {
 
     watch(typeExist, () => {
       if (typeExist.value) {
-        name.value = typeExist.value.name;
+        newsType.code = typeExist.value.code;
+        newsType.name = typeExist.value.name;
       }
     });
 
@@ -95,14 +126,11 @@ export default {
     function onSubmit() {
       const type = {
         id: typeId.value,
-        name: name.value,
-      };
-      const headers = { 
-        'Authorization': header.value, 
-        "Content-Type": "application/json" 
+        code: newsType.code,
+        name: newsType.name,
       };
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType`, type, { headers })
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType`, type, { headers: tokenHeader })
         .then((res) => {
           console.log(res.data);
           let responseData = res.data;
@@ -115,7 +143,7 @@ export default {
         });
     }
     return {
-      name,
+      newsType,
       onSubmit,
       validateName,
       success,

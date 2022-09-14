@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import DepartmentForm from "~~/components/GroupForm.vue";
+import DepartmentForm from "~~/components/form/GroupForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {

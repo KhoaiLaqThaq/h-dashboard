@@ -13,7 +13,7 @@
         :headers="tableHeader"
         :items="newsTypes"
         :actionEdit="true"
-        :actionDelete="true"
+        :actionDelete="false"
       />
     </div>
   </div>
@@ -39,17 +39,13 @@ export default {
   setup() {
     const tableHeader = [
       { text: "STT", value: "no" },
+      { text: "Mã", value: "code" },
       { text: "Tên loại tin tức", value: "name" },
     ];
 
     const newsTypes = ref([]);
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
     const header = useHeader();
 
-    function setPagination(data) {
-      newsTypes.value = data;
-    }
     // call api
     function searchCallApi() {
       let tokenHeader = {
@@ -62,7 +58,7 @@ export default {
         .then((response) => {
           //   console.log(response.data);
           const data = response.data;
-          setPagination(data);
+          newsTypes.value = data;
         })
         .catch((e) => {
           console.log(e);
@@ -72,14 +68,12 @@ export default {
     return {
       tableHeader,
       newsTypes,
-      itemsSelected,
-      themeColor,
 
       searchCallApi,
     };
   },
   created() {
-    //this.searchCallApi();
+    this.searchCallApi();
   },
 };
 </script>

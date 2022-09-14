@@ -59,8 +59,8 @@ import { ref, reactive } from "vue";
 import { useRoute } from 'vue-router';
 import { Form, Field, ErrorMessage } from "vee-validate";
 
-import TitleHeader from "./common/TitleHeader.vue";
-import BaseButton from "./common/BaseButton.vue";
+import TitleHeader from "~~/components/common/TitleHeader.vue";
+import BaseButton from "~~/components/common/BaseButton.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
 
 import axios from "axios";

@@ -10,10 +10,11 @@
     </div>
     <div class="tr" v-for="(item, index) in items" :key="index">
       <div class="td">{{ index + 1 }}</div>
+      <div class="td">{{ item.code }}</div>
       <div class="td">{{ item.name }}</div>
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="d-flex">
-          <div class="ms-auto cursor-pointer" v-if="actionEdit">
+          <div class="cursor-pointer" :class="actionDelete ? 'ms-auto':'m-auto'" v-if="actionEdit">
             <NuxtLink :to="'/common/newsType/form/' + item.id" class="d-flex">
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>

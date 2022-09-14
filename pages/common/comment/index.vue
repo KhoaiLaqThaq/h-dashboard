@@ -164,7 +164,6 @@ export default {
       axios
         .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments`, criteria, {headers: tokenHeader})
         .then((response) => {
-          console.log(response.data);
           const data = response.data;
           setPagination(data);
         })

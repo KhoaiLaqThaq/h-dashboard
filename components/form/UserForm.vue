@@ -99,7 +99,7 @@ import FormCheck from "~~/components/common/FormCheck.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
-import MultiCheckboxVue from "./common/MultiCheckbox.vue";
+import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
 // icons

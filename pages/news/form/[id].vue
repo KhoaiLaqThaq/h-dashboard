@@ -2,7 +2,7 @@
     <NewsForm class="mt-3" />
 </template>
 <script>
-import NewsForm from '~~/components/NewsForm.vue';
+import NewsForm from '~~/components/form/NewsForm.vue';
 
 export default {
     components() {

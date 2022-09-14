@@ -75,11 +75,11 @@ import ArrowLeftIcon from "~~/assets/images/icons/ArrowLeftIcon.vue";
 import NewsRelated from "~~/components/NewsRelated.vue";
 
 // icon
-import HeartIcon from "../assets/images/icons/HeartIcon.vue";
+import HeartIcon from "~~/assets/images/icons/HeartIcon.vue";
 import moment from "moment";
-import SquareIcon from "../assets/images/icons/SquareIcon.vue";
-import BackIcon from "../assets/images/icons/BackIcon.vue";
-import CircleIcon from "../assets/images/icons/CircleIcon.vue";
+import SquareIcon from "~~/assets/images/icons/SquareIcon.vue";
+import BackIcon from "~~/assets/images/icons/BackIcon.vue";
+import CircleIcon from "~~/assets/images/icons/CircleIcon.vue";
 import Comment1 from "./Comment.vue";
 
 export default {

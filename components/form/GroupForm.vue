@@ -46,11 +46,7 @@ import FormCheck from "~~/components/common/FormCheck.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
-import MultiCheckboxVue from "./common/MultiCheckbox.vue";
-// functions
-import { getNowDate } from "~~/constants/format-date.js";
-// icons
-import XIcon from "~~/assets/images/icons/XIcon.vue";
+import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
@@ -65,7 +61,6 @@ export default {
     FormCheck,
     UseDropZone,
     DatepickerLite,
-    XIcon,
     MultiCheckboxVue,
   },
   props: ["user"],

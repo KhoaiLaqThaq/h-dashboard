@@ -30,8 +30,8 @@
 </template>
 <script>
 import { ref } from "vue";
-import TitleHeader from "./common/TitleHeader.vue";
-import BaseButton from "./common/BaseButton.vue";
+import TitleHeader from "~~/components/common/TitleHeader.vue";
+import BaseButton from "~~/components/common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRoute } from "vue-router";
 
