@@ -82,7 +82,6 @@ export default {
         axios
         .post(`${CONFIG.BASE_URL}/user/auth/login`, data)
         .then((response) => {
-          console.log("response login: " + response);
           let responseData = response.data;
           if (responseData && responseData.code === 200) {
             saveInforLogin(responseData);
@@ -104,17 +103,14 @@ export default {
       let decode = VueJwtDecode.decode(accessToken);
       
       if (decode) {
-        console.log('====> Decode jwt: ' + decode);
         let k6kClient = decode.azp;
         let roles = decode.resource_access[k6kClient].roles;
         let expiresIn = decode.exp - decode.iat;
-        console.log('roles: ', roles);
-        console.log('expiresIn: ', expiresIn);
         
         // set global state
         client.value = k6kClient;
         token.value = accessToken;
-        header.value = `Bearer ${responseData}`;
+        header.value = `Bearer ${accessToken}`;
         currentRole.value = roles;
         // set localStorage
         localStorage.setItem("kclient", k6kClient);

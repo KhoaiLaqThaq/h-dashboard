@@ -176,13 +176,13 @@ export default {
         'Content-Type': 'application/json',
       };
 
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       // TODO: Call api
       axios
-        .post(
-          `${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`,
-          criteria,
-          { headers: tokenHeader }
-        )
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`, criteria, {headers: tokenHeader})
         .then((response) => {
           // console.log(response.data);
           const data = response.data;

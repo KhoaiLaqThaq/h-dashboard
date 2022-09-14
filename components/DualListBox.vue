@@ -128,9 +128,6 @@ export default {
     destination: Array,
     label: String,
   },
-  mounted: function () {
-    console.log(this);
-  },
   data() {
     return {
       searchSource: "",
