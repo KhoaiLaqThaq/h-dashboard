@@ -9,36 +9,20 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  v-model="keyword"
-                  id="keyword"
-                  class="form-control pr-5"
-                />
+                <input type="text" v-model="keyword" id="keyword" class="form-control pr-5" />
                 <label for="keyword">Tìm kiếm từ khóa...</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  v-model="departmentName"
-                  id="departmentName"
-                  class="form-control pr-5"
-                />
-                <label for="departmentName"
-                  >Tìm kiếm đơn vị thành viên...</label
-                >
+                <input type="text" v-model="departmentName" id="departmentName" class="form-control pr-5" />
+                <label for="departmentName">Tìm kiếm đơn vị thành viên...</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating">
                 <select v-model="status" class="form-select">
-                  <option
-                    v-for="(status, index) in newStatus"
-                    :key="index"
-                    :value="status.value"
-                  >
+                  <option v-for="(status, index) in newStatus" :key="index" :value="status.value">
                     {{ status.name }}
                   </option>
                 </select>
@@ -61,39 +45,17 @@
     <div class="content-news">
       <div class="d-flex">
         <TitleHeader :title="title" />
-        <AddButton
-          :textSize="'text-small'"
-          :title="btnTitle"
-          :routerPush="routerPush"
-          class="ms-auto"
-        />
+        <AddButton v-if="useCurrentsRole(currentRole,['ROLE_NEWS_CREATE'])" :textSize="'text-small'" :title="btnTitle"
+          :routerPush="routerPush" class="ms-auto" />
       </div>
       <div class="table-content mt-3 radius-20">
-        <table-news-component
-          :headers="headers"
-          :items="content"
-          :actionEdit="true"
-          :actionDelete="false"
-          :page="page"
-          :size="size"
-          :sortField="sortField"
-          :sortDirection="sortDirection"
-          @change-sort-direction="sortDirection = $event"
-          @change-sort-field="changeSortField($event)"
-        />
+        <table-news-component :headers="headers" :items="content" :actionEdit="true" :actionDelete="false" :page="page"
+          :size="size" :sortField="sortField" :sortDirection="sortDirection"
+          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)" />
 
-        <pagination
-          :page="page"
-          :size="size"
-          :number="number"
-          :numberOfElements="numberOfElements"
-          :totalElements="totalElements"
-          :totalPages="totalPages"
-          :first="first"
-          :last="last"
-          @change-page="page = $event"
-          @change-size="size = $event"
-        />
+        <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
+          :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last"
+          @change-page="page = $event" @change-size="size = $event" />
       </div>
     </div>
   </div>
@@ -105,6 +67,7 @@ import AddButton from "~~/components/common/AddButton.vue";
 import TableNewsComponent from "~~/components/common/table/TableNewsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 import { newStatus } from "~~/constants/enum.js";
+import { useCurrentsRole } from "~~/services/common.js"
 
 import CONFIG from "~~/config";
 import axios from "axios";
@@ -141,6 +104,7 @@ export default {
     const status = ref("");
     const sortField = ref("id");
     const sortDirection = ref(true);
+    const currentRole = useCurrentRole();
 
     const headers = [
       { text: "STT", value: "id" },
@@ -210,9 +174,11 @@ export default {
       sortDirection,
       departmentName,
       status,
+      currentRole,
 
       searchCallApi,
       changeSortField,
+      useCurrentsRole,
     };
   },
   created() {

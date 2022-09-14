@@ -3,14 +3,21 @@
         <div class="report-box zoom-in" v-for="(item, index) in reports" :key="index">
             <div class="box p-3">
                 <div class="d-flex">
-                    <template v-if="item.type === 1"><ComputerIcon /></template>
-                    <template v-if="item.type === 2"><PostIcon /></template>
-                    <template v-if="item.type === 3"><UserIcon /></template>
-                    <template v-if="item.type === 4"><IconCommunity /></template>
+                    <template v-if="item.type === 1">
+                        <ComputerIcon />
+                    </template>
+                    <template v-if="item.type === 2">
+                        <PostIcon />
+                    </template>
+                    <template v-if="item.type === 3">
+                        <UserIcon />
+                    </template>
+                    <template v-if="item.type === 4">
+                        <IconCommunity />
+                    </template>
                     <div class="ms-auto">
                         <div class="report-box__indicator cursor-pointer"
-                            :class="item.percent > 0 ? 'bgc-success':'bgc-danger'"
-                        >{{Math.abs(item.percent) + '%'}}
+                            :class="item.percent > 0 ? 'bgc-success':'bgc-danger'">{{Math.abs(item.percent) + '%'}}
                         </div>
                     </div>
                 </div>
@@ -41,12 +48,12 @@ export default {
             { percent: '30', amount: 42, name: 'Events', type: 4 }
         ]);
 
-        function setData(reportData){
-            reports.value.forEach(function(item){
-                if(item.type == 1){
+        function setData(reportData) {
+            reports.value.forEach(function (item) {
+                if (item.type == 1) {
                     item.amount = reportData.viewTotal;
                     item.percent = reportData.viewPercent;
-                } else if(item.type == 2){
+                } else if (item.type == 2) {
                     item.amount = reportData.newsTotal;
                     item.percent = reportData.newsPercent;
                 }
@@ -59,15 +66,15 @@ export default {
                 'Authorization': header.value,
                 'Content-Type': 'application/json'
             };
-        axios
-            .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/report/preview`, {headers: tokenHeader})
-            .then((response) => {
-                const data = response.data;
-                setData(data);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+            axios
+                .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/report/preview`, { headers: tokenHeader })
+                .then((response) => {
+                    const data = response.data;
+                    setData(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
         }
 
         return {
