@@ -50,7 +50,7 @@
             class="form-control box auto-scroll-y"
             id="floatingTextarea2"
             style="min-height: 100px"
-            :rules="validateField"
+            
           />
 
           <label for="">Mô tả</label>
@@ -108,8 +108,12 @@ export default {
     // TODO: Call api to get a systemParamId have id
     const getSystemParamById = () => {
       if (systemParamId.value) {
+        let tokenHeader = {
+          'Authorization': header.value,
+          'Content-Type': 'application/json'
+        };
         axios
-          .get(`${CONFIG.BASE_URL}/api/systemParameter/${systemParamId.value}`)
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/systemParameter/${systemParamId.value}`, {headers: tokenHeader})
           .then((response) => {
             let responseData = response.data;
             systemParam.paramName = responseData.paramName;
@@ -130,9 +134,12 @@ export default {
         paramValue: systemParam.paramValue,
         description: systemParam.description,
       };
-
+      const headers = { 
+        'Authorization': header.value, 
+        "Content-Type": "application/json" 
+      };
       axios
-        .post(`${CONFIG.BASE_URL}/api/systemParameter`, data)
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/systemParameter`, data, { headers })
         .then((response) => {
           console.log("responseData: ", response.data);
           let responseData = response.data;

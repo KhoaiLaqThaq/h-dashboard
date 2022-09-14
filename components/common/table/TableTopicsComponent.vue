@@ -44,9 +44,13 @@ export default {
   },
   props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
   setup() {
-
+    const header = useHeader();
     function deleteTopic(topicId) {
-      axios.delete(`${CONFIG.BASE_URL}/api/topic/${topicId}`)
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
+      axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic/${topicId}`, {headers: tokenHeader})
         .then(response => {
           let data = response.data;
           console.log(data);

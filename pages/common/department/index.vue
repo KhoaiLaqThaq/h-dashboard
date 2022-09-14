@@ -47,13 +47,18 @@ export default {
       { text: "Tên đơn vị thành viên", value: "name" },
     ];
     const departments = ref([]);
-
+    const header = useHeader();
     // call api
     function searchCallApi() {
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       axios
-        .get(`${CONFIG.BASE_URL}/api/departments`)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, {headers: tokenHeader})
         .then((response) => {
           const data = response.data;
+          console.log(response);
           departments.value = data;
         })
         .catch((e) => {

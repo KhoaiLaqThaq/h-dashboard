@@ -51,13 +51,17 @@ export default {
     const topicId = ref(route.params.id);
     const topicExist = ref({});
     let success = false;
-
+  const header = useHeader();
     // call api getById
     function callApiGetById() {
       if (topicId.value) {
         console.log("entering callApiGetById()...", topicId.value);
+        let tokenHeader = {
+          'Authorization': header.value,
+          'Content-Type': 'application/json'
+        };
         axios
-          .get(`${CONFIG.BASE_URL}/api/topic/${topicId.value}`)
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic/${topicId.value}`, {headers: tokenHeader})
           .then((response) => {
             if (response) {
               topicExist.value = response.data;
@@ -93,9 +97,12 @@ export default {
         id: topicId.value,
         name: name.value,
       };
-      const headers = { "Content-Type": "application/json" };
+      const headers = { 
+        'Authorization': header.value, 
+        "Content-Type": "application/json" 
+      };
       axios
-        .post(`${CONFIG.BASE_URL}/api/topic`, topic, { headers })
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic`, topic, { headers })
         .then((res) => {
           console.log(res.data);
           let responseData = res.data;

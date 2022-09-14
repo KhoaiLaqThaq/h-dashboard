@@ -91,7 +91,11 @@ export default {
     // TODO: Call api to get a department have id
     const getDepartmentById = () => {
       if (departmentId.value) {
-        axios.get(`${CONFIG.BASE_URL}/api/department/${departmentId.value}`)
+        let tokenHeader = {
+          'Authorization': header.value,
+          'Content-Type': 'application/json'
+        };
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/department/${departmentId.value}`, {headers: tokenHeader})
         .then((response) => {
           let responseData = response.data;
           department.code = responseData.code;
@@ -123,8 +127,11 @@ export default {
         };
       }
       
-      const headers = { "Content-Type": "multipart/form-data" };
-      axios.post(`${CONFIG.BASE_URL}/api/department`, data, { headers })
+      const headers = { 
+        'Authorization': header.value, 
+        "Content-Type": "multipart/form-data" 
+      };
+      axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/department`, data, { headers })
       .then(response => {
         console.log('responseData: ', response.data);
         let responseData = response.data;

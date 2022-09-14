@@ -542,7 +542,7 @@ export default {
         "Authorization": header.value,
         "Content-Type": "multipart/form-data" 
       };
-      axios.post(`${CONFIG.BASE_URL}/api/news`, news, { headers: tokenHeaders})
+      axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news`, news, { headers: tokenHeaders})
         .then((res) => {
           let responseData = res.data;
           alert(responseData.code + " " + responseData.message);
