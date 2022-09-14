@@ -2,22 +2,13 @@
   <div class="mt-3">
     <div class="d-flex mb-3">
       <TitleHeader :title="titleForm" />
-      <AddButton
-        class="ms-auto"
-        :textSize="'text-small'"
-        :title="btnTitle"
-        :routerPush="routerPush"
-      />
+      <AddButton v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_DEPARTMENT_CREATE])" class="ms-auto"
+        :textSize="'text-small'" :title="btnTitle" :routerPush="routerPush" />
     </div>
 
     <div class="col-12 table-content">
-      <TableDepartmentComponent
-        :headers="tableHeader"
-        :items="departments"
-        :actionEdit="true"
-        :actionDelete="false"
-        :routerPush="routerPush"
-      />
+      <TableDepartmentComponent :headers="tableHeader" :items="departments" :actionEdit="true" :actionDelete="false"
+        :routerPush="routerPush" />
     </div>
   </div>
 </template>
@@ -27,8 +18,10 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import TableDepartmentComponent from "~~/components/common/table/TableDepartmentComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
+import { useCurrentsRole } from "~~/services/common.js"
 
 import CONFIG from "~~/config";
+import { ROLES } from "~~/constants/roles.js";
 import axios from "axios";
 
 export default {
@@ -48,6 +41,7 @@ export default {
     ];
     const departments = ref([]);
     const header = useHeader();
+    const currentRole = useCurrentUser();
     // call api
     function searchCallApi() {
       let tokenHeader = {
@@ -55,7 +49,7 @@ export default {
         'Content-Type': 'application/json'
       };
       axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, {headers: tokenHeader})
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers: tokenHeader })
         .then((response) => {
           const data = response.data;
           console.log(response);
@@ -69,7 +63,11 @@ export default {
     return {
       tableHeader,
       departments,
+      currentRole,
+      ROLES,
+
       searchCallApi,
+      useCurrentsRole,
     };
   },
   mounted() {

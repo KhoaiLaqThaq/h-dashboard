@@ -10,37 +10,18 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-4">
-            <input
-              type="text"
-              v-model="newsTitle"
-              class="form-control pr-5"
-              placeholder="Bài viết"
-            />
+            <input type="text" v-model="newsTitle" class="form-control pr-5" placeholder="Bài viết" />
           </div>
           <div class="col-md-4">
-            <input
-              type="text"
-              v-model="commentContent"
-              class="form-control pr-5"
-              placeholder="Nội dung"
-            />
+            <input type="text" v-model="commentContent" class="form-control pr-5" placeholder="Nội dung" />
           </div>
           <div class="col-md-4">
-            <input
-              type="text"
-              v-model="createdBy"
-              class="form-control pr-5"
-              placeholder="Người tạo"
-            />
+            <input type="text" v-model="createdBy" class="form-control pr-5" placeholder="Người tạo" />
           </div>
         </div>
         <div class="row text-right">
           <div class="col-md-12">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="searchCallApi()"
-            >
+            <button type="button" class="btn btn-secondary" @click="searchCallApi()">
               Tìm kiếm
             </button>
           </div>
@@ -49,39 +30,18 @@
     </div>
 
     <div class="d-flex mb-3">
-      <button
-        type="button"
-        class="btn btn-primary shadow-md"
-        @click="$refs.myChild.changeMultiStatus()"
-        style="margin-top: 1%"
-      >
+      <button v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_COMMENT_APPROVE])" type="button"
+        class="btn btn-primary shadow-md" @click="$refs.myChild.changeMultiStatus()" style="margin-top: 1%">
         <span class="mx-2" :class="textSize">Phê duyệt nhiều bình luận</span>
       </button>
     </div>
     <div class="table-content mt-3 radius-20">
-      <table-comment-component
-        ref="myChild"
-        :headers="headers"
-        :items="content"
-        :actionEdit="true"
-        :actionDelete="false"
-        :page="page"
-        :size="size"
-        :reCallApi="searchCallApi"
-      />
+      <table-comment-component ref="myChild" :headers="headers" :items="content" :actionEdit="true"
+        :actionDelete="false" :page="page" :size="size" :reCallApi="searchCallApi" />
 
-      <pagination
-        :page="page"
-        :size="size"
-        :number="number"
-        :numberOfElements="numberOfElements"
-        :totalElements="totalElements"
-        :totalPages="totalPages"
-        :first="first"
-        :last="last"
-        @change-page="page = $event"
-        @change-size="size = $event"
-      />
+      <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
+        :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last" @change-page="page = $event"
+        @change-size="size = $event" />
     </div>
   </div>
 </template>
@@ -93,7 +53,9 @@ import AddButton from "~~/components/common/AddButton.vue";
 import TableCommentComponent from "~~/components/common/table/TableCommentComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
+import { useCurrentsRole } from "~~/services/common";
 import CONFIG from "~~/config";
+import { ROLES } from "~~/constants/roles.js"
 import axios from "axios";
 
 export default {
@@ -125,6 +87,7 @@ export default {
     const commentContent = ref("");
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
+    const currentRole = useCurrentRole();
 
     const headers = [
       { text: "STT", value: "no" },
@@ -162,7 +125,7 @@ export default {
       };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments`, criteria, {headers: tokenHeader})
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments`, criteria, { headers: tokenHeader })
         .then((response) => {
           const data = response.data;
           setPagination(data);
@@ -192,6 +155,10 @@ export default {
       newsTitle,
       createdBy,
       commentContent,
+      currentRole,
+      ROLES,
+
+      useCurrentsRole,
       searchCallApi,
     };
   },

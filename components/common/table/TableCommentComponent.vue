@@ -10,12 +10,7 @@
 
     <div class="tr" v-for="(item, index) in items" :key="index">
       <div class="td px-3">
-        <input
-          type="checkbox"
-          :id="'check' + item.id"
-          @click="countSelectedCheckBox()"
-          class="boxCheck"
-        />
+        <input type="checkbox" :id="'check' + item.id" @click="countSelectedCheckBox()" class="boxCheck" />
       </div>
       <div class="td">{{ index + 1 + page * size }}</div>
       <div class="td">{{ item.newsTitle }}</div>
@@ -23,22 +18,16 @@
       <div class="td">{{ item.createdBy }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
       <div class="td">
-        <div class="form-check form-switch">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            :checked="item.enabled"
-            role="switch"
-            @click="changeCommentStatus(item.id)"
-          />
+        <div v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_COMMENT_APPROVE])"
+          class="form-check form-switch">
+          <input type="checkbox" class="form-check-input" :checked="item.enabled" role="switch"
+            @click="changeCommentStatus(item.id)" />
         </div>
       </div>
       <td class="td">
-        <div class="action-group d-flex">
-          <div
-            class="ms-3 cursor-pointer text-danger"
-            @click="disableComment(item.id)"
-          >
+        <div v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_COMMENT_DELETE])"
+          class="action-group d-flex">
+          <div class="ms-3 cursor-pointer text-danger" @click="disableComment(item.id)">
             <delete-icon />
             <span class="ms-1">Xóa</span>
           </div>
@@ -52,8 +41,10 @@ import moment from "moment";
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
+import { useCurrentsRole } from "~~/services/common.js"
 
 import CONFIG from "~~/config";
+import { ROLES } from "~~/constants/roles.js";
 import axios from "axios";
 import { displayBrief } from "~~/constants/format-string.js";
 
@@ -74,6 +65,7 @@ export default {
   setup() {
     const checkedAll = ref(false);
     const listSelected = ref([]);
+    const currentRole = useCurrentRole();
 
     // function displayBrief(brief) {
     //   let maxLength = 125;
@@ -166,6 +158,9 @@ export default {
 
     return {
       checkedAll,
+      currentRole,
+      ROLES,
+
       displayBrief,
       displayDate,
       changeCommentStatus,
@@ -173,6 +168,7 @@ export default {
       countSelectedCheckBox,
       changeMultiStatus,
       disableComment,
+      useCurrentsRole,
     };
   },
 };
