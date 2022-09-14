@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="tr" v-for="(item, index) in items" :key="index">
-      <div class="td">{{ index + 1 + page * size }}</div>
+      <div class="td">{{ index + 1 }}</div>
       <div class="td">{{ item.name }}</div>
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="d-flex">
@@ -42,7 +42,7 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
+  props: ["headers", "items", "actionEdit", "actionDelete"],
   setup() {
     const header = useHeader();
     function deleteType(typeId) {

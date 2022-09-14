@@ -14,8 +14,6 @@
         :items="newsTypes"
         :actionEdit="true"
         :actionDelete="true"
-        :page="page"
-        :size="size"
       />
     </div>
   </div>
@@ -45,8 +43,6 @@ export default {
     ];
 
     const newsTypes = ref([]);
-    const page = ref(0);
-    const size = ref(10);
     const itemsSelected = ref([]);
     const themeColor = ref("#1e40af");
     const header = useHeader();
@@ -56,10 +52,6 @@ export default {
     }
     // call api
     function searchCallApi() {
-      let criteria = {
-        page: page.value,
-        size: size.value,
-      };
       let tokenHeader = {
         'Authorization': header.value,
         'Content-Type': 'application/json'
@@ -77,17 +69,11 @@ export default {
         });
     }
 
-    watch([page, size], () => {
-      searchCallApi();
-    });
-
     return {
       tableHeader,
       newsTypes,
       itemsSelected,
       themeColor,
-      page,
-      size,
 
       searchCallApi,
     };
