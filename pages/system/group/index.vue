@@ -3,11 +3,11 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
     </div>
-    <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
+    <AddButton v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_GROUP_USER_CREATE])" class="mb-4" :title="btnTitle" :routerPush="routerPush" />
     <div class="col-12 table-content">
       <TableComponent
         :headers="tableHeader"
-        :items="topics"
+        :items="groups"
         :actionEdit="true"
         :page="page"
         :size="size"
@@ -23,6 +23,8 @@ import AddButton from "~~/components/common/AddButton.vue";
 import TableComponent from "~~/components/common/table/TableGroupsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
+import { useCurrentsRole } from "~~/services/common.js";
+import {ROLES} from "~~/constants/roles.js";
 import CONFIG from "~~/config";
 import axios from "axios";
 
@@ -36,12 +38,13 @@ export default {
     };
   },
   setup() {
+    const currentRole = useCurrentRole();
     const tableHeader = [
       { text: "STT", value: "no" },
       { text: "Tên nhóm quyền", value: "name" },
     ];
 
-    const topics = ref([
+    const groups = ref([
       {
         no: 1,
         name: "Nhóm quyền Admin",
@@ -57,16 +60,16 @@ export default {
     ]);
     const page = ref(0);
     const size = ref(10);
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
 
     return {
       tableHeader,
-      topics,
-      itemsSelected,
-      themeColor,
+      groups,
       page,
       size,
+      ROLES,
+
+      currentRole,
+      useCurrentsRole
     };
   },
   //   created() {

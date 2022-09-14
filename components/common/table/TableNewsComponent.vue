@@ -22,10 +22,10 @@
       <td class="td" v-if="actionEdit || actionDelete">
         <div class="action-group d-flex">
           <NuxtLink class="cursor-pointer" :to="'/news/form/' + item.id"
-            v-if="actionEdit && useCurrentsRole(currentRole,['ROLE_NEWS_EDIT'])">
+            v-if="actionEdit && useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_NEWS_EDIT])">
             <edit-icon /><span class="ms-1">Sửa</span>
           </NuxtLink>
-          <div v-if="useCurrentsRole(currentRole,['ROLE_NEWS_DELETE'])" class="ms-3 cursor-pointer text-danger">
+          <div v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_NEWS_DELETE])" class="ms-3 cursor-pointer text-danger">
             <delete-icon @click="disabledNews(item.id)" />
             <span class="ms-1">Xóa</span>
           </div>
@@ -41,6 +41,7 @@ import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
+import {ROLES} from "~~/constants/roles.js";
 
 export default {
   components: {
@@ -104,6 +105,7 @@ export default {
 
     return {
       currentRole,
+      ROLES,
 
       displayBrief,
       displayDate,

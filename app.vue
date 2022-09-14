@@ -79,7 +79,7 @@ export default {
         }
 
         if (!currentRole.value) {
-          currentRole.value = jwtTokenKeys.resource_access[client.value].roles;
+          currentRole.value = jwtTokenKeys.resourceAccess[client.value].roles;
         }
       }
     }

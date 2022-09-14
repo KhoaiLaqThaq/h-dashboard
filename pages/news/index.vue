@@ -45,7 +45,7 @@
     <div class="content-news">
       <div class="d-flex">
         <TitleHeader :title="title" />
-        <AddButton v-if="useCurrentsRole(currentRole,['ROLE_NEWS_CREATE'])" :textSize="'text-small'" :title="btnTitle"
+        <AddButton v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_NEWS_CREATE])" :textSize="'text-small'" :title="btnTitle"
           :routerPush="routerPush" class="ms-auto" />
       </div>
       <div class="table-content mt-3 radius-20">
@@ -70,6 +70,7 @@ import { newStatus } from "~~/constants/enum.js";
 import { useCurrentsRole } from "~~/services/common.js"
 
 import CONFIG from "~~/config";
+import {ROLES} from "~~/constants/roles.js";
 import axios from "axios";
 
 export default {
@@ -179,6 +180,7 @@ export default {
       departmentName,
       status,
       currentRole,
+      ROLES,
 
       searchCallApi,
       changeSortField,

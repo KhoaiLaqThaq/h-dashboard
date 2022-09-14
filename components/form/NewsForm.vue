@@ -173,6 +173,7 @@ import XIcon from "~~/assets/images/icons/XIcon.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import axios from "axios";
 import CONFIG from "~~/config";
+import {ROLES} from "~~/constants/roles.js";
 
 export default {
   components: {
@@ -213,11 +214,10 @@ export default {
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
-    console.log("crrRole " + currentRole.value);
     const newsId = ref(route.params && route.params.id);
     const newsExist = ref({});
     const titleForm = ref(newsId.value ? "Giao diện chỉnh sửa tin tức" : "Giao diện thêm mới tin tức");
-    const showStatus = ref(!newsId.value);
+    const showStatus = ref(newsId.value ? true : false);
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
     const avatarUrl = ref("");
@@ -258,11 +258,6 @@ export default {
 
     // call api getById
     function callApiGetById() {
-      console.log(newsId.value);
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
-      };
       if (newsId.value) {
         console.log("entering callApiGetById()...", newsId.value);
         axios
@@ -527,6 +522,8 @@ export default {
       listTagsForSelect,
       showStatus,
       currentRole,
+      ROLES,
+
       // function
       addTags,
       removeTag,
