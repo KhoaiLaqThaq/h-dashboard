@@ -3,26 +3,26 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
     </div>
-    <TopicForm />
+    <NewsTypeForm />
   </div>
 </template>
 <script>
-import TopicForm from "~~/components/TopicForm.vue";
+import axios from "axios";
+import { ref } from "vue";
+import NewsTypeForm from "~~/components/NewsTypeForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
-    TopicForm,
+    NewsTypeForm,
     TitleHeader,
   },
-
   data() {
     return {
-      titleForm: "Thêm mới chuyên mục",
+      titleForm: "Chỉnh sửa loại tin tức",
     };
   },
   setup() {
     // define variables
-
     return {
       //   addNews,
     };

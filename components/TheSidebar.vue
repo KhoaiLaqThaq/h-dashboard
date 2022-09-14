@@ -115,6 +115,19 @@
           </li>
           <li>
             <NuxtLink
+              to="/common/newsType"
+              class="side-menu"
+              aria-label="newsType"
+              :class="{ active: routeNameActive == 'newsType' }"
+              title="Quản lý loại tin tức"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_NEWTYPE_VIEW'])"
+            >
+              <div class="side-menu__icon"><IconDocumentation /></div>
+              <span class="side-menu__title pl-1"> Loại tin tức</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
               to="/common/comment"
               class="side-menu"
               aria-label="comment"
@@ -160,6 +173,7 @@ import IconGroup from "../assets/images/icons/IconGroup.vue";
 import IconTooling from "~~/assets/images/icons/IconTooling.vue";
 import IconComment from "~~/assets/images/icons/IconComment.vue";
 import ComputerIcon from "~~/assets/images/icons/ComputerIcon.vue";
+import IconDocumentation from "~~/assets/images/icons/IconDocumentation.vue";
 
 import VueJwtDecode from 'vue-jwt-decode';
 import camelcaseKeys from 'camelcase-keys';
@@ -176,6 +190,7 @@ export default {
     IconTooling,
     IconComment,
     ComputerIcon,
+    IconDocumentation,
   },
 
   setup() {

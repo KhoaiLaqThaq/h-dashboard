@@ -16,7 +16,7 @@
             <ErrorMessage name="name" class="text-danger" />
           </div>
 
-          <label for="">Tên chuyên mục <span class="text-danger">*</span></label>
+          <label for="">Tên loại tin tức <span class="text-danger">*</span></label>
         </div>
         <BaseButton
           class="btn-primary ms-auto"
@@ -41,39 +41,39 @@ export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {
     return {
-      titleAdd: "Thêm mới chuyên mục",
-      titleEdit: "Chỉnh sửa chuyên mục",
+      titleAdd: "Thêm mới loại tin tức",
+      titleEdit: "Chỉnh sửa loại tin tức",
     };
   },
   setup(props) {
     const route = useRoute();
     const name = ref("");
-    const topicId = ref(route.params.id);
-    const topicExist = ref({});
+    const typeId = ref(route.params.id);
+    const typeExist = ref({});
     let success = false;
   const header = useHeader();
     // call api getById
     function callApiGetById() {
-      if (topicId.value) {
-        console.log("entering callApiGetById()...", topicId.value);
+      if (typeId.value) {
+        console.log("entering callApiGetById()...", typeId.value);
         let tokenHeader = {
           'Authorization': header.value,
           'Content-Type': 'application/json'
         };
         axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic/${topicId.value}`, {headers: tokenHeader})
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType/${typeId.value}`, {headers: tokenHeader})
           .then((response) => {
             if (response) {
-              topicExist.value = response.data;
+              typeExist.value = response.data;
             }
           })
           .catch((error) => console.log(error));
       }
     }
 
-    watch(topicExist, () => {
-      if (topicExist.value) {
-        name.value = topicExist.value.name;
+    watch(typeExist, () => {
+      if (typeExist.value) {
+        name.value = typeExist.value.name;
       }
     });
 
@@ -93,8 +93,8 @@ export default {
 
     //Call post API topic
     function onSubmit() {
-      const topic = {
-        id: topicId.value,
+      const type = {
+        id: typeId.value,
         name: name.value,
       };
       const headers = { 
@@ -102,12 +102,12 @@ export default {
         "Content-Type": "application/json" 
       };
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic`, topic, { headers })
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType`, type, { headers })
         .then((res) => {
           console.log(res.data);
           let responseData = res.data;
           if (responseData) {
-            navigateTo("/common/topic");
+            navigateTo("/common/newsType");
           }
         })
         .catch((error) => {
