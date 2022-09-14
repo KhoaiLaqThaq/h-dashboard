@@ -66,6 +66,8 @@ export default {
     const header = useHeader();
     const client = useKeycloakClient();
     const currentRole = useCurrentRole();
+    const currUser = useCurrentUser();
+    const { $showToast } = useNuxtApp();
 
     function login(e) {
       console.log("====>Entering login");
@@ -81,6 +83,7 @@ export default {
             let responseData = response.data;
             if (responseData && responseData.code === 200) {
               saveInforLogin(responseData);
+              $showToast("Đăng nhập thành công", "success", 2000);
             } else if (responseData.code === 404) {
               errorMessage.value = responseData.message;
             } else {
@@ -108,6 +111,7 @@ export default {
         token.value = accessToken;
         header.value = `Bearer ${accessToken}`;
         currentRole.value = roles;
+        currUser.value = decode.email;
         // set localStorage
         localStorage.setItem("kclient", k6kClient);
         localStorage.setItem("token", accessToken);

@@ -20,6 +20,7 @@ export default {
     const header = useHeader();
     const client = useKeycloakClient();
     const currentRole = useCurrentRole();
+    const currentUser = useCurrentUser();
 
     const setLayoutDefault = () => {
       if (token.value) {
@@ -50,7 +51,7 @@ export default {
         if (diffTime < (expired * 1000)) {
           if (jwtTokenStorage && !token.value) {
             token.value = jwtTokenStorage;
-             // check header global state
+            // check header global state
             if (!header.value) header.value = `Bearer ${jwtTokenStorage}`;
 
             // set role current
@@ -72,6 +73,9 @@ export default {
         // set lại client
         if (localStorage.getItem('kclient') && !client.value) {
           client.value = jwtTokenKeys.azp;
+        }
+        if (!currentUser.value) {
+          currentUser.value = jwtTokenKeys.email;
         }
 
         if (!currentRole.value) {
