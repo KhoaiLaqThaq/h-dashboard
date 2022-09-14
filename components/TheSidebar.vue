@@ -1,14 +1,7 @@
 <template>
   <nav class="side-nav pt-2">
-    <NuxtLink
-      to="/"
-      class="router-link-active router-link-exact-active d-flex intro-x"
-    >
-      <img
-        src="~/assets/images/logo/logomavin.png"
-        alt=""
-        class="logo-img logo-mavin"
-      />
+    <NuxtLink to="/" class="router-link-active router-link-exact-active d-flex intro-x">
+      <img src="~/assets/images/logo/logomavin.png" alt="" class="logo-img logo-mavin" />
     </NuxtLink>
     <div class="side-nav__devider my-6 me-3"></div>
     <ul>
@@ -20,53 +13,41 @@
       </li>
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a
-          class="nav-link side-menu cursor-pointer"
-          title="Quản lý chung"
-          @click="toggleSubmenu('system')"
-          id="system"
-          ref="system"
-          :v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_SYSTEM'])"
-        >
-          <div class="side-menu__icon"><IconTooling /></div>
+        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung" @click="toggleSubmenu('system')" id="system"
+          ref="system" :v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_SYSTEM'])">
+          <div class="side-menu__icon">
+            <IconTooling />
+          </div>
           <span class="side-menu__title pl-1"> Quản lý hệ thống</span>
         </a>
         <ul class="submenu collapse">
           <li>
-            <NuxtLink
-              to="/system/group"
-              class="side-menu"
-              aria-label="group"
+            <NuxtLink to="/system/group" class="side-menu" aria-label="group"
               :class="{ active: routeNameActive == 'group' }"
-              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_GROUP_USER_VIEW'])"
-            >
-              <div class="side-menu__icon"><IconGroup /></div>
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_GROUP_USER_VIEW'])">
+              <div class="side-menu__icon">
+                <IconGroup />
+              </div>
               <span class="side-menu__title pl-1"> Nhóm người dùng</span>
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink
-              to="/system/user"
-              class="side-menu"
-              aria-label="user"
-              :class="{ active: routeNameActive == 'user' }"
-              title="Quản lý người dùng"
-              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_USER_VIEW'])"
-            >
-              <div class="side-menu__icon"><UserIcon /></div>
+            <NuxtLink to="/system/user" class="side-menu" aria-label="user"
+              :class="{ active: routeNameActive == 'user' }" title="Quản lý người dùng"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_USER_VIEW'])">
+              <div class="side-menu__icon">
+                <UserIcon />
+              </div>
               <span class="side-menu__title pl-1"> Người dùng</span>
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink
-              to="/system/systemParams"
-              class="side-menu"
-              aria-label="systemParams"
-              :class="{ active: routeNameActive == 'systemParams' }"
-              title="Quản lý tham số hệ thống"
-              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_SYS_PARAM_VIEW'])"
-            >
-              <div class="side-menu__icon"><ComputerIcon /></div>
+            <NuxtLink to="/system/systemParams" class="side-menu" aria-label="systemParams"
+              :class="{ active: routeNameActive == 'systemParams' }" title="Quản lý tham số hệ thống"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_SYS_PARAM_VIEW'])">
+              <div class="side-menu__icon">
+                <ComputerIcon />
+              </div>
               <span class="side-menu__title pl-1"> Tham số hệ thống</span>
             </NuxtLink>
           </li>
@@ -74,42 +55,32 @@
       </li>
       <!-- submenu -->
       <li class="nav-item has-submenu" aria-label="has-submenu">
-        <a
-          class="nav-link side-menu cursor-pointer"
-          title="Quản lý chung"
-          @click="toggleSubmenu('common')"
-          id="common"
-          ref="common"
-          v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_COMMON'])"
-        >
-          <div class="side-menu__icon"><IconCommunity /></div>
+        <a class="nav-link side-menu cursor-pointer" title="Quản lý chung" @click="toggleSubmenu('common')" id="common"
+          ref="common" v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_MNG_COMMON'])">
+          <div class="side-menu__icon">
+            <IconCommunity />
+          </div>
           <span class="side-menu__title pl-1"> Quản lý chung</span>
         </a>
         <ul class="submenu collapse">
           <li>
-            <NuxtLink
-              to="/common/department"
-              class="side-menu"
-              aria-label="department"
-              :class="{ active: routeNameActive == 'department' }"
-              title="Quản lý đơn vị thành viên"
-              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_DEPARTMENT_VIEW'])"
-            >
-              <div class="side-menu__icon"><IconUnit /></div>
+            <NuxtLink to="/common/department" class="side-menu" aria-label="department"
+              :class="{ active: routeNameActive == 'department' }" title="Quản lý đơn vị thành viên"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_DEPARTMENT_VIEW'])">
+              <div class="side-menu__icon">
+                <IconUnit />
+              </div>
               <span class="side-menu__title pl-1"> Đơn vị thành viên</span>
             </NuxtLink>
             <ul class="side-menu__sub-open"></ul>
           </li>
           <li>
-            <NuxtLink
-              to="/common/topic"
-              class="side-menu"
-              aria-label="topic"
-              :class="{ active: routeNameActive == 'topic' }"
-              title="Quản lý chủ đề"
-              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_TOPIC_VIEW'])"
-            >
-              <div class="side-menu__icon"><IconTopic /></div>
+            <NuxtLink to="/common/topic" class="side-menu" aria-label="topic"
+              :class="{ active: routeNameActive == 'topic' }" title="Quản lý chủ đề"
+              v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_TOPIC_VIEW'])">
+              <div class="side-menu__icon">
+                <IconTopic />
+              </div>
               <span class="side-menu__title pl-1"> Chuyên mục</span>
             </NuxtLink>
           </li>
@@ -142,14 +113,11 @@
         </ul>
       </li>
       <li>
-        <NuxtLink
-          to="/news"
-          class="side-menu"
-          :class="{ active: routeNameActive == 'news' }"
-          title="Quản lý tin tức"
-          v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_NEWS_VIEW'])"
-        >
-          <div class="side-menu__icon"><PostIcon /></div>
+        <NuxtLink to="/news" class="side-menu" :class="{ active: routeNameActive == 'news' }" title="Quản lý tin tức"
+          v-if="checkSidebarAuthority(['ROLE_ADMIN', 'ROLE_NEWS_VIEW'])">
+          <div class="side-menu__icon">
+            <PostIcon />
+          </div>
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </NuxtLink>
       </li>
@@ -279,7 +247,7 @@ export default {
         resetStateBeforeLogout();
       }
     }
-    
+
     function setStateAfterDecodeToken(jwtTokenKeys) {
       // set current Role
       if (jwtTokenKeys) {
@@ -309,7 +277,7 @@ export default {
 
       if (roleCurrents && roleItems) {
         for (let i = 0; i < roleItems.length; i++) {
-          if (roleCurrents.includes(roleItems[i])) 
+          if (roleCurrents.includes(roleItems[i]))
             return true;
         }
         return false;

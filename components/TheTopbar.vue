@@ -7,35 +7,26 @@
         </li>
         <li class="breadcrumb-item active">
           <NuxtLink :to="routeNameState">{{
-            routeNameState == "index" ? "Trang chủ" : routeNameState
+          routeNameState == "index" ? "Trang chủ" : routeNameState
           }}</NuxtLink>
         </li>
       </ol>
     </nav>
 
     <div class="dropdown me-4">
-      <div
-        class="dropdown-toggle notification notification--bullet cursor-pointer"
-      >
+      <div class="dropdown-toggle notification notification--bullet cursor-pointer">
         <RingIcon class="notification-icon lucide" />
       </div>
       <!-- notification-content -->
     </div>
     <div class="dropdown me-3">
-      <div
-        class="dropdown-toggle rounded-full w-8 h-8 img-fit cursor-pointer"
-        id="dropdownMenuAccountInfo"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
+      <div class="dropdown-toggle rounded-full w-8 h-8 img-fit cursor-pointer" id="dropdownMenuAccountInfo"
+        data-bs-toggle="dropdown" aria-expanded="false">
         <img src="@/assets/images/avatar/avatar1.jpg" alt="..." />
       </div>
-      <ul
-        class="dropdown-menu dropdown-acc__customize"
-        aria-labelledby="dropdownMenuAccountInfo"
-      >
+      <ul class="dropdown-menu dropdown-acc__customize" aria-labelledby="dropdownMenuAccountInfo">
         <li class="dropdown-item px-3 dropdown-acc-item">
-          <div class="name">Andrew</div>
+          <div class="name">{{currentUser}}</div>
           <div class="description text-secondary">Accountor</div>
         </li>
         <li class="dropdown-item px-3 dropdown-acc-item">
@@ -71,6 +62,7 @@ export default {
   setup() {
     const routeNameState = useRouteActive();
     const token = useToken();
+    const currentUser = useCurrentUser();
 
     function logout() {
       console.log('entering logout()...')
@@ -80,10 +72,13 @@ export default {
 
     return {
       routeNameState,
+      currentUser,
 
       logout
     };
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>

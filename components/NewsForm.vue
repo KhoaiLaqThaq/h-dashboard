@@ -2,44 +2,17 @@
   <Form @submit="onSubmit()" enctype="multipart/form-data">
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
-      <PreviewButton
-        class="ms-auto"
-        :btnType="'button'"
-        :name="'Preview'"
-        :textSize="'text-small'"
-      />
-      <BaseButton
-        class="btn-primary ms-2 box"
-        :btnType="'submit'"
-        :name="'Save'"
-        :textSize="'text-small'"
-      />
-      <NewsPreview
-        :title="title"
-        :avatarUrl="avatarUrl"
-        :content="content"
-        :createdDate="createdDate"
-      />
-      <NewsTabletPreview
-        :title="title"
-        :avatarUrl="avatarUrl"
-        :content="content"
-        :createdDate="createdDate"
-      />
+      <PreviewButton class="ms-auto" :btnType="'button'" :name="'Preview'" :textSize="'text-small'" />
+      <BaseButton class="btn-primary ms-2 box" :btnType="'submit'" :name="'Save'" :textSize="'text-small'" />
+      <NewsPreview :title="title" :avatarUrl="avatarUrl" :content="content" :createdDate="createdDate" />
+      <NewsTabletPreview :title="title" :avatarUrl="avatarUrl" :content="content" :createdDate="createdDate" />
     </div>
 
     <div class="row mt-3 py-3">
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
-          <Field
-            name="title"
-            v-model="title"
-            type="text"
-            class="form-control box"
-            required="required"
-            autocomplete="false"
-            :rules="validateField"
-          />
+          <Field name="title" v-model="title" type="text" class="form-control box" required="required"
+            autocomplete="false" :rules="validateField" />
           <ErrorMessage name="title" class="text-danger" />
           <label for="">Tiêu đề <span class="text-danger">*</span></label>
         </div>
@@ -47,20 +20,9 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
-          <Field
-            as="select"
-            name="type"
-            v-model="optionType"
-            class="form-select box"
-            required="required"
-            :value="type"
-            :rules="validateField"
-          >
-            <option
-              v-for="(option, index) in options"
-              :key="index"
-              :value="option.value"
-            >
+          <Field as="select" name="type" v-model="optionType" class="form-select box" required="required"
+            :value="optionType" :rules="validateField">
+            <option v-for="(option, index) in newsTypes" :key="index" :value="option.id">
               {{ option.name }}
             </option>
             <ErrorMessage name="type" class="text-danger" />
@@ -71,20 +33,9 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
-          <Field
-            as="select"
-            name="topic"
-            v-model="topic"
-            class="form-select box"
-            required="required"
-            :value="topic"
-            :rules="validateField"
-          >
-            <option
-              v-for="(option, index) in topics"
-              :key="index"
-              :value="option.id"
-            >
+          <Field as="select" name="topic" v-model="topic" class="form-select box" required="required" :value="topic"
+            :rules="validateField">
+            <option v-for="(option, index) in topics" :key="index" :value="option.id">
               {{ option.name }}
             </option>
             <ErrorMessage name="topic" class="text-danger" />
@@ -95,14 +46,8 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating">
-          <datepicker-lite
-            class="form-control picker-date box"
-            :class-attr="'border-none'"
-            :name-attr="'createdDate'"
-            :show-bottom-button="true"
-            :value-attr="displayDate(createdDate)"
-            :locale="locale"
-          />
+          <datepicker-lite class="form-control picker-date box" :class-attr="'border-none'" :name-attr="'createdDate'"
+            :show-bottom-button="true" :value-attr="displayDate(createdDate)" :locale="locale" />
           <label>Ngày viết <span class="text-danger">*</span></label>
         </div>
       </div>
@@ -112,15 +57,8 @@
       <div class="col-lg-9 col-sm-12">
         <!-- brief -->
         <div class="form-floating mb-3">
-          <Field
-            as="textarea"
-            name="brief"
-            v-model="brief"
-            class="form-control box auto-scroll-y"
-            id="floatingTextarea2"
-            style="min-height: 100px"
-            :rules="validateField"
-          />
+          <Field as="textarea" name="brief" v-model="brief" class="form-control box auto-scroll-y"
+            id="floatingTextarea2" style="min-height: 100px" :rules="validateField" />
           <ErrorMessage name="brief" class="text-danger" />
           <label for="">Mô tả ngắn <span class="text-danger">*</span></label>
         </div>
@@ -128,32 +66,19 @@
 
       <div class="col-lg-3 col-sm-12">
         <div class="form-floating mb-3 input-suggest__event">
-          <input
-            type="text"
-            class="form-control box"
-            autocomplete="false"
-            v-model="tag"
-            @keyup.space="addTags()"
-          />
+          <input type="text" class="form-control box" autocomplete="false" v-model="tag" @keyup.space="addTags()" />
           <div v-if="tagsOption" class="tags-unorder-list">
-            <div
-              class="tag-option"
-              v-for="(tagItem, index) in listTagsForSelect"
-              :key="index"
-              @click="selectTagSuggestion"
-            >
+            <div class="tag-option" v-for="(tagItem, index) in listTagsForSelect" :key="index"
+              @click="selectTagSuggestion">
               {{ tagItem.name }}
             </div>
           </div>
           <span class="title-suggest__event">Space</span>
           <label for="">Thêm tag <span class="text-danger">*</span></label>
           <div class="tags mt-2">
-            <span
-              class="tag-item bg-primary"
-              v-for="(tag, index) in tags"
-              :key="index"
-              >{{ tag }}<XIcon class="ms-1" @click="removeTag(index)"
-            /></span>
+            <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}
+              <XIcon class="ms-1" @click="removeTag(index)" />
+            </span>
           </div>
         </div>
       </div>
@@ -165,10 +90,7 @@
           <TabItem title="Ảnh đại diện">
             <div class="card radius-unset box">
               <div class="card-body">
-                <UseDropZone
-                  @change-image="changeImage($event)"
-                  :avatarUrl="avatarUrl"
-                />
+                <UseDropZone @change-image="changeImage($event)" :avatarUrl="avatarUrl" />
               </div>
             </div>
           </TabItem>
@@ -177,11 +99,7 @@
             <div class="form-group bg-white">
               <div class="card m-3">
                 <div class="card-body p-0">
-                  <ckeditor
-                    :editor="editor"
-                    :config="editorConfig"
-                    v-model="content"
-                  ></ckeditor>
+                  <ckeditor :editor="editor" :config="editorConfig" v-model="content"></ckeditor>
                 </div>
                 <ErrorMessage name="content" class="text-danger" />
               </div>
@@ -199,37 +117,21 @@
           </div>
 
           <div>
-            <DualListBox
-              class="m-auto"
-              :source="source"
-              :destination="destination"
-              label="name"
-              v-on:onChangeList="onChangeList"
-            />
+            <DualListBox class="m-auto" :source="source" :destination="destination" label="name"
+              v-on:onChangeList="onChangeList" />
           </div>
         </div>
       </div>
     </div>
     <hr />
 
-    <div v-if="showStatus" class="col-lg-3 col-sm-12">
+    <div v-if="showStatus && useCurrentsRole(currentRole,['ROLE_NEWS_APPROVE'])" class="col-lg-3 col-sm-12">
       <div class="form-floating">
         <div>
           <label>Trạng thái <span class="text-danger">*</span></label>
         </div>
-        <Field
-          as="select"
-          name="status"
-          v-model="status"
-          class="form-select box"
-          required="required"
-          :value="status"
-        >
-          <option
-            v-for="(status, index) in newStatus"
-            :key="index"
-            :value="status.value"
-          >
+        <Field as="select" name="status" v-model="status" class="form-select box" required="required" :value="status">
+          <option v-for="(status, index) in newStatus" :key="index" :value="status.value">
             {{ status.name }}
           </option>
           <ErrorMessage name="topic" class="text-danger" />
@@ -241,6 +143,7 @@
 <script>
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useCurrentsRole } from "~~/services/common.js";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
 import moment from "moment";
@@ -264,7 +167,6 @@ import NewsTabletPreviewVue from "~~/components/NewsTabletPreview.vue";
 // functions
 import { getNowDate } from "~~/constants/format-date.js";
 import { newStatus } from "~~/constants/enum.js";
-import { options } from "~~/constants/enum.js";
 // icons
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
@@ -296,7 +198,6 @@ export default {
   },
   data() {
     return {
-      options: options,
       newStatus: newStatus,
     };
   },
@@ -309,10 +210,14 @@ export default {
   setup() {
     const route = useRoute();
     const header = useHeader();
+    const currentUser = useCurrentUser();
+    const currentRole = useCurrentRole();
+    const { $showToast } = useNuxtApp();
+    console.log("crrRole " + currentRole.value);
     const newsId = ref(route.params && route.params.id);
     const newsExist = ref({});
-    const titleForm = ref(newsId.value? "Giao diện chỉnh sửa tin tức": "Giao diện thêm mới tin tức");
-    const showStatus = ref(newsId.value);
+    const titleForm = ref(newsId.value ? "Giao diện chỉnh sửa tin tức" : "Giao diện thêm mới tin tức");
+    const showStatus = ref(!newsId.value);
     const createdDate = ref(getNowDate());
     const avatar = ref(undefined);
     const avatarUrl = ref("");
@@ -328,14 +233,14 @@ export default {
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
-    const option = ref("");
-    const optionType = ref("");
+    const optionType = ref([]);
     const type = ref("");
     const commentTotal = ref(0);
     const likeTotal = ref(0);
     const viewTotal = ref(0);
     const createdBy = ref("");
     const createdDateString = ref("");
+    const newsTypes = ref([]);
 
     //source and destination of departments dual-listbox
     const source = ref([]);
@@ -361,7 +266,7 @@ export default {
       if (newsId.value) {
         console.log("entering callApiGetById()...", newsId.value);
         axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/${newsId.value}`, {headers})
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/${newsId.value}`, { headers })
           .then((response) => {
             if (response) {
               newsExist.value = response.data;
@@ -378,7 +283,7 @@ export default {
       if (newsId.value) {
         console.log("entering callApiGetAllTags...");
         axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/tags`, {headers})
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/tags`, { headers })
           .then((response) => {
             if (response.data) {
               listTags.value = response.data;
@@ -390,9 +295,21 @@ export default {
       }
     }
 
+    function getListNewsType() {
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsTypes`, { headers })
+        .then((response) => {
+          const data = response.data;
+          newsTypes.value = data;
+          optionType.value = data[0] && data[0].id;
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
+    }
+
     // TODO: call API get lisTopics
     function getListTopic() {
-      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, {headers})
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, { headers })
         .then((response) => {
           const data = response.data;
           topics.value = data;
@@ -406,7 +323,7 @@ export default {
     // TODO: call API get listDepartments
     function getListDepartments() {
       axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, {headers})
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers })
         .then((response) => {
           const data = response.data;
           if (data) {
@@ -436,6 +353,7 @@ export default {
         createdDateString.value = data.displayCreatedDate;
         createdBy.value = data.createdBy;
         status.value = data.status;
+        showStatus.value = data.createdBy != currentUser.value ? true : false
 
         if (data.tags?.length > 0) {
           data.tags?.forEach((e) => {
@@ -524,7 +442,7 @@ export default {
         id: newsId.value ? newsId.value : null,
         avatar: avatar.value ? avatar.value : null,
         avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
-        type: optionType.value,
+        newsTypeId: optionType.value,
         title: title.value,
         brief: brief.value,
         content: content.value,
@@ -540,15 +458,17 @@ export default {
       };
       let tokenHeaders = {
         "Authorization": header.value,
-        "Content-Type": "multipart/form-data" 
+        "Content-Type": "multipart/form-data"
       };
       axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news`, news, { headers: tokenHeaders})
         .then((res) => {
           let responseData = res.data;
-          alert(responseData.code + " " + responseData.message);
+          console.log(responseData.code + " " + responseData.message);
+          $showToast("Thêm/Sửa Tin tức thành công", "success", 2000);
           navigateTo("/news");
         })
         .catch((error) => {
+          $showToast("Thêm/Sửa Tin tức thất bại", "danger", 2000);
           console.log(error);
         });
     }
@@ -592,8 +512,8 @@ export default {
       createdDate,
       topics,
       topic,
-      option,
       optionType,
+      newsTypes,
       brief,
       content,
       status,
@@ -606,23 +526,28 @@ export default {
       tagsOption,
       listTagsForSelect,
       showStatus,
+      currentRole,
       // function
       addTags,
       removeTag,
       onSubmit,
       getListTopic,
       getListDepartments,
+      getListNewsType,
       validateField,
       callApiGetById,
       callApiGetAllTags,
       selectTagSuggestion,
       displayDate,
-      changeImage
+      changeImage,
+      useCurrentsRole,
+
     };
   },
   created() {
     this.getListTopic();
     this.getListDepartments();
+    this.getListNewsType();
     this.callApiGetById();
     this.callApiGetAllTags();
   },
@@ -667,6 +592,7 @@ export default {
     }
   }
 }
+
 .title-suggest__event {
   position: absolute;
   top: 1rem;

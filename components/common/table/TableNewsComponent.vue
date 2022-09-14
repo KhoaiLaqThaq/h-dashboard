@@ -16,23 +16,16 @@
       <div class="td">{{ displayBrief(item.brief) }}</div>
       <div class="td">{{ displayDate(item.createdDate) }}</div>
       <div class="td px-4">
-        <template v-if="item.status == '1'"
-          ><span class="badge bg-pending">Chưa phê duyệt</span></template
-        >
-        <template v-if="item.status == '2'"
-          ><span class="badge bg-success">Đã phê duyệt</span></template
-        >
+        <template v-if="item.status == '1'"><span class="badge bg-pending">Chưa phê duyệt</span></template>
+        <template v-if="item.status == '2'"><span class="badge bg-success">Đã phê duyệt</span></template>
       </div>
       <td class="td" v-if="actionEdit || actionDelete">
         <div class="action-group d-flex">
-          <NuxtLink
-            class="cursor-pointer"
-            :to="'/news/form/' + item.id"
-            v-if="actionEdit"
-          >
+          <NuxtLink class="cursor-pointer" :to="'/news/form/' + item.id"
+            v-if="actionEdit && useCurrentsRole(currentRole,['ROLE_NEWS_EDIT'])">
             <edit-icon /><span class="ms-1">Sửa</span>
           </NuxtLink>
-          <div class="ms-3 cursor-pointer text-danger">
+          <div v-if="useCurrentsRole(currentRole,['ROLE_NEWS_DELETE'])" class="ms-3 cursor-pointer text-danger">
             <delete-icon @click="disabledNews(item.id)" />
             <span class="ms-1">Xóa</span>
           </div>
@@ -44,6 +37,7 @@
 <script>
 import { ref } from 'vue';
 import moment from "moment";
+import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
@@ -54,18 +48,20 @@ export default {
     DeleteIcon,
   },
   props: [
-    "headers", 
-    "items", 
-    "actionEdit", 
-    "actionDelete", 
-    "page", 
-    "size", 
-    "sortField", 
+    "headers",
+    "items",
+    "actionEdit",
+    "actionDelete",
+    "page",
+    "size",
+    "sortField",
     "sortDirection"
   ],
   setup(props, { emit }) {
     const sortField = ref(props.sortField);
     const sortDirection = ref(props.sortDirection);
+    const currentRole = useCurrentRole();
+
 
     function displayBrief(brief) {
       let maxLength = 125;
@@ -89,10 +85,10 @@ export default {
       }
       // change ui
       let fieldSet = document.getElementById(fieldValue);
-        fieldSet.classList.remove('sorting', sortDirection.value ? 'sorting_asc':'sorting_desc');
-        fieldSet.classList.add(sortDirection.value ? 'sorting_desc':'sorting_asc');
-        // reset other columns
-        resetOtherColumns(fieldValue);
+      fieldSet.classList.remove('sorting', sortDirection.value ? 'sorting_asc' : 'sorting_desc');
+      fieldSet.classList.add(sortDirection.value ? 'sorting_desc' : 'sorting_asc');
+      // reset other columns
+      resetOtherColumns(fieldValue);
     }
 
     function resetOtherColumns(idSelector) {
@@ -107,11 +103,16 @@ export default {
     }
 
     return {
+      currentRole,
+
       displayBrief,
       displayDate,
-      searchCondition
+      searchCondition,
+      useCurrentsRole,
     };
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>
