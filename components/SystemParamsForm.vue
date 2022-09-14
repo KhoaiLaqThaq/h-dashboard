@@ -90,7 +90,7 @@ export default {
       description: "",
     });
     //const doInputParamName = ref(1);
-
+    const header = useHeader();
     function validateName(value) {
       if (!value) return "Trường này là bắt buộc";
 
