@@ -158,17 +158,12 @@ export default {
     const header = useHeader();
     const client = useKeycloakClient();
     const currentRole = useCurrentRole();
-
-    const resetRouteNameState = () => {
-      routeNameState.value = null;
-    };
+    const resetRouteNameState = () => routeNameState.value = null;
+    const toggleSubmenu = (e) => document.getElementById(e).nextElementSibling.classList.toggle("show");
+    
     const onLoadRouteNameCurrent = () => {
       setRouteNameActive(route.name);
       checkAuthentication();
-    };
-    const toggleSubmenu = (e) => {
-      console.log("selector: ", e);
-      document.getElementById(e).nextElementSibling.classList.toggle("show");
     };
 
     function setRouteNameActive(to) {
@@ -243,10 +238,11 @@ export default {
           client.value = jwtTokenKeys.azp;
         }
 
+        let rolesDecode = jwtTokenKeys.resourceAccess[client.value].roles;
         if (!currentRole.value) {
-          currentRole.value = jwtTokenKeys.resourceAccess[client.value].roles;
+          currentRole.value = rolesDecode;
         }
-        roles.value = currentRole.value;
+        roles.value = rolesDecode;
       }
     }
 

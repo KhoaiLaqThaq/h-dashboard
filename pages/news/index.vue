@@ -99,11 +99,12 @@ export default {
     const first = ref(false);
     const last = ref(false);
     const content = ref([]);
-    const keyword = ref("");
-    const departmentName = ref("");
-    const status = ref("");
-    const sortField = ref("id");
+    const keyword = ref('');
+    const departmentName = ref('');
+    const status = ref('');
+    const sortField = ref('id');
     const sortDirection = ref(true);
+    const header = useHeader();
     const currentRole = useCurrentRole();
 
     const headers = [
@@ -136,9 +137,13 @@ export default {
         sortDirection: sortDirection.value,
       };
 
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/api/news/list`, criteria)
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`, criteria, { headers: tokenHeader })
         .then((response) => {
           // console.log(response.data);
           const data = response.data;

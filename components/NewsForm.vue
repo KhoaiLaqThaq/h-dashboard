@@ -245,7 +245,6 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DatepickerLite from "vue3-datepicker-lite";
 import moment from "moment";
 import DualListBox from "~~/components/DualListBox.vue";
-//import "dual-listbox-vue/dist/dual-listbox.css";
 
 // components
 import PreviewButton from "~~/components/common/PreviewButton.vue";
@@ -309,6 +308,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const header = useHeader();
     const newsId = ref(route.params && route.params.id);
     const newsExist = ref({});
     const titleForm = ref(newsId.value? "Giao diện chỉnh sửa tin tức": "Giao diện thêm mới tin tức");
@@ -328,14 +328,14 @@ export default {
     const tags = ref([]);
     const topics = ref([]);
     const topic = ref(null);
-    let option = ref("");
+    const option = ref("");
     const optionType = ref("");
     const type = ref("");
     const commentTotal = ref(0);
     const likeTotal = ref(0);
     const viewTotal = ref(0);
     const createdBy = ref("");
-    let createdDateString = ref("");
+    const createdDateString = ref("");
 
     //source and destination of departments dual-listbox
     const source = ref([]);
@@ -346,32 +346,73 @@ export default {
     const tagsOption = ref(false);
     let listTagsForSelect = ref([]);
 
+    let headers = {
+      "Authorization": header.value,
+      "Content-Type": "application/json"
+    };
+
     // call api getById
     function callApiGetById() {
       console.log(newsId.value);
       if (newsId.value) {
         console.log("entering callApiGetById()...", newsId.value);
         axios
-          .get(`${CONFIG.BASE_URL}/api/news/${newsId.value}`)
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/${newsId.value}`, {headers})
           .then((response) => {
             if (response) {
               newsExist.value = response.data;
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error)
+          });
       }
     }
 
+    // TODO: call api get All Tags
     function callApiGetAllTags() {
-      console.log("entering callApiGetAllTags...");
-      axios
-        .get(`${CONFIG.BASE_URL}/api/tags`)
+      if (newsId.value) {
+        console.log("entering callApiGetAllTags...");
+        axios
+          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/tags`, {headers})
+          .then((response) => {
+            if (response.data) {
+              listTags.value = response.data;
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      }
+    }
+
+    // TODO: call API get lisTopics
+    function getListTopic() {
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, {headers})
         .then((response) => {
-          if (response.data) {
-            listTags.value = response.data;
+          const data = response.data;
+          topics.value = data;
+          topic.value = data[0] && data[0].id;
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
+    }
+
+    // TODO: call API get listDepartments
+    function getListDepartments() {
+      axios
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, {headers})
+        .then((response) => {
+          const data = response.data;
+          if (data) {
+            source.value = data;
+            resetDepartmentSource();
           }
         })
-        .catch((error) => console.log(error));
+        .catch((e) => {
+          console.log(e.toString());
+        });
     }
 
     watch(newsExist, () => {
@@ -391,27 +432,19 @@ export default {
         createdDateString.value = data.displayCreatedDate;
         createdBy.value = data.createdBy;
         status.value = data.status;
-        if (avatarUrl != null) {
-          getObjectFileFromUrl(avatarUrl);
-        }
-        if (data.tags.length > 0) {
-          data.tags.forEach((e) => {
+
+        if (data.tags?.length > 0) {
+          data.tags?.forEach((e) => {
             // tagNames.value += "," + e.name;
             tags.value.push(e.name);
           });
         }
-        if (data.departments.length > 0) {
+        if (data.departments?.length > 0) {
           destination.value = data.departments;
           resetDepartmentSource();
         }
       }
     });
-
-    const changeImage = (imageNew) => {
-      console.log('============> Change avatar image')
-      avatar.value = imageNew;
-      isChangedAvatar.value = true;
-    };
 
     watch(tag, () => {
       if (tag.value.trim().length > 0) {
@@ -423,6 +456,12 @@ export default {
         tagsOption.value = false;
       }
     });
+
+    const changeImage = (imageNew) => {
+      console.log('============> Change avatar image')
+      avatar.value = imageNew;
+      isChangedAvatar.value = true;
+    };
 
     const locale = {
       format: "DD/MM/YYYY",
@@ -458,35 +497,6 @@ export default {
 
     // TODO: Remove tag
     const removeTag = (index) => tags.value.splice(index, 1);
-
-    // TODO: call API get lisTopics
-    function getListTopic() {
-      axios.get(`${CONFIG.BASE_URL}/api/topics`)
-        .then((response) => {
-          const data = response.data;
-          topics.value = data;
-          topic.value = data[0] && data[0].id;
-        })
-        .catch((e) => {
-          console.log(e.toString());
-        });
-    }
-
-    // TODO: call API get listDepartments
-    function getListDepartments() {
-      axios
-        .get(`${CONFIG.BASE_URL}/api/departments`)
-        .then((response) => {
-          const data = response.data;
-          if (data) {
-            source.value = data;
-            resetDepartmentSource();
-          }
-        })
-        .catch((e) => {
-          console.log(e.toString());
-        });
-    }
 
     // TODO: Define rules for validate
     function validateField(value) {
@@ -524,8 +534,11 @@ export default {
         createdDateString: newsId.value ? createdDateString.value : null,
         departmentCodes: departmentCodes,
       };
-      const headers = { "Content-Type": "multipart/form-data" };
-      axios.post(`${CONFIG.BASE_URL}/api/news`, news, { headers })
+      let tokenHeaders = {
+        "Authorization": header.value,
+        "Content-Type": "multipart/form-data" 
+      };
+      axios.post(`${CONFIG.BASE_URL}/api/news`, news, { headers: tokenHeaders})
         .then((res) => {
           let responseData = res.data;
           alert(responseData.code + " " + responseData.message);
@@ -543,18 +556,6 @@ export default {
         tags.value.push(tagSelected);
       }
       tag.value = "";
-    }
-
-    function getObjectFileFromUrl(url) {
-      const config = { responseType: "blob" };
-      axios.get(`${CONFIG.BASE_URL}/api/topics`, config)
-        .then((response) => {
-          const file = new File([response.data], "");
-          avatar.value = file;
-        })
-        .catch((e) => {
-          console.log(e.toString());
-        });
     }
 
     function resetDepartmentSource() {

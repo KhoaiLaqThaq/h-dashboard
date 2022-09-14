@@ -7,11 +7,7 @@
             <div class="auth-logo">
               <nuxt-link to="/" class="text-center">
                 <span class="logo-lg">
-                  <img
-                    src="~/assets/images/logo-mavin2.jpeg"
-                    alt=""
-                    height="200"
-                  />
+                  <img src="~/assets/images/logo-mavin2.jpeg" alt="" height="200" />
                 </span>
               </nuxt-link>
             </div>
@@ -20,36 +16,19 @@
           <form @submit.prevent="login()">
             <!-- email -->
             <div class="form-floating mb-3">
-              <input
-                class="form-control"
-                type="email"
-                id="emailaddress"
-                v-model="currentUser.username"
-              />
-              <label for="emailaddress"
-                >Địa chỉ Email thành viên
-                <span class="text-danger">*</span></label
-              >
+              <input class="form-control" type="email" id="emailaddress" v-model="currentUser.username" />
+              <label for="emailaddress">Địa chỉ Email thành viên <span class="text-danger">*</span></label>
             </div>
             <!-- /email -->
             <!-- password -->
             <div class="form-floating mb-3">
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                v-model="currentUser.password"
-              />
-              <label for="password"
-                >Mật khẩu <span class="text-danger">*</span></label
-              >
+              <input type="password" id="password" class="form-control" v-model="currentUser.password" />
+              <label for="password">Mật khẩu <span class="text-danger">*</span></label>
             </div>
             <!-- /password -->
 
             <div class="form-group">
-              <strong
-                ><span class="text-danger">{{ errorMessage }}</span></strong
-              >
+              <strong><span class="text-danger">{{errorMessage}}</span></strong>
             </div>
             <hr />
             <div class="form-group mb-0 text-center">
@@ -69,19 +48,19 @@
   </div>
 </template>
 <script>
-import { ref, reactive } from "vue";
-import axios from "axios";
-import CONFIG from "~~/config";
+import { ref, reactive } from 'vue';
+import axios from 'axios';
+import CONFIG from '~~/config';
 
-import VueJwtDecode from "vue-jwt-decode";
+import VueJwtDecode from 'vue-jwt-decode';
 
 export default {
   setup() {
     const currentUser = reactive({
-      username: "",
-      password: "",
+      username: '',
+      password: ''
     });
-    const errorMessage = ref("");
+    const errorMessage = ref('');
     // state global
     const token = useToken();
     const header = useHeader();
@@ -93,13 +72,12 @@ export default {
       if (currentUser.username != "" && currentUser.password != "") {
         let data = {
           username: currentUser.username,
-          password: currentUser.password,
+          password: currentUser.password
         };
 
         axios
           .post(`${CONFIG.BASE_URL}/user/auth/login`, data)
           .then((response) => {
-            console.log("response login: " + response);
             let responseData = response.data;
             if (responseData && responseData.code === 200) {
               saveInforLogin(responseData);
@@ -107,10 +85,9 @@ export default {
               errorMessage.value = responseData.message;
             } else {
               errorMessage.value = "Ops! Lỗi không xác định.";
-              console.log("ERROR else");
+              console.log('ERROR else');
             }
-          })
-          .catch((error) => {
+          }).catch(error => {
             errorMessage.value = "Vui lòng kiểm tra lại thông tin tài khoản!";
             console.log("LOGIN ERROR: " + error);
           });
@@ -122,17 +99,14 @@ export default {
       let decode = VueJwtDecode.decode(accessToken);
 
       if (decode) {
-        console.log("====> Decode jwt: " + decode);
         let k6kClient = decode.azp;
         let roles = decode.resource_access[k6kClient].roles;
         let expiresIn = decode.exp - decode.iat;
-        console.log("roles: ", roles);
-        console.log("expiresIn: ", expiresIn);
 
         // set global state
         client.value = k6kClient;
         token.value = accessToken;
-        header.value = `Bearer ${responseData}`;
+        header.value = `Bearer ${accessToken}`;
         currentRole.value = roles;
         // set localStorage
         localStorage.setItem("kclient", k6kClient);
