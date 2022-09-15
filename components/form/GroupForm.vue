@@ -5,31 +5,37 @@
       <BaseButton
         class="btn-primary ms-auto"
         :btnType="'submit'"
-        :name="'Save'"
+        :name="'Lưu'"
         :textSize="'text-small'"
       />
     </div>
     <div class="row mt-3">
       <div class="col-12">
-        <!-- Họ -->
-        <!-- Tên  -->
         <div class="form-floating mb-3 col-6">
-          <input
+          <Field
             type="text"
             class="form-control box"
-            required="required"
-            autocomplete="false"
-            v-model="name"
+            name="name"
+            v-model="group.name"
+            :rules="validateName"
           />
+          <div class="mt-1 p-1">
+            <ErrorMessage name="name" class="text-danger" />
+          </div>
           <label for=""
             >Tên nhóm quyền <span class="text-danger">*</span></label
           >
         </div>
-        <!-- Tên đăng nhập -->
 
         <label for="">Phân quyền <span class="text-danger">*</span></label>
         <div class="form-floating mb-3 row">
-          <MultiCheckboxVue v-model:value="priority" :options="options" />
+          <!-- <MultiCheckboxVue v-model:value="priority" :options="options" /> -->
+          <DualListBox 
+            class="m-auto" 
+            :source="source" 
+            :destination="destination" 
+            label="description"
+            v-on:onChangeList="onChangeList" />
         </div>
       </div>
     </div>
@@ -37,16 +43,13 @@
 </template>
 <script>
 import { ref } from "vue";
-import DatepickerLite from "vue3-datepicker-lite";
+import { useRoute } from "vue-router";
+import { Form, Field, ErrorMessage } from "vee-validate";
 // components
 import BaseButton from "~~/components/common/BaseButton.vue";
-import BaseSelect from "~~/components/common/BaseSelect.vue";
-import BaseInput from "~~/components/common/BaseInput.vue";
-import FormCheck from "~~/components/common/FormCheck.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
-import FloatSelect from "~~/components/common/FloatSelect.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
-import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
+import DualListBox from "~~/components/DualListBox.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
@@ -54,14 +57,12 @@ import CONFIG from "~~/config";
 export default {
   components: {
     TitleHeader,
-    FloatSelect,
     BaseButton,
-    BaseSelect,
-    BaseInput,
-    FormCheck,
     UseDropZone,
-    DatepickerLite,
-    MultiCheckboxVue,
+    DualListBox,
+    Form, 
+    Field, 
+    ErrorMessage,
   },
   props: ["user"],
   data() {
@@ -69,41 +70,155 @@ export default {
       titleForm: "Giao diện thêm mới nhóm quyền",
     };
   },
+  methods: {
+    onChangeList: function ({ source, destination }) {
+      this.source = source;
+      this.destination = destination;
+    },
+  },
   setup(props) {
-    const name = ref("");
+    const route = useRoute();
     const priority = ref([]);
-    const options = ref([]);
+    const header = useHeader();
+    const group = reactive({
+      name: "",
+    });
+    const groupId = ref(route.params.id);
+     //source and destination of roles dual-listbox
+    const source = ref([]);
+    const destination = ref([]);
+    // TODO: Call api to get a group have id
+    const getGroupById = () => {
+      if (groupId.value) {
+        let tokenHeader = {
+          'Authorization': header.value,
+          'Content-Type': 'application/json'
+        };
+        axios
+          .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/group/${groupId.value}`, {headers: tokenHeader})
+          .then((response) => {
+            let responseData = response.data;
+            group.name = responseData.name;
+            if (responseData.roles?.length > 0) {
+              destination.value = responseData.roles;
+              resetRoleSource();
+            }
+          })
+          .catch((error) => {
+            console.log("error: " + error);
+          });
+      }
+    };
 
     function onSubmit() {
       console.log("Form Submmitted");
+      let roles = ref([]);
+      destination.value.forEach((item) => {
+        roles.value.push({id: item.id, name: item.name, description: item.description})
+      });
+      let groupData = {
+        id: groupId.value ? groupId.value : null,
+        name: group.name,
+        enabled: true,
+        roles: roles.value,
+      };
+      console.log(groupData);
+      const headers = { 
+        'Authorization': header.value, 
+        "Content-Type": "application/json" 
+      };
+      axios
+        .post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/group`, groupData, { headers })
+        .then((response) => {
+          console.log("responseData: ", response.data);
+          let responseData = response.data;
+          if (responseData) {
+            navigateTo("/system/group");
+          }
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
     }
 
-    const getOptions = () => {
-      options.value = [
-        { name: "Thêm", id: 1 },
-        { name: "Sửa", id: 2 },
-        { name: "Xoá", id: 3 },
-        { name: "Thêm 2", id: 4 },
-        { name: "Sửa 2", id: 5 },
-        { name: "Xoá 2", id: 6 },
-        { name: "Phê duyệt", id: 7 },
-        { name: "Phê duyệt 2", id: 8 },
-      ];
-    };
+    function validateName(value) {
+      if (!value)
+        return "Trường này là bắt buộc";
+      
+      if (value.trim().length < 3)
+        return "Trường này phải có hơn 3 ký tự";
 
-    onMounted(() => {
-      getOptions();
-    });
+      return true;
+    }
 
+    function getListRoles() {
+      let headers = {
+      "Authorization": header.value,
+      "Content-Type": "application/json"
+      };
+      if(groupId.value){
+        axios
+        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles/${group.name}`, { headers })
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          if (data) {
+            source.value = data;
+            resetRoleSource();
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
+      }else{
+        axios
+        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles`, { headers })
+        .then((response) => {
+          const data = response.data;
+          if (data) {
+            source.value = data;
+            resetRoleSource();
+          }
+        })
+        .catch((e) => {
+          console.log(e.toString());
+        });
+      }
+    }
+
+    function resetRoleSource() {
+      if (source.value.length > 0) {
+        console.log(destination.value);
+        source.value.forEach((s, index) => {
+          let check = destination.value.find((d) => {
+            console.log(d.id === s.id);
+            if (d.id === s.id) {
+              console.log(d);
+              return d; }
+          });
+          if (check != undefined) {
+            source.value.splice(index, 1);
+          }
+        });
+      }
+    }
     return {
-      name,
       priority,
-      options,
-
+      group,
+      groupId,
+      source,
+      destination,
       // function
       onSubmit,
+      getListRoles,
+      getGroupById,
+      validateName,
     };
   },
+  created(){
+    this.getListRoles();
+    this.getGroupById();
+  }
 };
 </script>
 <style lang="scss"></style>
