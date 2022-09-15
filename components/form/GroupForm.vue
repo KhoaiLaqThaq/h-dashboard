@@ -101,7 +101,7 @@ export default {
             group.name = responseData.name;
             if (responseData.roles?.length > 0) {
               destination.value = responseData.roles;
-              resetRoleSource();
+              // resetRoleSource();
             }
           })
           .catch((error) => {
@@ -130,7 +130,6 @@ export default {
       axios
         .post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/group`, groupData, { headers })
         .then((response) => {
-          console.log("responseData: ", response.data);
           let responseData = response.data;
           if (responseData) {
             navigateTo("/system/group");
@@ -156,50 +155,35 @@ export default {
       "Authorization": header.value,
       "Content-Type": "application/json"
       };
-      if(groupId.value){
-        axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles/${group.name}`, { headers })
-        .then((response) => {
-          const data = response.data;
-          console.log(data);
-          if (data) {
-            source.value = data;
-            resetRoleSource();
-          }
-        })
-        .catch((e) => {
-          console.log(e.toString());
-        });
-      }else{
-        axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles`, { headers })
-        .then((response) => {
-          const data = response.data;
-          if (data) {
-            source.value = data;
-            resetRoleSource();
-          }
-        })
-        .catch((e) => {
-          console.log(e.toString());
-        });
-      }
+      axios
+      .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles`, { headers })
+      .then((response) => {
+        const data = response.data;
+        if (data) {
+          source.value = data;
+          // resetRoleSource();
+        }
+      })
+      .catch((e) => {
+        console.log(e.toString());
+      });
     }
+
+    watch([source, destination], () => {
+      if (destination.value.length > 0) {
+        resetRoleSource()
+      }
+    });
 
     function resetRoleSource() {
       if (source.value.length > 0) {
-        console.log(destination.value);
         source.value.forEach((s, index) => {
-          let check = destination.value.find((d) => {
-            console.log(d.id === s.id);
-            if (d.id === s.id) {
-              console.log(d);
-              return d; }
-          });
+          let check = destination.value.find((d) => d.id === s.id);
           if (check != undefined) {
-            source.value.splice(index, 1);
+              source.value.splice(index, 1);
           }
         });
+        console.log('roles after: ', source.value.length) 
       }
     }
     return {

@@ -1,5 +1,7 @@
 <template>
-    <NewsForm class="mt-3" />
+    <div class="content-news mt-3">
+        <NewsForm class="mt-3" />
+    </div>
 </template>
 <script>
 import NewsForm from '~~/components/form/NewsForm.vue';
