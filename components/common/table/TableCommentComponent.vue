@@ -67,14 +67,6 @@ export default {
     const listSelected = ref([]);
     const currentRole = useCurrentRole();
 
-    // function displayBrief(brief) {
-    //   let maxLength = 125;
-    //   if (brief.length > maxLength) {
-    //     return brief.slice(0, maxLength).concat("...");
-    //   }
-    //   return brief;
-    // }
-
     function disableComment(id) {
       if (confirm("Bạn có muốn xóa bình luận này?")) {
         axios

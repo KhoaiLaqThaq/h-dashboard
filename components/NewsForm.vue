@@ -404,7 +404,6 @@ export default {
 
     // TODO: thêm tag
     function addTags() {
-      console.log('tag: ', tags.value);
       if (tag.value.trim().length > 0 && tag.value.trim() != "" && !tags.value.includes(tag.value.trim())) {
         // tagNames.value += "," + tag.value.trim();
         tags.value.push(tag.value.trim());
