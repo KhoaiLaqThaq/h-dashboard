@@ -76,7 +76,7 @@
           <span class="title-suggest__event">Space</span>
           <label for="">Thêm tag <span class="text-danger">*</span></label>
           <div class="tags mt-2">
-            <span class="tag-item bg-primary" v-for="(tag, index) in tags" :key="index">{{ tag }}
+            <span class="tag-item" v-for="(tag, index) in tags" :key="index">{{ tag }}
               <XIcon class="ms-1" @click="removeTag(index)" />
             </span>
           </div>
@@ -335,7 +335,7 @@ export default {
         let data = newsExist.value;
         title.value = data.title;
         type.value = data.type;
-        optionType.value = data.type;
+        optionType.value = data.newsTypeId;
         topic.value = data.topic && data.topic.id;
         createdDate.value = data.createdDate;
         brief.value = data.brief;
@@ -404,9 +404,10 @@ export default {
 
     // TODO: thêm tag
     function addTags() {
-      if (tag.value.trim().length > 0 && tag.value.trim() != "") {
-        tagNames.value += "," + tag.value;
-        tags.value.push(tag.value);
+      console.log('tag: ', tags.value);
+      if (tag.value.trim().length > 0 && tag.value.trim() != "" && !tags.value.includes(tag.value.trim())) {
+        // tagNames.value += "," + tag.value.trim();
+        tags.value.push(tag.value.trim());
       }
       tag.value = "";
     }
@@ -558,7 +559,9 @@ export default {
   .tag-item {
     margin-left: 0.2rem;
     margin-bottom: 0.2rem;
-    border-radius: 10px;
+    border-radius: 4px;
+    background-color: rgb(168, 167, 167);
+    border: 3px solid rgb(141, 141, 141);
     padding: 5px 25px 5px 5px;
     display: inline-block;
     font-size: 14px;
@@ -571,6 +574,7 @@ export default {
     color: #ffffff;
 
     svg {
+      margin-top: 2px;
       position: absolute;
       top: 0;
       bottom: 0;
@@ -582,9 +586,6 @@ export default {
       border-bottom-right-radius: 10px;
       margin-left: 1rem;
 
-      &:hover {
-        background-color: #1f71b4;
-      }
     }
   }
 }
