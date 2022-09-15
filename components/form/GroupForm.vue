@@ -101,7 +101,7 @@ export default {
             group.name = responseData.name;
             if (responseData.roles?.length > 0) {
               destination.value = responseData.roles;
-              // resetRoleSource();
+              resetRoleSource();
             }
           })
           .catch((error) => {
@@ -161,7 +161,7 @@ export default {
         const data = response.data;
         if (data) {
           source.value = data;
-          // resetRoleSource();
+          resetRoleSource();
         }
       })
       .catch((e) => {
@@ -169,21 +169,15 @@ export default {
       });
     }
 
-    watch([source, destination], () => {
-      if (destination.value.length > 0) {
-        resetRoleSource()
-      }
-    });
-
     function resetRoleSource() {
       if (source.value.length > 0) {
         source.value.forEach((s, index) => {
           let check = destination.value.find((d) => d.id === s.id);
           if (check != undefined) {
               source.value.splice(index, 1);
+              resetRoleSource();
           }
         });
-        console.log('roles after: ', source.value.length) 
       }
     }
     return {
