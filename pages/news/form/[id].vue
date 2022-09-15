@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import NewsForm from '~~/components/form/NewsForm.vue';
+import NewsForm from '~~/components/NewsForm.vue';
 
 export default {
     components() {

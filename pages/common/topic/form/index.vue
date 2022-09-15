@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import TopicForm from "~~/components/form/TopicForm.vue";
+import TopicForm from "~~/components/TopicForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {

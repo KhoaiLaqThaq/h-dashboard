@@ -9,7 +9,7 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
-import TopicForm from "~~/components/form/TopicForm.vue";
+import TopicForm from "~~/components/TopicForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {

@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import NewsTypeForm from "~~/components/form/NewsTypeForm.vue";
+import NewsTypeForm from "~~/components/NewsTypeForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
