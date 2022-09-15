@@ -9,7 +9,7 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
-import NewsTypeForm from "~~/components/NewsTypeForm.vue";
+import NewsTypeForm from "~~/components/form/NewsTypeForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
