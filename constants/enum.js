@@ -6,6 +6,11 @@ export const newStatus = [
   { name: "Từ chối phê duyệt", value: "3" },
 ];
 
+export const userStatus = [
+  { name: "Hoạt động", value: true },
+  { name: "Không hoạt động", value: false },
+];
+
 export const options = [
   { name: "Loại tin tập đoàn", value: "company" },
   { name: "Loại tin phòng", value: "department" },

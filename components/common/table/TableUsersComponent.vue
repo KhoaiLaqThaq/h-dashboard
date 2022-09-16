@@ -1,7 +1,8 @@
 <template>
   <div class="table-container">
     <div class="tr">
-      <div class="th" v-for="(item, index) in headers" :key="index">
+      <div class="th" :id="item.value" v-for="(item, index) in headers" :key="index"
+        @click="searchCondition(item.value)">
         {{ item.text }}
       </div>
       <div class="text-center th" v-if="actionEdit || actionDelete">
@@ -9,24 +10,25 @@
       </div>
     </div>
     <div class="tr" v-for="(item, index) in items" :key="index">
-      <div class="td text-center">{{ item.no }}</div>
-      <div class="td">{{ item.name }}</div>
+      <div class="td text-center">{{ index + 1 + page * size }}</div>
+      <div class="td">{{ item.username }}</div>
       <div class="td">{{ item.email }}</div>
-      <div class="td">{{ item.first_name }}</div>
-      <div class="td">{{ item.last_name }}</div>
-      <div class="td">{{ item.age }}</div>
-      <div class="td">{{ item.role }}</div>
+      <div class="td">{{ item.firstName }}</div>
+      <div class="td">{{ item.lastName }}</div>
+      <div class="td">
+        <template v-if="item.accountEnabled == true"><span class="badge bg-pending">Active</span></template>
+        <template v-if="item.accountEnabled == false"><span class="badge bg-success">Inactive</span></template>
+      </div>
+      <div class="td">{{ item.groupName }}</div>
+
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="d-flex">
           <div class="ms-auto cursor-pointer" v-if="actionEdit">
-            <NuxtLink :to="'/users/form/' + item.id" class="d-flex"
-              ><edit-icon /><span class="ms-1">Sửa</span></NuxtLink
-            >
+            <NuxtLink :to="'/users/form/' + item.id" class="d-flex">
+              <edit-icon /><span class="ms-1">Sửa</span>
+            </NuxtLink>
           </div>
-          <div
-            class="d-flex me-auto cursor-pointer ms-3 text-danger"
-            v-if="actionDelete"
-          >
+          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete">
             <delete-icon @click="disabledUsers(item.id)" />
             <span class="ms-1">Xóa</span>
           </div>
@@ -36,17 +38,74 @@
   </div>
 </template>
 <script>
+import { ref } from 'vue';
 import moment from "moment";
+import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
+import { ROLES } from "~~/constants/roles.js";
 
 export default {
   components: {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
+  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "sortField",
+    "sortDirection"],
+  setup(props, { emit }) {
+    const sortField = ref(props.sortField);
+    const sortDirection = ref(props.sortDirection);
+    const currentRole = useCurrentRole();
+    function displayBrief(brief) {
+      let maxLength = 125;
+      if (brief.length > maxLength) {
+        return brief.slice(0, maxLength).concat("...");
+      }
+      return brief;
+    }
+
+    const displayDate = (date) => moment(date).month(date[1] - 1).format("YYYY-MM-DD HH:mm:ss");
+
+    function searchCondition(fieldValue) {
+      if (sortField.value === fieldValue) {
+        // change sort direction
+        sortDirection.value = !sortDirection.value
+        emit('change-sort-direction', sortDirection.value);
+      } else {
+        // change sort field & reset sort direction
+        sortField.value = fieldValue;
+        emit('change-sort-field', fieldValue);
+      }
+      // change ui
+      let fieldSet = document.getElementById(fieldValue);
+      fieldSet.classList.remove('sorting', sortDirection.value ? 'sorting_asc' : 'sorting_desc');
+      fieldSet.classList.add(sortDirection.value ? 'sorting_desc' : 'sorting_asc');
+      // reset other columns
+      resetOtherColumns(fieldValue);
+    }
+
+    function resetOtherColumns(idSelector) {
+      let otherSelectors = document.getElementsByClassName('th');
+      for (let i = 0; i < otherSelectors.length - 1; i++) {
+        const element = otherSelectors[i];
+        if (element.id != idSelector) {
+          element.classList.add('sorting');
+          element.classList.remove('sorting_desc', 'sorting_asc');
+        }
+      }
+    }
+
+    return {
+      currentRole,
+      ROLES,
+
+      displayBrief,
+      displayDate,
+      searchCondition,
+      useCurrentsRole,
+    };
+  },
 };
 </script>
 <style lang="scss">
