@@ -218,7 +218,7 @@ export default {
     const titleForm = ref(newsId.value ? "Giao diện chỉnh sửa tin tức" : "Giao diện thêm mới tin tức");
     const showStatus = ref(newsId.value ? true : false);
     const createdDate = ref(getNowDate());
-    const avatar = ref(undefined);
+    const avatar = ref(null);
     const avatarUrl = ref("");
     const isChangedAvatar = ref(false);
     const title = ref("");
@@ -341,6 +341,7 @@ export default {
         brief.value = data.brief;
         content.value = data.content;
         avatarUrl.value = data.avatarUrl;
+        avatar.value = data.avatar;
         commentTotal.value = data.commentTotal;
         likeTotal.value = data.likeTotal;
         viewTotal.value = data.viewTotal;
@@ -434,7 +435,6 @@ export default {
       });
       const news = {
         id: newsId.value ? newsId.value : null,
-        avatar: avatar.value ? avatar.value : null,
         avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
         newsTypeId: optionType.value,
         title: title.value,
@@ -450,6 +450,8 @@ export default {
         createdDateString: newsId.value ? createdDateString.value : null,
         departmentCodes: departmentCodes,
       };
+      if (avatar.value)
+        news["avatar"] = avatar.value;
       let tokenHeaders = {
         "Authorization": header.value,
         "Content-Type": "multipart/form-data"
