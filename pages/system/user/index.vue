@@ -52,11 +52,11 @@
     </div>
 
     <div class="d-flex mt-3">
-      <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
+      <AddButton v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_CREATE])" :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
     </div>
 
     <div class="table-content mt-3">
-      <table-component :headers="tableHeaders" :items="content" :actionEdit="true" :actionDelete="true" :page="page" :size="size" />
+      <table-component :headers="tableHeaders" :items="content" :actionEdit="true" :actionDelete="true" :page="page" :size="size" :routerPush="routerPush" />
 
       <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements" :totalElements="totalElements" 
         :totalPages="totalPages" :first="first" :last="last" @change-page="page = $event" @change-size="size = $event" />
@@ -116,11 +116,11 @@ export default {
     //const currentPage = ref(0);
     const tableHeaders = [
       { text: "STT", value: "no" },
-      { text: "Username", value: "username" },
+      { text: "Tên đăng nhập", value: "username" },
       { text: "Email", value: "email" },
       { text: "Họ", value: "lastName" },
       { text: "Tên", value: "firstName" },
-      { text: "TT", value: "accountEnabled" },
+      { text: "Trạng thái", value: "accountEnabled" },
       { text: "Nhóm", value: "groupName" },
     ];
 
@@ -152,7 +152,6 @@ export default {
       axios
         .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartments`, criteria, { headers: tokenHeader })
         .then((response) => {
-          console.log(response.data);
           const data = response.data;
           setPagination(data);
         })
