@@ -484,6 +484,7 @@ export default {
           });
           if (check != undefined) {
             source.value.splice(index, 1);
+            resetDepartmentSource();
           }
         });
       }
