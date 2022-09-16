@@ -49,7 +49,7 @@ provide('selectedTitle', selectedTitle)
     transition: .4s all ease-out;
     cursor: pointer;
     user-select: none;
-    max-width: 150px;
+    // max-width: 150px;
 }
 
 .tabs__item.selected {

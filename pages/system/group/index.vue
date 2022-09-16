@@ -38,28 +38,33 @@ export default {
     };
   },
   setup() {
+    const header = useHeader();
     const currentRole = useCurrentRole();
     const tableHeader = [
       { text: "STT", value: "no" },
       { text: "Tên nhóm quyền", value: "name" },
     ];
 
-    const groups = ref([
-      {
-        no: 1,
-        name: "Nhóm quyền Admin",
-      },
-      {
-        no: 2,
-        name: "Nhóm quyền duyệt tin",
-      },
-      {
-        no: 2,
-        name: "Nhóm quyền thêm nội dung",
-      },
-    ]);
+    const groups = ref([]);
     const page = ref(0);
     const size = ref(10);
+
+    function searchCallApi() {
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
+      axios
+        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers: tokenHeader })
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          groups.value = data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    }
 
     return {
       tableHeader,
@@ -69,12 +74,13 @@ export default {
       ROLES,
 
       currentRole,
-      useCurrentsRole
+      useCurrentsRole,
+      searchCallApi,
     };
   },
-  //   created() {
-  //     this.searchCallApi();
-  //   },
+    created() {
+      this.searchCallApi();
+    },
 };
 </script>
 <style lang=""></style>

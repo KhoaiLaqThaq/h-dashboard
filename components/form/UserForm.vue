@@ -1,112 +1,109 @@
 <template>
-  <form @submit.prevent="onSubmit()" enctype="multipart/form-data">
-    <div class="d-flex">
-      <TitleHeader :title="titleForm" />
-      <BaseButton
-        class="btn-primary ms-auto"
-        :btnType="'submit'"
-        :name="'Save'"
-        :textSize="'text-small'"
-      />
-    </div>
-    <div class="row mt-3">
-      <div class="col-12">
-        <!-- Họ -->
-        <div class="row gx-2">
-          <div class="form-floating mb-3 col-6">
-            <input
-              type="text"
-              class="form-control box"
-              required="required"
-              autocomplete="false"
-              v-model="last_name"
-            />
-            <label for="">Họ <span class="text-danger">*</span></label>
-          </div>
-          <!-- Tên  -->
-          <div class="form-floating mb-3 col-6">
-            <input
-              type="text"
-              class="form-control box"
-              required="required"
-              autocomplete="false"
-              v-model="first_name"
-            />
-            <label for="">Tên <span class="text-danger">*</span></label>
-          </div>
-          <!-- Tên đăng nhập -->
-          <div class="form-floating mb-3 col-6">
-            <input
-              type="text"
-              class="form-control box"
-              required="required"
-              autocomplete="false"
-              v-model="username"
-            />
-            <label for=""
-              >Tên đăng nhập <span class="text-danger">*</span></label
-            >
-          </div>
-          <!-- Email  -->
-          <div class="form-floating mb-3 col-6">
-            <input
-              type="email"
-              class="form-control box"
-              required="required"
-              autocomplete="false"
-              v-model="email"
-            />
-            <label for="">Email <span class="text-danger">*</span></label>
-          </div>
+  <form>
+    <TabsWrapper>
+      <TabItem title="Thông tin người dùng">
+        <div class="card radius-unset mb-0 box">
+          <div class="card-body">
+            <div class="row mt-3 pb-0">
+              <div class="col-12">
+                <div class="row gx-2">
+                  <div class="form-floating mb-3 col-6">
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.firstName"/>
+                    <label for="">Họ</label>
+                  </div>
+                  <div class="form-floating mb-3 col-6">
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.lastName" />
+                    <label for="">Tên</label>
+                  </div>
+                  <!-- Tên đăng nhập -->
+                  <div class="form-floating mb-3 col-6">
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username"/>
+                    <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
+                  </div>
+                  <!-- Email  -->
+                  <div class="form-floating mb-3 col-6">
+                    <input type="email" class="form-control box" required="required" autocomplete="false" v-model="user.email" />
+                    <label for="">Email <span class="text-danger">*</span></label>
+                  </div>
 
-          <label for=""
-            >Phân nhóm quyền <span class="text-danger">*</span></label
-          >
-          <div class="form-floating mb-3 row">
-            <MultiCheckboxVue
-              v-model:value="groupPriority"
-              :options="groupOptions"
-            />
-          </div>
+                  <div class="col-6">
+                    <label for="">Kích hoạt tài khoản</label>
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input" :checked="user.enabled" role="switch"/>
+                    </div>
+                  </div>
+                </div>
 
-          <label for="">Phân quyền <span class="text-danger">*</span></label>
-          <div class="form-floating mb-3 row">
-            <MultiCheckboxVue v-model:value="priority" :options="options" />
-          </div>
+                <hr>
 
-          <label for=""
-            >Chọn đơn vị thành viên<span class="text-danger">*</span></label
-          >
-          <div class="form-floating mb-3 row">
-            <MultiCheckboxVue
-              v-model:value="unitPriority"
-              :options="unitOptions"
-            />
+                <div class="row pb-0">
+                  <div class="col-12 text-right">
+                    <BaseButton class="btn-primary ms-auto" :btnType="'button'" :name="'Lưu'" :textSize="'text-small'" @click="onSubmit()"/>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </TabItem>
+      <TabItem title="Phân quyền">
+        <div class="form-group bg-white">
+          <div class="card radius-unset mb-0 box">
+            <div class="card-body">
+              <div class="row mt-3 pb-0">
+                <div class="col-12">
+                  <div class="row gx-2">
+                    <div class="col-6">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" required="required">
+                          <option></option>
+                        </select>
+                        <label>Chọn nhóm quyền <span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-6">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" required="required">
+                          <option></option>
+                        </select>
+                        <label>Chọn phòng ban <span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row pb-0">
+                    <div class="col-12 text-right">
+                      <BaseButton class="btn-primary ms-auto" :btnType="'button'" :name="'Phân quyền'" :textSize="'text-small'" @click="onAuthority()"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </TabItem>
+    </TabsWrapper>
+
+    
   </form>
 </template>
 <script>
-import { ref } from "vue";
-import DatepickerLite from "vue3-datepicker-lite";
+import { ref, reactive } from "vue";
+import { useRoute } from "vue-router";
 // components
 import BaseButton from "~~/components/common/BaseButton.vue";
 import BaseSelect from "~~/components/common/BaseSelect.vue";
-import BaseInput from "~~/components/common/BaseInput.vue";
-import FormCheck from "~~/components/common/FormCheck.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
-import UseDropZone from "~~/components/common/UseDropZone.vue";
 import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
-// functions
-import { getNowDate } from "~~/constants/format-date.js";
-// icons
-import XIcon from "~~/assets/images/icons/XIcon.vue";
+import TabsWrapper from "~~/components/common/tab/TabsWrapper.vue";
+import TabItem from "~~/components/common/tab/TabItem.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
+import {ROLES} from "~~/constants/roles.js";
+import { useCurrentsRole } from '~~/services/common.js'
 
 export default {
   components: {
@@ -114,87 +111,45 @@ export default {
     FloatSelect,
     BaseButton,
     BaseSelect,
-    BaseInput,
-    FormCheck,
-    UseDropZone,
-    DatepickerLite,
-    XIcon,
     MultiCheckboxVue,
+    TabsWrapper,
+    TabItem
   },
-  props: ["user"],
-  data() {
-    return {
-      titleForm: "Giao diện thêm mới người dùng",
-      options: ["Loại tin 1", "Loại tin 2", "Loại tin 3"],
-    };
-  },
-  setup(props) {
-    const email = ref("");
-    const fullname = ref("");
-    const priority = ref([]);
-    const options = ref([]);
-    const groupOptions = ref([]);
-    const groupPriority = ref([]);
-    const unitPriority = ref([]);
-    const unitOptions = ref([]);
+  setup() {
+    const route = useRoute();
+    const userId = ref(route.params && route.params.id);
+    const header = useHeader();
+    const currentUser = useCurrentUser();
+    const currentRole = useCurrentRole();
+    const { $showToast } = useNuxtApp();
+    
+    const titleForm = ref(userId.value ? "Giao diện chỉnh sửa người dùng":"Giao diện thêm mới người dùng");
+    const user = reactive({
+      username: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      accountEnabled: true
+    });
 
     function onSubmit() {
       console.log("Form Submmitted");
     }
 
-    const getOptions = () => {
-      options.value = [
-        { name: "Thêm", id: 1 },
-        { name: "Sửa", id: 2 },
-        { name: "Xoá", id: 3 },
-        { name: "Thêm 2", id: 4 },
-        { name: "Sửa 2", id: 5 },
-        { name: "Xoá 2", id: 6 },
-        { name: "Phê duyệt", id: 7 },
-        { name: "Phê duyệt 2", id: 8 },
-      ];
-    };
+    function onAuthority() {
 
-    const getGroupOptions = () => {
-      groupOptions.value = [
-        { name: "Nhóm Admin", id: 1 },
-        { name: "Nhóm Content Creator", id: 2 },
-        { name: "Nhóm Phê duyệt", id: 3 },
-        { name: "Nhóm Chỉnh sửa", id: 4 },
-      ];
-    };
-
-    const getUnitOptions = () => {
-      unitOptions.value = [
-        { name: "Mavinex", id: 1 },
-        { name: "Mavin Foods", id: 2 },
-        { name: "Mavin Aqua", id: 3 },
-        { name: "Mavin Fish", id: 4 },
-        { name: "Mavinex", id: 5 },
-        { name: "Mekovet", id: 6 },
-        { name: "Mavin Pigfarm", id: 7 },
-        { name: "Mavin Duckfarm", id: 8 },
-      ];
-    };
-
-    onMounted(() => {
-      getOptions();
-      getGroupOptions();
-      getUnitOptions();
-    });
+    }
 
     return {
-      fullname,
-      email,
-      priority,
-      options,
-      groupOptions,
-      groupPriority,
-      unitPriority,
-      unitOptions,
+      titleForm,
+      ROLES,
+      user,
 
       // function
       onSubmit,
+      onAuthority,
+      useCurrentsRole
     };
   },
 };

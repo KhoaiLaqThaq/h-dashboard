@@ -9,7 +9,7 @@
       <div class="td">{{ item.name }}</div>
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="action-group d-flex">
-          <NuxtLink v-if="actionEdit && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_GROUP_USER_UPDATE])" class="cursor-pointer" :to="routerPush + '/' + item.no">
+          <NuxtLink v-if="actionEdit && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_GROUP_USER_UPDATE])" class="cursor-pointer" :to="routerPush + '/' + item.id">
             <edit-icon /><span class="ms-1">Sửa</span>
           </NuxtLink>
           <div v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_GROUP_USER_DELETE])" class="ms-3 cursor-pointer text-danger">
