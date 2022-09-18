@@ -22,8 +22,8 @@
             <div class="col-md-4">
               <div class="form-floating">
                 <select v-model="accountEnabled" class="form-select">
-                  <option v-for="(accountEnabled, index) in userStatus" :key="index" :value="accountEnabled.value">
-                    {{ accountEnabled.name }}
+                  <option v-for="(enabled, index) in userStatus" :key="index" :value="enabled.value">
+                    {{ enabled.name }}
                   </option>
                 </select>
                 <label for="floatingSelect">Tìm kiếm theo trạng thái...</label>
@@ -131,7 +131,6 @@ export default {
       let criteria = {
         page: page.value,
         size: size.value,
-        keyword: keyword.value,
         groupName: groupName.value,
         enabled: accountEnabled.value,
       };
@@ -141,7 +140,7 @@ export default {
       };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartments`, criteria, { headers: tokenHeader })
+        .post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/users`, criteria, { headers: tokenHeader })
         .then((response) => {
           // console.log(response.data);
           const data = response.data;
@@ -152,12 +151,7 @@ export default {
         });
     }
 
-    const changeSortField = (fieldValue) => {
-      console.log("change sort field", fieldValue);
-      sortField.value = fieldValue;
-    };
-
-    watch([page, size, sortField, sortDirection], () => {
+    watch([page, size], () => {
       searchCallApi();
     });
     return {
@@ -177,7 +171,6 @@ export default {
       ROLES,
 
       searchCallApi,
-      changeSortField,
       useCurrentsRole,
     };
   },
