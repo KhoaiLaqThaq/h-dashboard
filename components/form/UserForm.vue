@@ -1,7 +1,11 @@
 <template>
   <form>
-    <TabsWrapper>
-      <TabItem title="Thông tin người dùng">
+    <div class="tabs-container">
+      <ul>
+        <li class="tabs__item selected">Thông tin người dùng</li>
+        <li class="tabs__item" @click="navigateToAuthority()">Phân quyền</li>
+      </ul>
+      <div class="tabs__content">
         <div class="card radius-unset mb-0 box">
           <div class="card-body">
             <div class="row mt-3 pb-0">
@@ -15,12 +19,10 @@
                     <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.lastName" />
                     <label for="">Tên</label>
                   </div>
-                  <!-- Tên đăng nhập -->
                   <div class="form-floating mb-3 col-6">
                     <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username"/>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
                   </div>
-                  <!-- Email  -->
                   <div class="form-floating mb-3 col-6">
                     <input type="email" class="form-control box" required="required" autocomplete="false" v-model="user.email" />
                     <label for="">Email <span class="text-danger">*</span></label>
@@ -29,76 +31,32 @@
                   <div class="col-6">
                     <label for="">Kích hoạt tài khoản</label>
                     <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input" :checked="user.enabled" role="switch"/>
+                      <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.enabled" role="switch"/>
                     </div>
                   </div>
                 </div>
-
                 <hr>
-
                 <div class="row pb-0">
                   <div class="col-12 text-right">
-                    <BaseButton class="btn-primary ms-auto" :btnType="'button'" :name="'Lưu'" :textSize="'text-small'" @click="onSubmit()"/>
+                    <button class="btn btn-primary ms-auto text-small" type="button" @click="onSubmit()">Lưu</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </TabItem>
-      <TabItem title="Phân quyền">
-        <div class="form-group bg-white">
-          <div class="card radius-unset mb-0 box">
-            <div class="card-body">
-              <div class="row mt-3 pb-0">
-                <div class="col-12">
-                  <div class="row gx-2">
-                    <div class="col-6">
-                      <div class="form-floating mb-3">
-                        <select class="form-select" required="required">
-                          <option></option>
-                        </select>
-                        <label>Chọn nhóm quyền <span class="text-danger">*</span></label>
-                      </div>
-                    </div>
-
-                    <div class="col-6">
-                      <div class="form-floating mb-3">
-                        <select class="form-select" required="required">
-                          <option></option>
-                        </select>
-                        <label>Chọn phòng ban <span class="text-danger">*</span></label>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row pb-0">
-                    <div class="col-12 text-right">
-                      <BaseButton class="btn-primary ms-auto" :btnType="'button'" :name="'Phân quyền'" :textSize="'text-small'" @click="onAuthority()"/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </TabItem>
-    </TabsWrapper>
-
-    
+      </div>
+    </div>
   </form>
 </template>
 <script>
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 // components
-import BaseButton from "~~/components/common/BaseButton.vue";
 import BaseSelect from "~~/components/common/BaseSelect.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
-import TabsWrapper from "~~/components/common/tab/TabsWrapper.vue";
-import TabItem from "~~/components/common/tab/TabItem.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
