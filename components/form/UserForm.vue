@@ -67,20 +67,18 @@ export default {
   components: {
     TitleHeader,
     FloatSelect,
-    BaseButton,
     BaseSelect,
-    MultiCheckboxVue,
-    TabsWrapper,
-    TabItem
+    MultiCheckboxVue
   },
   setup() {
     const route = useRoute();
     const userId = ref(route.params && route.params.id);
+    const userDepartmentId = ref("");
     const header = useHeader();
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
-    
+
     const titleForm = ref(userId.value ? "Giao diện chỉnh sửa người dùng":"Giao diện thêm mới người dùng");
     const user = reactive({
       username: "",
@@ -90,13 +88,120 @@ export default {
       email: "",
       accountEnabled: true
     });
+    let headers = {
+      'Authorization': header.value,
+      'Content-Type': 'application/json'
+    };
+
+    function onLoadUserK6K() {
+      if (userId.value) {
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, { headers})
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData) {
+            console.log('responseData: ', responseData);
+            setUser(responseData);
+            onLoadUserDepartment(responseData.k6kUserId);
+          } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
+        })
+        .catch((error) => {
+          onLoadUserError("Tải thông tin người dùng không thành công -1");
+          console.log("LOAD USER ERROR: ", error);
+        });
+      }
+    }
+
+    function onLoadUserDepartment(k6kUserId) {
+      if (k6kUserId) {
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${k6kUserId}`, { headers})
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData) {
+            userDepartmentId.value = responseData.id
+          }
+        })
+        .catch((error) => {
+          onLoadUserError("Tải thông tin người dùng không thành công -2");
+        })
+      }
+    }
 
     function onSubmit() {
       console.log("Form Submmitted");
+      let userData = {
+        id: userId.value,
+        username: user.username,
+        password: user.password,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        enabled: user.accountEnabled
+      };
+      axios.post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user`, userData, {headers})
+      .then((response) => {
+        let responseData = response.data;
+        if (responseData) {
+          console.log("SAVE RESPONSE USER K6k: ", responseData);
+          // save user-department
+          saveUserDepartment(responseData);
+        }
+      })
+      .catch((error) => {
+        $showToast("Lưu người dùng thất bại -1", "error", 2000);
+        console.log("SAVE USER ERROR -1: ", error);
+      });
     }
 
-    function onAuthority() {
+    function saveUserDepartment(responseUserDepartment) {
+      if (responseUserDepartment) {
+        console.log('responseUserDepartment: ', responseUserDepartment);
+        let newsDepartmentData = {
+          id: userDepartmentId.value,
+          username: responseUserDepartment.username,
+          email: responseUserDepartment.email,
+          firstName: responseUserDepartment.firstName,
+          lastName: responseUserDepartment.lastName,
+          enabled: responseUserDepartment.enabled,
+          k6kUserId: userId.value ? userId.value : responseUserDepartment.id,
+        };
+        axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData) {
+            console.log("SAVE RESPONSE USER DEPARTMENT: ", responseData);
+            $showToast("Lưu người dùng thành công", "success", 2000);
+            navigateTo("/system/user/form/" + responseUserDepartment.id);
+          }
+        })
+        .catch((error) => {
+          $showToast("Lưu người dùng thất bại -2", "error", 2000);
+          console.log("SAVE USER ERROR -2: ", error);
+        })
+      }
+    }
 
+    function setUser(newUser) {
+      if (newUser) {
+        user.username = newUser.username;
+        user.password = newUser.password;
+        user.firstName = newUser.firstName;
+        user.lastName = newUser.lastName;
+        user.email = newUser.email;
+        user.accountEnabled = newUser.accountEnabled;
+      }
+    }
+
+    function onLoadUserError(message) {
+      $showToast(message, "warning", 3000);
+      navigateTo("/system/user");
+    }
+
+    function navigateToAuthority() {
+      if (!userId.value){
+        console.log('userid: ', userId.value);
+        $showToast("Yêu cầu tạo người dùng trước", "warning", 3000);
+      } else
+        navigateTo("/system/user/form/authority/" + userId.value);
     }
 
     return {
@@ -106,10 +211,14 @@ export default {
 
       // function
       onSubmit,
-      onAuthority,
-      useCurrentsRole
+      useCurrentsRole,
+      navigateToAuthority,
+      onLoadUserK6K
     };
   },
+  created() {
+    this.onLoadUserK6K();
+  }
 };
 </script>
 <style lang="scss"></style>
