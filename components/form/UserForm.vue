@@ -99,7 +99,6 @@ export default {
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            console.log('responseData: ', responseData);
             setUser(responseData);
             onLoadUserDepartment(responseData.k6kUserId);
           } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
@@ -141,7 +140,6 @@ export default {
       .then((response) => {
         let responseData = response.data;
         if (responseData) {
-          console.log("SAVE RESPONSE USER K6k: ", responseData);
           // save user-department
           saveUserDepartment(responseData);
         }
@@ -168,7 +166,6 @@ export default {
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            console.log("SAVE RESPONSE USER DEPARTMENT: ", responseData);
             $showToast("Lưu người dùng thành công", "success", 2000);
             navigateTo("/system/user/form/" + responseUserDepartment.id);
           }
@@ -198,7 +195,6 @@ export default {
 
     function navigateToAuthority() {
       if (!userId.value){
-        console.log('userid: ', userId.value);
         $showToast("Yêu cầu tạo người dùng trước", "warning", 3000);
       } else
         navigateTo("/system/user/form/authority/" + userId.value);
