@@ -1,8 +1,7 @@
 <template>
   <div class="table-container">
     <div class="tr">
-      <div class="th" :id="item.value" v-for="(item, index) in headers" :key="index"
-        @click="searchCondition(item.value)">
+      <div class="th" :id="item.value" v-for="(item, index) in headers" :key="index">
         {{ item.text }}
       </div>
       <div class="text-center th" v-if="actionEdit || actionDelete">
@@ -16,8 +15,8 @@
       <div class="td">{{ item.firstName }}</div>
       <div class="td">{{ item.lastName }}</div>
       <div class="td">
-        <template v-if="item.accountEnabled == true"><span class="badge bg-pending">Active</span></template>
-        <template v-if="item.accountEnabled == false"><span class="badge bg-success">Inactive</span></template>
+        <template v-if="item.enabled == true"><span class="badge bg-success">Active</span></template>
+        <template v-if="item.enabled == false"><span class="badge bg-warning">Inactive</span></template>
       </div>
       <div class="td">{{ item.groupName }}</div>
 
