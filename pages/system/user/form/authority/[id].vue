@@ -100,8 +100,9 @@ export default {
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
+                    console.log("responseData: ", responseData);
                     userDepartment.value = responseData;
-                    k6kGroupName.value = responseData.k6kGroupName;
+                    k6kGroupName.value = responseData.groupName;
                     departmentId.value = responseData.departmentId;
                 } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
             })
@@ -167,6 +168,7 @@ export default {
             let dataUserExist = userDepartment.value;
             let dataUserDepartment = {
                 id: dataUserExist.id,
+                departmentId: departmentId.value,
                 username: dataUserExist.username,
                 email: dataUserExist.email,
                 firstName: dataUserExist.firstName,

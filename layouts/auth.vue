@@ -16,8 +16,8 @@
           <form @submit.prevent="login()">
             <!-- email -->
             <div class="form-floating mb-3">
-              <input class="form-control" type="email" id="emailaddress" v-model="currentUser.username" />
-              <label for="emailaddress">Địa chỉ Email thành viên <span class="text-danger">*</span></label>
+              <input class="form-control" type="text" id="emailaddress" v-model="currentUser.username" />
+              <label for="emailaddress">Nhập tên đăng nhập <span class="text-danger">*</span></label>
             </div>
             <!-- /email -->
             <!-- password -->
