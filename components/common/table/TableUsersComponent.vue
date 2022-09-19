@@ -1,8 +1,7 @@
 <template>
   <div class="table-container">
     <div class="tr">
-      <div class="th" :id="item.value" v-for="(item, index) in headers" :key="index"
-        @click="searchCondition(item.value)">
+      <div class="th" :id="item.value" v-for="(item, index) in headers" :key="index">
         {{ item.text }}
       </div>
       <div class="text-center th" v-if="actionEdit || actionDelete">
@@ -16,8 +15,8 @@
       <div class="td">{{ item.firstName }}</div>
       <div class="td">{{ item.lastName }}</div>
       <div class="td">
-        <template v-if="item.accountEnabled == true"><span class="badge bg-pending">Active</span></template>
-        <template v-if="item.accountEnabled == false"><span class="badge bg-success">Inactive</span></template>
+        <template v-if="item.enabled == true"><span class="badge bg-success">Active</span></template>
+        <template v-if="item.enabled == false"><span class="badge bg-warning">Inactive</span></template>
       </div>
       <div class="td">{{ item.groupName }}</div>
 
@@ -28,8 +27,8 @@
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>
           </div>
-          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_DELETE])">
-            <delete-icon @click="disabledUsers(item.id)" />
+          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_DELETE])" @click="deleteUser(item.k6kUserId)">
+            <delete-icon />
             <span class="ms-1">Xóa</span>
           </div>
         </div>
@@ -44,7 +43,9 @@ import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
+import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
+import axios from 'axios';
 
 export default {
   components: {
@@ -56,6 +57,14 @@ export default {
     const sortField = ref(props.sortField);
     const sortDirection = ref(props.sortDirection);
     const currentRole = useCurrentRole();
+    const header = useHeader();
+    const { $showToast } = useNuxtApp();
+
+    let headers = {
+      'Authorization': header.value,
+      'Content-Type': 'application/json'
+    };
+
     function displayBrief(brief) {
       let maxLength = 125;
       if (brief.length > maxLength) {
@@ -95,6 +104,45 @@ export default {
       }
     }
 
+    function deleteUser(k6kUserId) {
+      if (k6kUserId) {
+        axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData) {
+            deleteUserDepartment(k6kUserId);
+          } else {
+            onLoadUserError("Ops! Xóa người dùng không thành công -1");
+          }
+        })
+        .catch((error) => {
+          onLoadUserError("Ops! Xóa người dùng không thành công -1");
+          console.log("ERROR DELETE USER K6K: ", error);
+        })
+      }
+    }
+
+    function deleteUserDepartment(k6kUserId) {
+      axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
+      .then((response) => {
+        let responseData = response.data;
+        if (responseData) {
+          $showToast("Xóa người dùng thành công!", "success", 3000);
+          location.reload();
+        } else {
+          onLoadUserError("Ops! Xóa người dùng không thành công -2");
+        }
+      })
+      .catch((error) => {
+        onLoadUserError("Ops! Xóa người dùng không thành công -2");
+        console.log("ERROR DELETE USER K6K: ", error);
+      })
+    }
+
+    function onLoadUserError(message) {
+      $showToast(message, "error", 3000);
+    }
+
     return {
       currentRole,
       ROLES,
@@ -102,7 +150,8 @@ export default {
       displayBrief,
       displayDate,
       searchCondition,
-      useCurrentsRole
+      useCurrentsRole,
+      deleteUser
     };
   },
 };
