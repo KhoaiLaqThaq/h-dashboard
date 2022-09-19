@@ -27,15 +27,10 @@
                     <input type="email" class="form-control box" required="required" autocomplete="false" v-model="user.email" />
                     <label for="">Email <span class="text-danger">*</span></label>
                   </div>
-
-                  <div class="col-6">
+                  <div class="col-6" v-if="showStatus">
                     <label for="">Kích hoạt tài khoản</label>
                     <div class="form-check form-switch">
-<<<<<<< HEAD
-                      <input type="checkbox" class="form-check-input" :checked="user.enabled" role="switch"/>
-=======
-                      <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.accountEnabled" role="switch"/>
->>>>>>> 9736ad72ee4d308a3fb481adfadc91e9a90abddf
+                    <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.accountEnabled" role="switch"/>
                     </div>
                   </div>
                 </div>
@@ -82,7 +77,7 @@ export default {
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
-
+    const showStatus = ref(userId.value ? true : false);
     const titleForm = ref(userId.value ? "Giao diện chỉnh sửa người dùng":"Giao diện thêm mới người dùng");
     const user = reactive({
       username: "",
@@ -90,7 +85,7 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-      accountEnabled: true
+      accountEnabled: false
     });
     let headers = {
       'Authorization': header.value,
@@ -170,7 +165,7 @@ export default {
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            $showToast("Lưu người dùng thành công", "success", 2000);
+            $showToast("Sửa người dùng thành công", "success", 2000);
             navigateTo("/system/user/form/" + responseUserDepartment.id);
           }
         })
@@ -208,6 +203,7 @@ export default {
       titleForm,
       ROLES,
       user,
+      showStatus,
 
       // function
       onSubmit,
