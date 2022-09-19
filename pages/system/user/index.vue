@@ -7,23 +7,29 @@
       <div class="card-body">
         <form @submit.prevent="searchCallApi()">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-floating mb-3">
-                <input type="text" v-model="keyword" id="keyword" class="form-control pr-5" />
-                <label for="keyword">Tìm kiếm từ khóa...</label>
+                <input type="text" v-model="username" id="username" class="form-control pr-5" />
+                <label for="username">Tìm kiếm username...</label>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-floating mb-3">
-                <input type="text" v-model="departmentName" id="groupName" class="form-control pr-5" />
-                <label for="departmentName">Tìm kiếm nhóm...</label>
+                <input type="text" v-model="email" id="email" class="form-control pr-5" />
+                <label for="email">Tìm kiếm email...</label>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <div class="form-floating mb-3">
+                <input type="text" v-model="groupName" id="groupName" class="form-control pr-5" />
+                <label for="groupName">Tìm kiếm nhóm...</label>
+              </div>
+            </div>
+            <div class="col-md-3">
               <div class="form-floating">
                 <select v-model="accountEnabled" class="form-select">
-                  <option v-for="(enabled, index) in userStatus" :key="index" :value="enabled.value">
-                    {{ enabled.name }}
+                  <option v-for="(accountEnabled, index) in userStatus" :key="index" :value="accountEnabled.value">
+                    {{ accountEnabled.name }}
                   </option>
                 </select>
                 <label for="floatingSelect">Tìm kiếm theo trạng thái...</label>
@@ -50,12 +56,10 @@
     </div>
 
     <div class="table-content mt-3">
-      <table-component :headers="headers" :items="content" :actionEdit="true" :actionDelete="true" :page="page"
-        :size="size" />
+      <table-component :headers="tableHeaders" :items="content" :actionEdit="true" :actionDelete="true" :page="page" :size="size" :routerPush="routerPush" />
 
-      <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
-        :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last" @change-page="page = $event"
-        @change-size="size = $event" />
+      <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements" :totalElements="totalElements" 
+        :totalPages="totalPages" :first="first" :last="last" @change-page="page = $event" @change-size="size = $event" />
     </div>
   </div>
 </template>
@@ -102,18 +106,21 @@ export default {
     const last = ref(false);
     const content = ref([]);
     const groupName = ref("");
-    const enabled = ref("");
+    const username = ref("");
+    const email = ref("");
+    const accountEnabled = ref("");
+    const departmentId = ref("");
     const header = useHeader();
     const currentRole = useCurrentRole();
 
     //const currentPage = ref(0);
-    const headers = [
+    const tableHeaders = [
       { text: "STT", value: "no" },
-      { text: "Username", value: "username" },
+      { text: "Tên đăng nhập", value: "username" },
       { text: "Email", value: "email" },
       { text: "Họ", value: "lastName" },
       { text: "Tên", value: "firstName" },
-      { text: "TT", value: "accountEnabled" },
+      { text: "Trạng thái", value: "accountEnabled" },
       { text: "Nhóm", value: "groupName" },
     ];
 
@@ -131,8 +138,11 @@ export default {
       let criteria = {
         page: page.value,
         size: size.value,
+        username: username.value,
+        email: email.value,
         groupName: groupName.value,
         enabled: accountEnabled.value,
+        departmentId: departmentId.value,
       };
       let tokenHeader = {
         'Authorization': header.value,
@@ -140,9 +150,8 @@ export default {
       };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/users`, criteria, { headers: tokenHeader })
+        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartments`, criteria, { headers: tokenHeader })
         .then((response) => {
-          // console.log(response.data);
           const data = response.data;
           setPagination(data);
         })
@@ -155,7 +164,7 @@ export default {
       searchCallApi();
     });
     return {
-      headers,
+      tableHeaders,
       page,
       size,
       numberOfElements,
@@ -165,8 +174,11 @@ export default {
       first,
       last,
       content,
+      username,
+      email,
       groupName,
-      enabled,
+      accountEnabled,
+      departmentId,
       currentRole,
       ROLES,
 

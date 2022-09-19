@@ -23,12 +23,12 @@
 
       <div class="td" v-if="actionEdit || actionDelete">
         <div class="d-flex">
-          <div class="ms-auto cursor-pointer" v-if="actionEdit">
-            <NuxtLink :to="'/users/form/' + item.id" class="d-flex">
+          <div class="ms-auto cursor-pointer" v-if="actionEdit && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_UPDATE])">
+            <NuxtLink :to="routerPush + '/' + item.k6kUserId" class="d-flex">
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>
           </div>
-          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete">
+          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_DELETE])">
             <delete-icon @click="disabledUsers(item.id)" />
             <span class="ms-1">Xóa</span>
           </div>
@@ -51,8 +51,7 @@ export default {
     EditIcon,
     DeleteIcon,
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "sortField",
-    "sortDirection"],
+  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "routerPush"],
   setup(props, { emit }) {
     const sortField = ref(props.sortField);
     const sortDirection = ref(props.sortDirection);
@@ -103,7 +102,7 @@ export default {
       displayBrief,
       displayDate,
       searchCondition,
-      useCurrentsRole,
+      useCurrentsRole
     };
   },
 };
