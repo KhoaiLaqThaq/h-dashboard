@@ -52,7 +52,7 @@
     </div>
 
     <div class="d-flex mt-3">
-      <AddButton v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_CREATE])" :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
+      <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
     </div>
 
     <div class="table-content mt-3">
