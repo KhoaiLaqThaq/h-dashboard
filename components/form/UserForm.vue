@@ -159,7 +159,7 @@ export default {
           email: responseUserDepartment.email,
           firstName: responseUserDepartment.firstName,
           lastName: responseUserDepartment.lastName,
-          enabled: responseUserDepartment.enabled,
+          enabled: user.accountEnabled,
           k6kUserId: userId.value ? userId.value : responseUserDepartment.id,
         };
         axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
