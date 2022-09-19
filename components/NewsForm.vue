@@ -464,7 +464,7 @@ export default {
           navigateTo("/news");
         })
         .catch((error) => {
-          $showToast("Thêm/Sửa Tin tức thất bại", "danger", 2000);
+          $showToast("Thêm/Sửa Tin tức thất bại", "error", 2000);
           console.log(error);
         });
     }

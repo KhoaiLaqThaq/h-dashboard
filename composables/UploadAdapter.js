@@ -37,8 +37,11 @@ export default class UploadAdapter {
     // Initializes the XMLHttpRequest object using the URL passed to the constructor.
     _initRequest() {
         const xhr = this.xhr = new XMLHttpRequest();
-
+        let token = localStorage.getItem("token");
+        let headers = `Bearer ${token}`;
+        
         xhr.open( 'POST', `${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/image/upload/path`, true );
+        xhr.setRequestHeader('Authorization', headers);
     }
 
     // Initializes XMLHttpRequest listeners.
