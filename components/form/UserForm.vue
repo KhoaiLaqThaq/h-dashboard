@@ -31,7 +31,7 @@
                   <div class="col-6">
                     <label for="">Kích hoạt tài khoản</label>
                     <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.enabled" role="switch"/>
+                      <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.accountEnabled" role="switch"/>
                     </div>
                   </div>
                 </div>
