@@ -20,7 +20,7 @@
                     <label for="">Tên</label>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username"/>
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username" :disabled="user.username"/>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
                   </div>
                   <div class="form-floating mb-3 col-6">
@@ -73,6 +73,10 @@ export default {
     const route = useRoute();
     const userId = ref(route.params && route.params.id);
     const userDepartmentId = ref("");
+    const departmentId = ref("");
+    const k6kGroupId = ref("");
+    const groupName = ref("");
+
     const header = useHeader();
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
@@ -99,7 +103,7 @@ export default {
           let responseData = response.data;
           if (responseData) {
             setUser(responseData);
-            onLoadUserDepartment(responseData.k6kUserId);
+            onLoadUserDepartment(responseData.id);
           } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
         })
         .catch((error) => {
@@ -116,6 +120,9 @@ export default {
           let responseData = response.data;
           if (responseData) {
             userDepartmentId.value = responseData.id
+            departmentId.value = responseData.departmentId;
+            k6kGroupId.value = responseData.k6kGroupId;
+            groupName.value = responseData.groupName;
           }
         })
         .catch((error) => {
@@ -133,7 +140,8 @@ export default {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        enabled: user.accountEnabled
+        accountEnabled: user.accountEnabled,
+        groupName: groupName.value
       };
       axios.post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user`, userData, {headers})
       .then((response) => {
@@ -151,24 +159,29 @@ export default {
 
     function saveUserDepartment(responseUserDepartment) {
       if (responseUserDepartment) {
-        console.log('responseUserDepartment: ', responseUserDepartment);
         let newsDepartmentData = {
           id: userDepartmentId.value,
           username: responseUserDepartment.username,
           email: responseUserDepartment.email,
           firstName: responseUserDepartment.firstName,
           lastName: responseUserDepartment.lastName,
-          enabled: responseUserDepartment.accountEnabled,
+          enabled: user.accountEnabled,
           k6kUserId: userId.value ? userId.value : responseUserDepartment.id,
-          k6kGroupId: responseUserDepartment.k6kGroupId,
-          groupName: responseUserDepartment.groupName
+          k6kGroupId: k6kGroupId.value,
+          groupName: groupName.value,
+          departmentId: departmentId.value
         };
         axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            $showToast("Sửa người dùng thành công", "success", 2000);
-            navigateTo("/system/user/form/" + responseUserDepartment.id);
+            if (responseData.groupName) {
+              $showToast("Cập nhật người dùng thành công", "success", 2000);
+              navigateTo("/system/user");
+            } else {
+              $showToast("Sửa người dùng thành công", "success", 2000);
+              navigateTo("/system/user/form/" + responseUserDepartment.id);
+            }
           }
         })
         .catch((error) => {
