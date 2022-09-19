@@ -161,6 +161,8 @@ export default {
           lastName: responseUserDepartment.lastName,
           enabled: responseUserDepartment.accountEnabled,
           k6kUserId: userId.value ? userId.value : responseUserDepartment.id,
+          k6kGroupId: responseUserDepartment.k6kGroupId,
+          groupName: responseUserDepartment.groupName
         };
         axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
         .then((response) => {
