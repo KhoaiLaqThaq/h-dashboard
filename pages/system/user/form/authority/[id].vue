@@ -14,8 +14,8 @@
                             <div class="row gx-2">
                                 <div class="col-6">
                                 <div class="form-floating mb-3">
-                                    <select v-model="k6kGroupId" class="form-select" required="required">
-                                        <option v-for="(groupUser, index) in groupUsers" :key="index" :value="groupUser.id">
+                                    <select v-model="k6kGroupName" class="form-select" required="required">
+                                        <option v-for="(groupUser, index) in groupUsers" :key="index" :value="groupUser.name">
                                             {{ groupUser.name }}
                                         </option>
                                     </select>
@@ -75,10 +75,11 @@ export default {
         const userId = ref(route.params && route.params.id);
         const { $showToast } = useNuxtApp();
 
-        const k6kGroupId = ref("");
+        const k6kGroupName = ref("");
         const departmentId = ref("");
         const groupUsers = ref([]);
         const departments = ref([]);
+        const userDepartment = ref(null);
 
         const headers = {
             'Authorization': header.value,
@@ -99,7 +100,8 @@ export default {
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
-                    k6kGroupId.value = responseData.k6kGroupId;
+                    userDepartment.value = responseData;
+                    k6kGroupName.value = responseData.k6kGroupName;
                     departmentId.value = responseData.departmentId;
                 } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
             })
@@ -137,9 +139,61 @@ export default {
             });
         }
 
-        function onAuthority() {
-            if (k6kGroupId.value && departmentId.value) {
+        function updateGroupUser() {
+            let dataExist = userDepartment.value;
+            let dataGroupUser = {
+                id: dataExist.k6kUserId,
+                username: dataExist.username,
+                email: dataExist.email,
+                firstName: dataExist.firstName,
+                lastName: dataExist.lastName,
+                enabled: dataExist.enabled,
+                groupName: k6kGroupName.value
+            };
+            axios.put(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, dataGroupUser, {headers})
+            .then((response) => {
+                let responseData = response.data;
+                if (responseData) {
+                    updateUserDepartment(responseData);
+                }
+            })
+            .catch((error) => {
+                onSaveUserError("Phân quyền người dùng thất bại, code: -1");
+                console.log("SAVE USER ERROR -1: ", error);
+            })
+        }
 
+        function updateUserDepartment(responseK6kGroup) {
+            let dataUserExist = userDepartment.value;
+            let dataUserDepartment = {
+                id: dataUserExist.id,
+                username: dataUserExist.username,
+                email: dataUserExist.email,
+                firstName: dataUserExist.firstName,
+                lastName: dataUserExist.lastName,
+                groupName: k6kGroupName.value,
+                enabled: dataUserExist.enabled,
+                k6kUserId: userId.value,
+                k6kGroupId: responseK6kGroup.id
+            };
+
+            axios.put(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${departmentId.value}`, dataUserDepartment, { headers})
+            .then((response) => {
+                let responseUserDepartment = response.data;
+                if (responseUserDepartment) {
+                    $showToast("Phân quyền người dùng thành công", "success", 3000);
+                    navigateTo("/system/user");
+                }
+            })
+            .catch((error) => {
+                onSaveUserError("Phân quyền người dùng thất bại, code: -2");
+                console.log('SAVE USER ERROR -2: ', error);
+            })
+        }
+
+        function onAuthority() {
+            if (k6kGroupName.value && departmentId.value) {
+                updateGroupUser();
             } else $showToast("Yêu cầu điền đầy đủ thông tin trong mẫu", "warning", 3000);
         }
 
@@ -152,8 +206,12 @@ export default {
             navigateTo("/system/user");
         }
 
+        function onSaveUserError(message) {
+            $showToast(message, "error", 3000);
+        }
+
         return {
-            k6kGroupId,
+            k6kGroupName,
             departmentId,
             groupUsers,
             departments,
