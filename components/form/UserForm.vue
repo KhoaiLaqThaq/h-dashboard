@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <Form @submit="onSubmit()">
     <div class="tabs-container">
       <ul>
         <li class="tabs__item selected">Thông tin người dùng</li>
@@ -20,13 +20,15 @@
                     <label for="">Tên</label>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.username" :disabled="userId"/>
+                    <Field type="text" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.username" name="username" :rules="validateName" :disabled="userId"/>
+                    <div class="mt-1 p-1"><strong><ErrorMessage name="username" class="text-danger" /></strong></div>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
                     <span class="float-check" @click="!userId && checkExistByUsername()">Kiểm tra</span>
                     <strong id="usernameMessage"></strong>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="email" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.email" />
+                    <Field type="email" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.email" name="email" :rules="validateEmail"/>
+                    <div class="mt-1 p-1"><strong><ErrorMessage name="email" class="text-danger" /></strong></div>
                     <label for="">Email <span class="text-danger">*</span></label>
                     <span class="float-check" @click="checkExistByEmail()">Kiểm tra</span>
                     <strong id="emailMessage"></strong>
@@ -52,7 +54,7 @@
                 <hr>
                 <div class="row pb-0">
                   <div class="col-12 text-right">
-                    <button class="btn btn-primary ms-auto text-small" type="button" @click="onSubmit()">Lưu</button>
+                    <BaseButton class="btn-primary ms-auto" :btnType="'submit'" :name="'Lưu'" :textSize="'text-small'" />
                   </div>
                 </div>
               </div>
@@ -61,16 +63,18 @@
         </div>
       </div>
     </div>
-  </form>
+  </Form>
 </template>
 <script>
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 // components
+import { Form, Field, ErrorMessage } from "vee-validate";
 import BaseSelect from "~~/components/common/BaseSelect.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
+import BaseButton from "~~/components/common/BaseButton.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
@@ -82,7 +86,11 @@ export default {
     TitleHeader,
     FloatSelect,
     BaseSelect,
-    MultiCheckboxVue
+    MultiCheckboxVue,
+    Form,
+    Field,
+    ErrorMessage,
+    BaseButton
   },
   setup() {
     const route = useRoute();
@@ -110,6 +118,42 @@ export default {
       'Authorization': header.value,
       'Content-Type': 'application/json'
     };
+
+    function validateName(value) {
+      // if the field is empty
+      if (!value) {
+        document.getElementById("usernameMessage").innerHTML = "";
+        return "Trường này là bắt buộc!";
+      }
+      // if the field is not a valid email
+      if (value.length < 3){
+        document.getElementById("usernameMessage").innerHTML = "";
+        return "Trường này phải có hơn 3 ký tự!";
+      }
+      const regex = /[^a-z\d$&+,:;=?@#|'<>.-^*()%!]/gi;
+      if (regex.test(value)) {
+        document.getElementById("usernameMessage").innerHTML = "";
+        return 'Tên đăng nhập không được chứa ký tự có dấu và khoảng trắng!';
+      }
+      // All is good
+      return true;
+    }
+
+    function validateEmail(value) {
+      // if the field is empty
+      if (!value) {
+        document.getElementById("emailMessage").innerHTML = "";
+        return 'Trường này là bắt buộc!';
+      }
+      // if the field is not a valid email
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!regex.test(value)) {
+        document.getElementById("emailMessage").innerHTML = "";
+        return 'Email không hợp lệ!';
+      }
+      // All is good
+      return true;
+    }
 
     function onLoadUserK6K() {
       if (userId.value) {
@@ -232,30 +276,37 @@ export default {
 
     // TODO: check user ton tai hay chua field username
     function checkExistByUsername() {
-        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
-        .then(response => {
-          let isExist = response.data;
-          let usernameMessageSelector = document.getElementById("usernameMessage");
-          if (isExist) {
-            usernameMessageSelector.innerText = "Tên người dùng đã tồn tại!";
-            usernameMessageSelector.classList.add("text-danger");
-            usernameMessageSelector.classList.remove("text-success");
-          } else {
-            usernameMessageSelector.innerText = "Tên người dùng phù hợp!";
-            usernameMessageSelector.classList.add("text-success");
-            usernameMessageSelector.classList.remove("text-danger");
-          }
-        })
-        .catch(error => {
-          $showToast("Kiểm tra tên đăng nhập của người dùng tồn tại thất bại", "error", 3000);
-          console.log("CHECK USER EXIST ERROR: ", error);
-        })
+      const regex = /[^a-z\d$&+,:;=?@#|'<>.-^*()%!]/gi;
+      if (!regex.test(user.username)) {
+        if (user.username.length >= 3) {
+          axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
+          .then(response => {
+            let isExist = response.data;
+            let usernameMessageSelector = document.getElementById("usernameMessage");
+            if (isExist) {
+              usernameMessageSelector.innerText = "Tên người dùng đã tồn tại!";
+              usernameMessageSelector.classList.add("text-danger");
+              usernameMessageSelector.classList.remove("text-success");
+            } else {
+              usernameMessageSelector.innerText = "Tên người dùng phù hợp!";
+              usernameMessageSelector.classList.add("text-success");
+              usernameMessageSelector.classList.remove("text-danger");
+            }
+          })
+          .catch(error => {
+            $showToast("Kiểm tra tên đăng nhập của người dùng tồn tại thất bại", "error", 3000);
+            console.log("CHECK USER EXIST ERROR: ", error);
+          })
+        }
+      }
     }
 
 
     // TODO: check user ton tai hay chua field email
     function checkExistByEmail() {
-      axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (regex.test(user.email)) {
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
         .then(response => {
           let isExist = response.data;
           let usernameMessageSelector = document.getElementById("emailMessage");
@@ -273,6 +324,7 @@ export default {
           $showToast("Kiểm tra địa chỉ mail của người dùng tồn tại thất bại", "error", 3000);
           console.log("CHECK USER EXIST ERROR: ", error);
         })
+      }
     }
 
     return {
@@ -288,7 +340,9 @@ export default {
       navigateToAuthority,
       onLoadUserK6K,
       checkExistByEmail,
-      checkExistByUsername
+      checkExistByUsername,
+      validateName,
+      validateEmail
     };
   },
   created() {
