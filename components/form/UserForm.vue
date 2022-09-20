@@ -20,7 +20,7 @@
                     <label for="">Tên</label>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username" :disabled="user.username"/>
+                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username" :disabled="userId"/>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
                   </div>
                   <div class="form-floating mb-3 col-6">
@@ -81,7 +81,7 @@ export default {
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
-    const showStatus = ref(userId.value ? true : false);
+    const showStatus = ref(false);
     const titleForm = ref(userId.value ? "Giao diện chỉnh sửa người dùng":"Giao diện thêm mới người dùng");
     const user = reactive({
       username: "",
@@ -123,6 +123,7 @@ export default {
             departmentId.value = responseData.departmentId;
             k6kGroupId.value = responseData.k6kGroupId;
             groupName.value = responseData.groupName;
+            showStatus.value = responseData.groupName ? true : false;
           }
         })
         .catch((error) => {
@@ -215,6 +216,7 @@ export default {
     }
 
     return {
+      userId,
       titleForm,
       ROLES,
       user,

@@ -75,6 +75,8 @@ export default {
         const userId = ref(route.params && route.params.id);
         const { $showToast } = useNuxtApp();
 
+        // kiểm tra có phải lần đầu phân quyền thì sẽ tự động active tài khoản
+        const firstTimeAuthority = ref(true);
         const k6kGroupName = ref("");
         const departmentId = ref("");
         const groupUsers = ref([]);
@@ -95,6 +97,7 @@ export default {
             }
         }
 
+        // TODO: Lấy thông tin đã tồn tại của user theo K6kUserId
         function onLoadUserDepartmentByK6kUserId() {
             axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${userId.value}`, { headers})
             .then((response) => {
@@ -103,6 +106,7 @@ export default {
                     console.log("responseData: ", responseData);
                     userDepartment.value = responseData;
                     k6kGroupName.value = responseData.groupName;
+                    firstTimeAuthority.value = responseData.groupName ? false : true;
                     departmentId.value = responseData.departmentId;
                 } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
             })
@@ -112,6 +116,7 @@ export default {
             });
         }
 
+        // TODO: Lấy danh sách nhóm quyền trên keycloak
         function onLoadGroupUsers() {
             axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers})
             .then((response) => {
@@ -126,6 +131,7 @@ export default {
             });
         }
 
+        // TODO: Lấy danh sách các phòng ban
         function onLoadDepartments() {
             axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers})
             .then((response) => {
@@ -148,7 +154,7 @@ export default {
                 email: dataExist.email,
                 firstName: dataExist.firstName,
                 lastName: dataExist.lastName,
-                enabled: dataExist.enabled,
+                accountEnabled: firstTimeAuthority.value ? true : dataExist.enabled,
                 groupName: k6kGroupName.value
             };
             axios.put(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, dataGroupUser, {headers})
@@ -174,7 +180,7 @@ export default {
                 firstName: dataUserExist.firstName,
                 lastName: dataUserExist.lastName,
                 groupName: k6kGroupName.value,
-                enabled: dataUserExist.enabled,
+                enabled: firstTimeAuthority.value ? true : dataUserExist.enabled,
                 k6kUserId: userId.value,
                 k6kGroupId: responseK6kGroup.id
             };
