@@ -49,10 +49,7 @@
     </div>
     <div class="d-flex">
       <TitleHeader :title="title" />
-    </div>
-
-    <div class="d-flex mt-3">
-      <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" />
+      <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" class="ms-auto" />
     </div>
 
     <div class="table-content mt-3">

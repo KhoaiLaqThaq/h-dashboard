@@ -20,12 +20,16 @@
                     <label for="">Tên</label>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username"/>
+                    <input type="text" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.username" :disabled="userId"/>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
+                    <span class="float-check" @click="!userId && checkExistByUsername()">Kiểm tra</span>
+                    <strong id="usernameMessage"></strong>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="email" class="form-control box" required="required" autocomplete="false" v-model="user.email" />
+                    <input type="email" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.email" />
                     <label for="">Email <span class="text-danger">*</span></label>
+                    <span class="float-check" @click="checkExistByEmail()">Kiểm tra</span>
+                    <strong id="emailMessage"></strong>
                   </div>
                   <div class="col-6" v-if="showStatus">
                     <label for="">Kích hoạt tài khoản</label>
@@ -34,6 +38,17 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row mb-0">
+                  <div class="col-12">
+                    <div class="mb-2">
+                      <span class="float-check-suggest">Kiểm tra</span> <b class="text-warning">Hỗ trợ người tạo kiểm tra thông tin người dùng đã tồn tại hay chưa.</b>
+                    </div>
+                    <strong class="text-warning">* Địa chỉ mail người tạo cần đảm bảo chính xác tiện cho hệ thống tự động gửi mật khẩu tài khoản đến hòm thư.</strong>
+                    <p class="text-small text-secondary mb-0">(Chưa phát triển trong giai đoạn POC)</p>
+                  </div>
+                </div>
+
                 <hr>
                 <div class="row pb-0">
                   <div class="col-12 text-right">
@@ -73,11 +88,15 @@ export default {
     const route = useRoute();
     const userId = ref(route.params && route.params.id);
     const userDepartmentId = ref("");
+    const departmentId = ref("");
+    const k6kGroupId = ref("");
+    const groupName = ref("");
+
     const header = useHeader();
     const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
-    const showStatus = ref(userId.value ? true : false);
+    const showStatus = ref(false);
     const titleForm = ref(userId.value ? "Giao diện chỉnh sửa người dùng":"Giao diện thêm mới người dùng");
     const user = reactive({
       username: "",
@@ -99,7 +118,7 @@ export default {
           let responseData = response.data;
           if (responseData) {
             setUser(responseData);
-            onLoadUserDepartment(responseData.k6kUserId);
+            onLoadUserDepartment(responseData.id);
           } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
         })
         .catch((error) => {
@@ -116,6 +135,10 @@ export default {
           let responseData = response.data;
           if (responseData) {
             userDepartmentId.value = responseData.id
+            departmentId.value = responseData.departmentId;
+            k6kGroupId.value = responseData.k6kGroupId;
+            groupName.value = responseData.groupName;
+            showStatus.value = responseData.groupName ? true : false;
           }
         })
         .catch((error) => {
@@ -133,7 +156,8 @@ export default {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        enabled: user.accountEnabled
+        accountEnabled: user.accountEnabled,
+        groupName: groupName.value
       };
       axios.post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user`, userData, {headers})
       .then((response) => {
@@ -151,22 +175,29 @@ export default {
 
     function saveUserDepartment(responseUserDepartment) {
       if (responseUserDepartment) {
-        console.log('responseUserDepartment: ', responseUserDepartment);
         let newsDepartmentData = {
           id: userDepartmentId.value,
           username: responseUserDepartment.username,
           email: responseUserDepartment.email,
           firstName: responseUserDepartment.firstName,
           lastName: responseUserDepartment.lastName,
-          enabled: responseUserDepartment.accountEnabled,
+          enabled: user.accountEnabled,
           k6kUserId: userId.value ? userId.value : responseUserDepartment.id,
+          k6kGroupId: k6kGroupId.value,
+          groupName: groupName.value,
+          departmentId: departmentId.value
         };
         axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            $showToast("Sửa người dùng thành công", "success", 2000);
-            navigateTo("/system/user/form/" + responseUserDepartment.id);
+            if (responseData.groupName) {
+              $showToast("Cập nhật người dùng thành công", "success", 2000);
+              navigateTo("/system/user");
+            } else {
+              $showToast("Sửa người dùng thành công", "success", 2000);
+              navigateTo("/system/user/form/" + responseUserDepartment.id);
+            }
           }
         })
         .catch((error) => {
@@ -199,7 +230,53 @@ export default {
         navigateTo("/system/user/form/authority/" + userId.value);
     }
 
+    // TODO: check user ton tai hay chua field username
+    function checkExistByUsername() {
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
+        .then(response => {
+          let isExist = response.data;
+          let usernameMessageSelector = document.getElementById("usernameMessage");
+          if (isExist) {
+            usernameMessageSelector.innerText = "Tên người dùng đã tồn tại!";
+            usernameMessageSelector.classList.add("text-danger");
+            usernameMessageSelector.classList.remove("text-success");
+          } else {
+            usernameMessageSelector.innerText = "Tên người dùng phù hợp!";
+            usernameMessageSelector.classList.add("text-success");
+            usernameMessageSelector.classList.remove("text-danger");
+          }
+        })
+        .catch(error => {
+          $showToast("Kiểm tra tên đăng nhập của người dùng tồn tại thất bại", "error", 3000);
+          console.log("CHECK USER EXIST ERROR: ", error);
+        })
+    }
+
+
+    // TODO: check user ton tai hay chua field email
+    function checkExistByEmail() {
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
+        .then(response => {
+          let isExist = response.data;
+          let usernameMessageSelector = document.getElementById("emailMessage");
+          if (isExist) {
+            usernameMessageSelector.innerText = "Địa chỉ mail người dùng đã tồn tại!";
+            usernameMessageSelector.classList.add("text-danger");
+            usernameMessageSelector.classList.remove("text-success");
+          } else {
+            usernameMessageSelector.innerText = "Địa chỉ mail người dùng phù hợp!";
+            usernameMessageSelector.classList.add("text-success");
+            usernameMessageSelector.classList.remove("text-danger");
+          }
+        })
+        .catch(error => {
+          $showToast("Kiểm tra địa chỉ mail của người dùng tồn tại thất bại", "error", 3000);
+          console.log("CHECK USER EXIST ERROR: ", error);
+        })
+    }
+
     return {
+      userId,
       titleForm,
       ROLES,
       user,
@@ -209,7 +286,9 @@ export default {
       onSubmit,
       useCurrentsRole,
       navigateToAuthority,
-      onLoadUserK6K
+      onLoadUserK6K,
+      checkExistByEmail,
+      checkExistByUsername
     };
   },
   created() {
