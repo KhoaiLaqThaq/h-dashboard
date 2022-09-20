@@ -20,12 +20,16 @@
                     <label for="">Tên</label>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control box" required="required" autocomplete="false" v-model="user.username" :disabled="userId"/>
+                    <input type="text" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.username" :disabled="userId"/>
                     <label for="">Tên đăng nhập <span class="text-danger">*</span></label>
+                    <span class="float-check" @click="!userId && checkExistByUsername()">Kiểm tra</span>
+                    <strong id="usernameMessage"></strong>
                   </div>
                   <div class="form-floating mb-3 col-6">
-                    <input type="email" class="form-control box" required="required" autocomplete="false" v-model="user.email" />
+                    <input type="email" class="form-control box mb-1" required="required" autocomplete="false" v-model="user.email" />
                     <label for="">Email <span class="text-danger">*</span></label>
+                    <span class="float-check" @click="checkExistByEmail()">Kiểm tra</span>
+                    <strong id="emailMessage"></strong>
                   </div>
                   <div class="col-6" v-if="showStatus">
                     <label for="">Kích hoạt tài khoản</label>
@@ -34,6 +38,17 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row mb-0">
+                  <div class="col-12">
+                    <div class="mb-2">
+                      <span class="float-check-suggest">Kiểm tra</span> <b class="text-warning">Hỗ trợ người tạo kiểm tra thông tin người dùng đã tồn tại hay chưa.</b>
+                    </div>
+                    <strong class="text-warning">* Địa chỉ mail người tạo cần đảm bảo chính xác tiện cho hệ thống tự động gửi mật khẩu tài khoản đến hòm thư.</strong>
+                    <p class="text-small text-secondary mb-0">(Chưa phát triển trong giai đoạn POC)</p>
+                  </div>
+                </div>
+
                 <hr>
                 <div class="row pb-0">
                   <div class="col-12 text-right">
@@ -215,6 +230,51 @@ export default {
         navigateTo("/system/user/form/authority/" + userId.value);
     }
 
+    // TODO: check user ton tai hay chua field username
+    function checkExistByUsername() {
+        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
+        .then(response => {
+          let isExist = response.data;
+          let usernameMessageSelector = document.getElementById("usernameMessage");
+          if (isExist) {
+            usernameMessageSelector.innerText = "Tên người dùng đã tồn tại!";
+            usernameMessageSelector.classList.add("text-danger");
+            usernameMessageSelector.classList.remove("text-success");
+          } else {
+            usernameMessageSelector.innerText = "Tên người dùng phù hợp!";
+            usernameMessageSelector.classList.add("text-success");
+            usernameMessageSelector.classList.remove("text-danger");
+          }
+        })
+        .catch(error => {
+          $showToast("Kiểm tra tên đăng nhập của người dùng tồn tại thất bại", "error", 3000);
+          console.log("CHECK USER EXIST ERROR: ", error);
+        })
+    }
+
+
+    // TODO: check user ton tai hay chua field email
+    function checkExistByEmail() {
+      axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
+        .then(response => {
+          let isExist = response.data;
+          let usernameMessageSelector = document.getElementById("emailMessage");
+          if (isExist) {
+            usernameMessageSelector.innerText = "Địa chỉ mail người dùng đã tồn tại!";
+            usernameMessageSelector.classList.add("text-danger");
+            usernameMessageSelector.classList.remove("text-success");
+          } else {
+            usernameMessageSelector.innerText = "Địa chỉ mail người dùng phù hợp!";
+            usernameMessageSelector.classList.add("text-success");
+            usernameMessageSelector.classList.remove("text-danger");
+          }
+        })
+        .catch(error => {
+          $showToast("Kiểm tra địa chỉ mail của người dùng tồn tại thất bại", "error", 3000);
+          console.log("CHECK USER EXIST ERROR: ", error);
+        })
+    }
+
     return {
       userId,
       titleForm,
@@ -226,7 +286,9 @@ export default {
       onSubmit,
       useCurrentsRole,
       navigateToAuthority,
-      onLoadUserK6K
+      onLoadUserK6K,
+      checkExistByEmail,
+      checkExistByUsername
     };
   },
   created() {

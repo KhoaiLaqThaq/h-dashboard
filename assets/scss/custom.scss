@@ -1095,6 +1095,31 @@ label {
 }
 //################### /tabs custom ################
 
+.float-check {
+  position: absolute;
+  top: 1rem;
+  right: 10px;
+  border: 3px solid rgb(141, 141, 141);
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: rgb(168, 167, 167);
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.float-check-suggest {
+  // top: 1rem;
+  // right: 10px;
+  border: 3px solid rgb(141, 141, 141);
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: rgb(168, 167, 167);
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .side-menu__sub-open {
   display: block;
 }
