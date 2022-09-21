@@ -51,8 +51,11 @@
 import { ref, reactive } from 'vue';
 import axios from 'axios';
 import CONFIG from '~~/config';
+import AuthService from "~~/services/auth.service";
+import TokenService from "~~/services/token.service";
 
 import VueJwtDecode from 'vue-jwt-decode';
+import camelcaseKeys from 'camelcase-keys';
 
 export default {
   setup() {
@@ -77,10 +80,10 @@ export default {
           password: currentUser.password
         };
 
-        axios
-          .post(`${CONFIG.BASE_URL}/user/auth/login`, data)
+        AuthService.login(data)
           .then((response) => {
             let responseData = response.data;
+            console.log("login response:" , responseData)
             if (responseData && responseData.code === 200) {
               saveInforLogin(responseData);
               $showToast("Đăng nhập thành công", "success", 2000);
@@ -94,6 +97,7 @@ export default {
             errorMessage.value = "Vui lòng kiểm tra lại thông tin tài khoản!";
             console.log("LOGIN ERROR: " + error);
           });
+
       }
     }
 

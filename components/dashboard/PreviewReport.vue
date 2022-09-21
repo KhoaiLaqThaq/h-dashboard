@@ -32,8 +32,7 @@ import ComputerIcon from '~~/assets/images/icons/ComputerIcon.vue';
 import PostIcon from '~~/assets/images/icons/PostIcon.vue';
 import UserIcon from '~~/assets/images/icons/UserIcon.vue';
 import IconCommunity from '~~/assets/images/icons/IconCommunity.vue';
-import axios from "axios";
-import CONFIG from "~~/config";
+import DashboardService from "~~/services/dashboard.service";
 
 export default {
     components: {
@@ -62,12 +61,7 @@ export default {
 
         // call api
         function searchCallApi() {
-            let tokenHeader = {
-                'Authorization': header.value,
-                'Content-Type': 'application/json'
-            };
-            axios
-                .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/report/preview`, { headers: tokenHeader })
+            DashboardService.showReportPreview()
                 .then((response) => {
                     const data = response.data;
                     setData(data);

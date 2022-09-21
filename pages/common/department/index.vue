@@ -20,9 +20,10 @@ import TableDepartmentComponent from "~~/components/common/table/TableDepartment
 import Pagination from "~~/components/common/table/Pagination.vue";
 import { useCurrentsRole } from "~~/services/common.js"
 
-import CONFIG from "~~/config";
+// import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from "axios";
+// import axios from "axios";
+import DepartmentService from "~~/services/department.service";
 
 export default {
   components: { TitleHeader, AddButton, TableDepartmentComponent, Pagination },
@@ -44,20 +45,30 @@ export default {
     const currentRole = useCurrentUser();
     // call api
     function searchCallApi() {
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
-      };
-      axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers: tokenHeader })
+      // let tokenHeader = {
+      //   'Authorization': header.value,
+      //   'Content-Type': 'application/json'
+      // };
+      // axios
+      //   .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers: tokenHeader })
+      //   .then((response) => {
+      //     const data = response.data;
+      //     console.log(response);
+      //     departments.value = data;
+      //   })
+      //   .catch((e) => {
+      //     this.errors.push(e);
+      //   });
+
+      DepartmentService.getAll()
         .then((response) => {
-          const data = response.data;
-          console.log(response);
-          departments.value = data;
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+            const data = response.data;
+            console.log(response);
+            departments.value = data;
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
     }
 
     return {
