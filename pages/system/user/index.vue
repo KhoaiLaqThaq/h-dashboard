@@ -49,7 +49,8 @@
     </div>
     <div class="d-flex">
       <TitleHeader :title="title" />
-      <AddButton :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" class="ms-auto" />
+      <AddButton v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_USER_CREATE])"
+      :textSize="'text-small'" :title="'Thêm mới'" :routerPush="routerPush" class="ms-auto" />
     </div>
 
     <div class="table-content mt-3">
