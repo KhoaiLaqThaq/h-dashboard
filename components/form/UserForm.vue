@@ -3,7 +3,7 @@
     <div class="tabs-container">
       <ul>
         <li class="tabs__item selected">Thông tin người dùng</li>
-        <li class="tabs__item" @click="navigateToAuthority()">Phân quyền</li>
+        <li class="tabs__item" @click="navigateToAuthority()" v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_SET_AUTHORITY])">Phân quyền</li>
       </ul>
       <div class="tabs__content">
         <div class="card radius-unset mb-0 box">
@@ -101,7 +101,6 @@ export default {
     const groupName = ref("");
 
     const header = useHeader();
-    const currentUser = useCurrentUser();
     const currentRole = useCurrentRole();
     const { $showToast } = useNuxtApp();
     const showStatus = ref(false);
@@ -119,20 +118,34 @@ export default {
       'Content-Type': 'application/json'
     };
 
+    const resetUseruserMessage = () => {
+      let usernameMessage = document.getElementById("usernameMessage");
+      if (usernameMessage && usernameMessage.textContent && usernameMessage.textContent.length > 0) {
+        document.getElementById("usernameMessage").innerHTML = "";
+      }
+    }
+
+    const resetEmailMessage = () => {
+      let emailMessage = document.getElementById("emailMessage");
+        if (emailMessage && emailMessage.textContent && emailMessage.textContent.length > 0) {
+          document.getElementById("emailMessage").innerHTML = "";
+        }
+    }
+
     function validateName(value) {
       // if the field is empty
       if (!value) {
-        document.getElementById("usernameMessage").innerHTML = "";
+        resetUseruserMessage();
         return "Trường này là bắt buộc!";
       }
       // if the field is not a valid email
       if (value.length < 3){
-        document.getElementById("usernameMessage").innerHTML = "";
+        resetUseruserMessage();
         return "Trường này phải có hơn 3 ký tự!";
       }
       const regex = /[^a-z\d$&+,:;=?@#|'<>.-^*()%!]/gi;
       if (regex.test(value)) {
-        document.getElementById("usernameMessage").innerHTML = "";
+        resetUseruserMessage();
         return 'Tên đăng nhập không được chứa ký tự có dấu và khoảng trắng!';
       }
       // All is good
@@ -142,13 +155,13 @@ export default {
     function validateEmail(value) {
       // if the field is empty
       if (!value) {
-        document.getElementById("emailMessage").innerHTML = "";
+        resetEmailMessage();
         return 'Trường này là bắt buộc!';
       }
       // if the field is not a valid email
       const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
       if (!regex.test(value)) {
-        document.getElementById("emailMessage").innerHTML = "";
+        resetEmailMessage();
         return 'Email không hợp lệ!';
       }
       // All is good
@@ -238,9 +251,9 @@ export default {
             $showToast("Lưu người dùng thành công", "success", 2000);
             if (!responseData.groupName) {
               $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
-              navigateTo("/system/user");
-            } else {
               navigateTo("/system/user/form/" + responseUserDepartment.id);
+            } else {
+              location.reload();
             }
           }
         })
@@ -331,6 +344,7 @@ export default {
       userId,
       titleForm,
       ROLES,
+      currentRole,
       user,
       showStatus,
 

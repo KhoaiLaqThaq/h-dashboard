@@ -7,15 +7,7 @@ export default class UploadAdapter {
 
     // Start the upload process
     upload() {
-        // Update the loader's progress
-        // server.onUploadProgress(data => {
-        //     this.loader.uploadTotal = data.total;
-        //     this.loader.uploaded = data.uploaded;
-        // });
-
         // // Return a promise that will be resolved when the file is uploaded.
-        // return this.loader.file
-        //     .then(file => server.upload(file));
         return this.loader.file
             .then( file => new Promise( ( resolve, reject ) => {
                 this._initRequest();
@@ -27,8 +19,6 @@ export default class UploadAdapter {
     // Aborts the upload process.
     abort() {
         // Reject the promise returned from the upload() method.
-        // server.abortUpload();
-
         if ( this.xhr ) {
             this.xhr.abort();
         }
@@ -48,8 +38,6 @@ export default class UploadAdapter {
     _initListeners( resolve, reject, file ) {
         const xhr = this.xhr;
         const loader = this.loader;
-        // const genericErrorText = `Couldn't upload file: ${ file.name }.`;
-
         xhr.addEventListener( 'error', () => reject( genericErrorText ) );
         xhr.addEventListener( 'abort', () => reject() );
         xhr.addEventListener( 'load', () => {

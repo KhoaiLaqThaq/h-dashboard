@@ -103,9 +103,8 @@ export default {
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
-                    console.log("responseData: ", responseData);
+                    // console.log("responseData: ", responseData);
                     if(!responseData.groupName){
-                        $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
                         userDepartment.value = responseData;
                         k6kGroupName.value = responseData.groupName;
                         firstTimeAuthority.value = responseData.groupName ? false : true;
@@ -175,7 +174,7 @@ export default {
 
         function updateUserDepartment(responseK6kGroup) {
             let dataUserExist = userDepartment.value;
-            console.log(dataUserExist.groupName);
+            // console.log(dataUserExist.groupName);
             let dataUserDepartment = {
                 id: dataUserExist.id,
                 departmentId: departmentId.value,
