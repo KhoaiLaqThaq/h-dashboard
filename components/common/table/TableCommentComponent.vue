@@ -43,10 +43,9 @@ import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 import { useCurrentsRole } from "~~/services/common.js"
 
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from "axios";
 import { displayBrief } from "~~/constants/format-string.js";
+import CommentService from "~~/services/model/comment.service";
 
 export default {
   components: {
@@ -66,29 +65,37 @@ export default {
     const checkedAll = ref(false);
     const listSelected = ref([]);
     const currentRole = useCurrentRole();
+    const { $showToast } = useNuxtApp();
+
+    const caseError = (message) => $showToast(message, "error", 3000);
+    const displayDate = (date) => date ? moment(date).month(date[1] - 1).format("YYYY-MM-DD HH:mm:ss") : "";
 
     function disableComment(id) {
       if (confirm("Bạn có muốn xóa bình luận này?")) {
-        axios
-          .delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comment/${id}`)
+        CommentService.deleteById(id)
           .then((response) => {
             console.log(response.data);
+            $showToast("Xóa bình luận thành công!", "success", 2000);
             location.reload();
           })
           .catch((e) => {
-            this.errors.push(e);
+            caseError("Xóa bình luận thất bại");
+            console.log("DELETE COMMENT ERROR: ", e);
           });
       }
     }
 
     function changeCommentStatus(id) {
-      axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comment/enable/${id}`)
+      CommentService.changeCommentStatus(id)
         .then((response) => {
-          console.log(response.data);
+          let responseData = response.data;
+          if (responseData) {
+            $showToast("Đổi trạng thái bình luận thành công!", "success", 2000);
+          }
         })
         .catch((e) => {
-          this.errors.push(e);
+          caseError("Thay đổi trạng thái bình luận thất bại");
+          console.log("CHANGE COMMENT STATUS ERROR: ", e);
         });
     }
 
@@ -116,14 +123,6 @@ export default {
       }
     }
 
-    function displayDate(date) {
-      if (date)
-        return moment(date)
-          .month(date[1] - 1)
-          .format("YYYY-MM-DD HH:mm:ss");
-      return "";
-    }
-
     function changeMultiStatus() {
       if (listSelected.value.length > 0) {
         let listIds = "";
@@ -132,8 +131,7 @@ export default {
           listCommentIds: listIds,
         };
 
-        axios
-          .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments/enableAll`, commentDto)
+        CommentService.changeMultiCommentStatus(commentDto)
           .then((res) => {
             this.reCallApi();
             let list = document.getElementsByClassName("boxCheck");
@@ -142,8 +140,9 @@ export default {
             }
             listSelected.value = [];
           })
-          .catch((error) => {
-            console.log(error);
+          .catch((e) => {
+            caseError("Thay đổi trạng thái bình luận thất bại");
+            console.log("CHANGE COMMENT STATUS ERROR: ", e);
           });
       }
     }
