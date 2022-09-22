@@ -48,24 +48,26 @@ export default {
     const { $showToast } = useNuxtApp();
 
     function deleteTopic(topicId) {
-      TopicService.deleteById(topicId.value)
-        .then(response => {
-          let data = response.data;
-          if (data) {
-            if (data.code == 200) {
-              $showToast("Xóa chuyên mục thành công!", "success", 3000);
-              location.reload();
-            } else {
-              
-              $showToast("Xóa chuyên mục không thành công!", "error", 3000);
+      if(confirm("Bạn có muốn xóa chuyên mục này không?")) {
+        TopicService.deleteById(topicId)
+          .then(response => {
+            let data = response.data;
+            if (data) {
+              if (data.code == 200) {
+                $showToast("Xóa chuyên mục thành công!", "success", 3000);
+                location.reload();
+              } else {
+                
+                $showToast("Xóa chuyên mục không thành công!", "error", 3000);
+              }
             }
-          }
-        })
-        .catch(error => {
-          $showToast("Xóa chuyên mục không thành công!", "error", 3000);
-          console.log(error.toString());
-        })
-        ;
+          })
+          .catch(error => {
+            $showToast("Xóa chuyên mục không thành công!", "error", 3000);
+            console.log(error.toString());
+          })
+          ;
+      }
     }
     return {
       currentRole,
