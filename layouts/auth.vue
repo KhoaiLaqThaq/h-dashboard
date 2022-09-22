@@ -49,13 +49,9 @@
 </template>
 <script>
 import { ref, reactive } from 'vue';
-import axios from 'axios';
-import CONFIG from '~~/config';
 import AuthService from "~~/services/auth.service";
-import TokenService from "~~/services/token.service";
 
 import VueJwtDecode from 'vue-jwt-decode';
-import camelcaseKeys from 'camelcase-keys';
 
 export default {
   setup() {

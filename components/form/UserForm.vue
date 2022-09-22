@@ -235,12 +235,11 @@ export default {
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            if (responseData.groupName) {
-              $showToast("Cập nhật người dùng thành công", "success", 2000);
-              $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 2000);
+            $showToast("Lưu người dùng thành công", "success", 2000);
+            if (!responseData.groupName) {
+              $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
               navigateTo("/system/user");
             } else {
-              $showToast("Sửa người dùng thành công", "success", 2000);
               navigateTo("/system/user/form/" + responseUserDepartment.id);
             }
           }
