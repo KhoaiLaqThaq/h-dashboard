@@ -34,9 +34,8 @@
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 import { useCurrentsRole } from "~~/services/common.js"
-import axios from 'axios';
 import { ROLES } from "~~/constants/roles.js";
-import CONFIG from '~~/config';
+import TopicService from "~~/services/model/topic.service";
 
 export default {
   components: {
@@ -45,27 +44,25 @@ export default {
   },
   props: ["headers", "items", "actionEdit", "actionDelete", "page", "size"],
   setup() {
-    const header = useHeader();
     const currentRole = useCurrentRole();
+    const { $showToast } = useNuxtApp();
+
     function deleteTopic(topicId) {
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
-      };
-      axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic/${topicId}`, { headers: tokenHeader })
+      TopicService.deleteById(topicId.value)
         .then(response => {
           let data = response.data;
-          console.log(data);
           if (data) {
             if (data.code == 200) {
-              // navigateTo("/common/topic");
+              $showToast("Xóa chuyên mục thành công!", "success", 3000);
               location.reload();
             } else {
-              console.log("ERROR: " + data.code);
+              
+              $showToast("Xóa chuyên mục không thành công!", "error", 3000);
             }
           }
         })
         .catch(error => {
+          $showToast("Xóa chuyên mục không thành công!", "error", 3000);
           console.log(error.toString());
         })
         ;

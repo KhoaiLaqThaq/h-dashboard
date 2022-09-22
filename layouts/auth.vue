@@ -49,7 +49,7 @@
 </template>
 <script>
 import { ref, reactive } from 'vue';
-import AuthService from "~~/services/auth.service";
+import AuthService from "~~/services/model/auth.service";
 
 import VueJwtDecode from 'vue-jwt-decode';
 

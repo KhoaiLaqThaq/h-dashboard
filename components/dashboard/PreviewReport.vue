@@ -32,7 +32,7 @@ import ComputerIcon from '~~/assets/images/icons/ComputerIcon.vue';
 import PostIcon from '~~/assets/images/icons/PostIcon.vue';
 import UserIcon from '~~/assets/images/icons/UserIcon.vue';
 import IconCommunity from '~~/assets/images/icons/IconCommunity.vue';
-import DashboardService from "~~/services/dashboard.service";
+import DashboardService from "~~/services/model/dashboard.service";
 
 export default {
     components: {

@@ -1,5 +1,5 @@
 import instance from "~~/services/api";
-import TokenService from "~~/services/token.service";
+import TokenService from "~~/services/model/token.service";
 
 const setup = () => {
     instance.interceptors.request.use(

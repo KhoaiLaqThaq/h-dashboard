@@ -1,5 +1,5 @@
 import api from "~~/services/api";
-import TokenService from "~~/services/token.service";
+import TokenService from "~~/services/model/token.service";
 import CONFIG from "~~/config";
 
 class AuthService {

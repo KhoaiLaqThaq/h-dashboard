@@ -35,8 +35,7 @@ import BaseButton from "~~/components/common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRoute } from "vue-router";
 
-import axios from "axios";
-import CONFIG from "~~/config";
+import TopicService from "~~/services/model/topic.service";
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {
@@ -51,17 +50,13 @@ export default {
     const topicId = ref(route.params.id);
     const topicExist = ref({});
     let success = false;
-  const header = useHeader();
+    const { $showToast } = useNuxtApp();
+
     // call api getById
     function callApiGetById() {
       if (topicId.value) {
         console.log("entering callApiGetById()...", topicId.value);
-        let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic/${topicId.value}`, {headers: tokenHeader})
+        TopicService.getAll(topicId.value)
           .then((response) => {
             if (response) {
               topicExist.value = response.data;
@@ -78,16 +73,12 @@ export default {
     });
 
     function validateName(value) {
-      // if the field is empty
       if (!value) {
         return "Trường này là bắt buộc";
       }
-      // if the field is not a valid email
+
       if (value.length < 3)
-        // if (valu < 3) {
         return "Trường này phải có hơn 3 ký tự";
-      // }
-      // All is good
       return true;
     }
 
@@ -97,16 +88,11 @@ export default {
         id: topicId.value,
         name: name.value,
       };
-      const headers = { 
-        'Authorization': header.value, 
-        "Content-Type": "application/json" 
-      };
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topic`, topic, { headers })
+      TopicService.saveOrUpdate(topic)
         .then((res) => {
-          console.log(res.data);
           let responseData = res.data;
           if (responseData) {
+            $showToast("Lưu chuyên mục thành công!", "success", 3000);
             navigateTo("/common/topic");
           }
         })

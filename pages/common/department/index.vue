@@ -23,7 +23,7 @@ import { useCurrentsRole } from "~~/services/common.js"
 // import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
 // import axios from "axios";
-import DepartmentService from "~~/services/department.service";
+import DepartmentService from "~~/services/model/department.service";
 
 export default {
   components: { TitleHeader, AddButton, TableDepartmentComponent, Pagination },
