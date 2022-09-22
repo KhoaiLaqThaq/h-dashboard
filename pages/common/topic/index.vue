@@ -12,16 +12,15 @@
   </div>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import TableComponent from "~~/components/common/table/TableTopicsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 import { useCurrentsRole } from "~~/services/common.js"
 
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from "axios";
+import NewsTypeService from "~~/services/model/newsType.service";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
@@ -41,9 +40,6 @@ export default {
     const topics = ref([]);
     const page = ref(0);
     const size = ref(10);
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
-    const header = useHeader();
     const currentRole = useCurrentRole();
 
     function setPagination(data) {
@@ -51,36 +47,19 @@ export default {
     }
     // call api
     function searchCallApi() {
-      let criteria = {
-        page: page.value,
-        size: size.value,
-      };
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
-      };
-      // TODO: Call api
-      axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, { headers: tokenHeader })
-        .then((response) => {
-          //   console.log(response.data);
-          const data = response.data;
-          setPagination(data);
+      NewsTypeService.getAll().then((response) => {
+          const responseData = response.data;
+          if (responseData)
+            setPagination(responseData);
         })
         .catch((e) => {
           console.log(e);
         });
     }
 
-    watch([page, size], () => {
-      searchCallApi();
-    });
-
     return {
       tableHeader,
       topics,
-      itemsSelected,
-      themeColor,
       page,
       size,
       currentRole,

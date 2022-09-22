@@ -14,20 +14,11 @@ export default {
     TopicForm,
     TitleHeader,
   },
-
   data() {
     return {
       titleForm: "Thêm mới chuyên mục",
     };
-  },
-  setup() {
-    // define variables
-
-    return {
-      //   addNews,
-    };
-  },
-  mounted() {},
+  }
 };
 </script>
 <style lang="scss"></style>
