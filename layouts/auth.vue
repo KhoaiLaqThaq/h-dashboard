@@ -79,15 +79,17 @@ export default {
         AuthService.login(data)
           .then((response) => {
             let responseData = response.data;
-            console.log("login response:" , responseData)
-            if (responseData && responseData.code === 200) {
-              saveInforLogin(responseData);
-              $showToast("Đăng nhập thành công", "success", 2000);
-            } else if (responseData.code === 404) {
-              errorMessage.value = responseData.message;
-            } else {
-              errorMessage.value = "Ops! Lỗi không xác định.";
-              console.log('ERROR else');
+            if (responseData){
+              if( responseData.code === 200) {
+                saveInforLogin(responseData);
+                $showToast("Đăng nhập thành công", "success", 2000);
+              } else if (responseData.code === 404) {
+                errorMessage.value = responseData.message;
+              } else if (responseData.code === 500) {
+                errorMessage.value = responseData.message;
+              } else {
+                errorMessage.value = "Ops! Lỗi không xác định.";
+              }
             }
           }).catch(error => {
             errorMessage.value = "Vui lòng kiểm tra lại thông tin tài khoản!";
@@ -100,7 +102,6 @@ export default {
     function saveInforLogin(responseData) {
       let accessToken = responseData.data;
       let decode = VueJwtDecode.decode(accessToken);
-
       if (decode) {
         let k6kClient = decode.azp;
         let roles = decode.resource_access[k6kClient].roles;
