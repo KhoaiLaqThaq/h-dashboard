@@ -70,7 +70,7 @@ export default {
     function disableComment(id) {
       if (confirm("Bạn có muốn xóa bình luận này?")) {
         axios
-          .delete(`${CONFIG.BASE_URL}/api/comment/${id}`)
+          .delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comment/${id}`)
           .then((response) => {
             console.log(response.data);
             location.reload();
@@ -83,7 +83,7 @@ export default {
 
     function changeCommentStatus(id) {
       axios
-        .get(`${CONFIG.BASE_URL}/api/comment/enable/${id}`)
+        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comment/enable/${id}`)
         .then((response) => {
           console.log(response.data);
         })
@@ -133,7 +133,7 @@ export default {
         };
 
         axios
-          .post(`${CONFIG.BASE_URL}/api/comments/enableAll`, commentDto)
+          .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments/enableAll`, commentDto)
           .then((res) => {
             this.reCallApi();
             let list = document.getElementsByClassName("boxCheck");
