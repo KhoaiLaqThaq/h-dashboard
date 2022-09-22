@@ -5,7 +5,6 @@ const setup = () => {
     instance.interceptors.request.use(
         (config) => {
             const token = TokenService.getLocalAccessToken();
-            console.log("token: ", token);
             if (token) {
                 config.headers["Authorization"] = "Bearer " + token;
             }
@@ -22,7 +21,6 @@ const setup = () => {
         },
         async (err) => {
             // const originalConfig = error.config;
-            console.log("interceptor response: ", err)
             if (err.response) {
                 // Access token was expired, then login again
                 if (err.response.status === 401) {

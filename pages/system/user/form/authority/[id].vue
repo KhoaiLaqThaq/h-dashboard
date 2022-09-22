@@ -104,12 +104,10 @@ export default {
                 let responseData = response.data;
                 if (responseData) {
                     // console.log("responseData: ", responseData);
-                    if(!responseData.groupName){
-                        userDepartment.value = responseData;
-                        k6kGroupName.value = responseData.groupName;
-                        firstTimeAuthority.value = responseData.groupName ? false : true;
-                        departmentId.value = responseData.departmentId;
-                    }
+                    userDepartment.value = responseData;
+                    k6kGroupName.value = responseData.groupName;
+                    firstTimeAuthority.value = responseData.groupName ? false : true;
+                    departmentId.value = responseData.departmentId;
                 } else onLoadUserError("Tải thông tin người dùng không thành công -1.");
             })
             .catch((error) => {
@@ -163,6 +161,7 @@ export default {
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
+                    console.log("update group user: ", responseData);
                     updateUserDepartment(responseData);
                 }
             })
@@ -174,7 +173,7 @@ export default {
 
         function updateUserDepartment(responseK6kGroup) {
             let dataUserExist = userDepartment.value;
-            // console.log(dataUserExist.groupName);
+            console.log('dataUserExist', dataUserExist);
             let dataUserDepartment = {
                 id: dataUserExist.id,
                 departmentId: departmentId.value,
@@ -185,7 +184,7 @@ export default {
                 groupName: k6kGroupName.value,
                 enabled: firstTimeAuthority.value ? true : dataUserExist.enabled,
                 k6kUserId: userId.value,
-                k6kGroupId: responseK6kGroup.id
+                k6kGroupId: responseK6kGroup.groupId
             };
 
             axios.put(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${departmentId.value}`, dataUserDepartment, { headers})
