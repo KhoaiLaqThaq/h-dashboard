@@ -173,6 +173,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import axios from "axios";
 import CONFIG from "~~/config";
 import {ROLES} from "~~/constants/roles.js";
+import NewsService from "~~/services/model/news.service";
 
 export default {
   components: {
@@ -258,9 +259,7 @@ export default {
     // call api getById
     function callApiGetById() {
       if (newsId.value) {
-        console.log("entering callApiGetById()...", newsId.value);
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/${newsId.value}`, { headers })
+        NewsService.getById(newsId.value)
           .then((response) => {
             if (response) {
               newsExist.value = response.data;
@@ -276,8 +275,7 @@ export default {
     function callApiGetAllTags() {
       if (newsId.value) {
         console.log("entering callApiGetAllTags...");
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/tags`, { headers })
+        NewsService.getAllTags()
           .then((response) => {
             if (response.data) {
               listTags.value = response.data;
@@ -290,7 +288,7 @@ export default {
     }
 
     function getListNewsType() {
-      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsTypes`, { headers })
+      NewsService.getAllNewsType()
         .then((response) => {
           const data = response.data;
           newsTypes.value = data;
@@ -303,7 +301,7 @@ export default {
 
     // TODO: call API get lisTopics
     function getListTopic() {
-      axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/topics`, { headers })
+      NewsService.getAllTopic()
         .then((response) => {
           const data = response.data;
           topics.value = data;
@@ -316,8 +314,7 @@ export default {
 
     // TODO: call API get listDepartments
     function getListDepartments() {
-      axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers })
+      NewsService.getAllDepartment()
         .then((response) => {
           const data = response.data;
           if (data) {
@@ -456,7 +453,7 @@ export default {
         "Authorization": header.value,
         "Content-Type": "multipart/form-data"
       };
-      axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news`, news, { headers: tokenHeaders})
+      NewsService.saveOrUpdate(news, tokenHeaders)
         .then((res) => {
           let responseData = res.data;
           console.log(responseData.code + " " + responseData.message);
