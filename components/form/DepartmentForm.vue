@@ -4,28 +4,15 @@
       <div class="col-lg-4 col-md-6 col-sm-12">
         <!-- code -->
         <div class="form-floating mb-3">
-          <Field type="text" class="form-control box" v-model="department.code" name="code"
-            :rules="validateName"
-          />
-
-          <div class="mt-1 p-1">
-            <ErrorMessage name="code" class="text-danger" />
-          </div>
-
+          <Field type="text" class="form-control box mb-2" v-model="department.code" name="code" :rules="validateName" />
+          <ErrorMessage name="code" class="text-danger" />
           <label for="">Mã đơn vị <span class="text-danger">*</span></label>
         </div>
       </div>
       <div class="col-lg-8 col-md-6 col-sm-12">
-        <!-- title -->
         <div class="form-floating mb-3">
-          <Field type="text" class="form-control box" v-model="department.name" name="name"
-            :rules="validateName"
-          />
-
-          <div class="mt-1 p-1">
-            <ErrorMessage name="name" class="text-danger" />
-          </div>
-
+          <Field type="text" class="form-control box mb-2" v-model="department.name" name="name" :rules="validateName"/>
+          <ErrorMessage name="name" class="text-danger" />
           <label for="">Tên đơn vị <span class="text-danger">*</span></label>
         </div>
       </div>
@@ -34,22 +21,14 @@
     <div class="row mb-3">
       <div class="card box">
         <div class="card-body">
-          <UseDropZone
-            @change-image="changeImage($event)"
-            :avatarUrl="avatarUrl"
-          />
+          <UseDropZone @change-image="changeImage($event)" :avatarUrl="avatarUrl" />
         </div>
       </div>
     </div>
 
     <div class="row d-flex">
       <div class="col-12 text-right">
-        <BaseButton
-          class="btn-primary"
-          :btnType="'submit'"
-          :name="'Lưu'"
-          :textSize="'text-small'"
-        />
+        <BaseButton class="btn-primary" :btnType="'submit'" :name="'Lưu'" :textSize="'text-small'" />
       </div>
     </div>
   </Form>
@@ -63,8 +42,8 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import BaseButton from "~~/components/common/BaseButton.vue";
 import UseDropZone from "~~/components/common/UseDropZone.vue";
 
-import axios from "axios";
-import CONFIG from "~~/config";
+import DepartmentService from "~~/services/model/department.service";
+
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage, UseDropZone },
   setup() {
@@ -91,16 +70,13 @@ export default {
     // TODO: Call api to get a department have id
     const getDepartmentById = () => {
       if (departmentId.value) {
-        let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
-        axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/department/${departmentId.value}`, {headers: tokenHeader})
-        .then((response) => {
+        DepartmentService.getById(departmentId.value).then((response) => {
           let responseData = response.data;
-          department.code = responseData.code;
-          department.name = responseData.name;
-          avatarUrl.value = responseData.avatarUrl;
+          if (responseData) {
+            department.code = responseData.code;
+            department.name = responseData.name;
+            avatarUrl.value = responseData.avatarUrl;
+          }
         }).catch((error) => {
           console.log('error: ' + error);
         });
@@ -131,9 +107,8 @@ export default {
         'Authorization': header.value, 
         "Content-Type": "multipart/form-data" 
       };
-      axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/department`, data, { headers })
+      DepartmentService.saveOrUpdate(data, headers)
       .then(response => {
-        console.log('responseData: ', response.data);
         let responseData = response.data;
         if (responseData) {
           navigateTo("/common/department");
