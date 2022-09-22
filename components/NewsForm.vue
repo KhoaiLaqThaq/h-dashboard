@@ -170,8 +170,6 @@ import { newStatus } from "~~/constants/enum.js";
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
 import { Form, Field, ErrorMessage } from "vee-validate";
-import axios from "axios";
-import CONFIG from "~~/config";
 import {ROLES} from "~~/constants/roles.js";
 import NewsService from "~~/services/model/news.service";
 
