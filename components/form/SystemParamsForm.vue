@@ -79,6 +79,7 @@ import BaseButton from "~~/components/common/BaseButton.vue";
 
 import axios from "axios";
 import CONFIG from "~~/config";
+import SystemParamsService from "~~/services/model/systemparams.service";
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   setup() {
@@ -89,6 +90,7 @@ export default {
       paramValue: "",
       description: "",
     });
+    const { $showToast } = useNuxtApp();
     //const doInputParamName = ref(1);
     const header = useHeader();
     function validateName(value) {
@@ -134,21 +136,17 @@ export default {
         paramValue: systemParam.paramValue,
         description: systemParam.description,
       };
-      const headers = { 
-        'Authorization': header.value, 
-        "Content-Type": "application/json" 
-      };
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/systemParameter`, data, { headers })
-        .then((response) => {
-          console.log("responseData: ", response.data);
-          let responseData = response.data;
+      SystemParamsService.saveOrUpdate(data)
+        .then((res) => {
+          let responseData = res.data;
           if (responseData) {
+            $showToast("Lưu tham số hệ thống thành công!", "success", 3000);
             navigateTo("/system/systemParams");
           }
         })
         .catch((error) => {
-          console.log("error: ", error);
+          $showToast("Lưu tham số hệ thống thất bại!", "error", 3000);
+          console.log(error);
         });
     }
     return {

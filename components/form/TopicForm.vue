@@ -97,6 +97,7 @@ export default {
           }
         })
         .catch((error) => {
+          $showToast("Lưu chuyên mục thất bại!", "error", 3000);
           console.log(error);
         });
     }
