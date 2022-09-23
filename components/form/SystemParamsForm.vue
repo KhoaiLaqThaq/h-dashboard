@@ -1,70 +1,49 @@
 <template>
   <Form @submit="onSubmit()">
     <div class="row mb-3">
-      <div class="col-lg-6 col-md-6 col-sm-12">
-        <!-- name -->
+      <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="form-floating mb-3">
-          <Field
-            type="text"
-            class="form-control box"
-            v-model="systemParam.paramName"
-            name="paramName"
-            :rules="validateName"
-            :disabled="systemParamId"
-          />
-
+          <Field type="text" class="form-control box" v-model="systemParam.paramName" name="paramName" :rules="validateName" :disabled="systemParamId" />
           <div class="mt-1 p-1">
             <ErrorMessage name="paramName" class="text-danger" />
           </div>
-
           <label for="">Tên tham số <span class="text-danger">*</span></label>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12">
-        <!-- value -->
+      <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="form-floating mb-3">
-          <Field
-            type="text"
-            class="form-control box"
-            v-model="systemParam.paramValue"
-            name="paramValue"
-            :rules="validateNumber"
+          <Field type="text" class="form-control box" v-model="systemParam.paramValue" name="paramValue" :rules="validateNumber" 
           />
-
           <div class="mt-1 p-1">
             <ErrorMessage name="paramValue" class="text-danger" />
           </div>
-
-          <label for=""
-            >Giá trị tham số <span class="text-danger">*</span></label
-          >
+          <label for="">Giá trị tham số <span class="text-danger">*</span></label>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <!-- value -->
-        <div class="form-floating mb-3">
-          <Field
-            as="textarea"
-            name="description"
-            v-model="systemParam.description"
-            class="form-control box auto-scroll-y"
-            id="floatingTextarea2"
-            style="min-height: 100px"
-            
-          />
 
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="form-floating mb-3">
+          <Field as="select" name="type" v-model="systemParam.type" class="form-select" required="required"
+            :rules="validateNumber" :disabled="systemParamId">
+              <option v-for="(systemType, index) in systemParamTypes" :key="index" :value="systemType.value">
+                  {{ systemType.name }}
+              </option>
+              <ErrorMessage name="type" class="text-danger" />
+          </Field>
+          <label>Chọn kiểu giá trị <span class="text-danger">*</span></label>
+        </div>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="form-floating mb-3">
+          <Field as="textarea" name="description" v-model="systemParam.description" class="form-control box auto-scroll-y" id="floatingTextarea2" style="min-height: 100px" />
           <label for="">Mô tả</label>
         </div>
       </div>
     </div>
     <div class="row d-flex">
       <div class="col-12 text-right">
-        <BaseButton
-          class="btn-primary"
-          :btnType="'submit'"
-          :name="'Save'"
-          :textSize="'text-small'"
-        />
+        <BaseButton class="btn-primary" :btnType="'submit'" :name="'Save'" :textSize="'text-small'" />
       </div>
     </div>
   </Form>
@@ -76,11 +55,17 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import BaseButton from "~~/components/common/BaseButton.vue";
+import { systemParamTypes } from "~~/constants/enum";
 
-import axios from "axios";
-import CONFIG from "~~/config";
+import SystemParamService from "~~/services/model/systemParam.service";
+
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
+  data() {
+    return {
+      systemParamTypes: systemParamTypes
+    }
+  },
   setup() {
     const route = useRoute();
     const systemParamId = ref(route.params.id);
@@ -88,12 +73,12 @@ export default {
       paramName: "",
       paramValue: "",
       description: "",
+      type: ""
     });
-    //const doInputParamName = ref(1);
-    const header = useHeader();
+    const { $showToast } = useNuxtApp();
+    
     function validateName(value) {
       if (!value) return "Trường này là bắt buộc";
-
       if (value.trim().length < 3) return "Trường này phải có hơn 3 ký tự";
 
       return true;
@@ -108,19 +93,17 @@ export default {
     // TODO: Call api to get a systemParamId have id
     const getSystemParamById = () => {
       if (systemParamId.value) {
-        let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/systemParameter/${systemParamId.value}`, {headers: tokenHeader})
-          .then((response) => {
+        SystemParamService.getById(systemParamId.value).then((response) => {
             let responseData = response.data;
-            systemParam.paramName = responseData.paramName;
-            systemParam.paramValue = responseData.paramValue;
-            systemParam.description = responseData.description;
+            if (responseData) {
+              systemParam.paramName = responseData.paramName;
+              systemParam.paramValue = responseData.paramValue;
+              systemParam.description = responseData.description;
+              systemParam.type = responseData.type;
+            }
           })
           .catch((error) => {
+            $showToast("Tải thông tin tham số hệ thống không thành công", "error", 2000);
             console.log("error: " + error);
           });
       }
@@ -133,24 +116,46 @@ export default {
         paramName: systemParam.paramName,
         paramValue: systemParam.paramValue,
         description: systemParam.description,
+        type: systemParam.type
       };
-      const headers = { 
-        'Authorization': header.value, 
-        "Content-Type": "application/json" 
-      };
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/systemParameter`, data, { headers })
-        .then((response) => {
-          console.log("responseData: ", response.data);
-          let responseData = response.data;
-          if (responseData) {
-            navigateTo("/system/systemParams");
-          }
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      // TODO: validate param type
+      let isOK = checkParamType();
+      console.log("isOK: " + isOK);
+      if (isOK)
+        SystemParamService.saveOrUpdate(data).then((response) => {
+            let responseData = response.data;
+            if (responseData) {
+              $showToast("Lưu thông tin tham số hệ thống thành công", "success", 3000);
+              navigateTo("/system/systemParams");
+            }
+          })
+          .catch((error) => {
+            $showToast("Lưu thông tin tham số hệ thống không thành công", "error", 2000);
+            console.log("error: ", error);
+          });
     }
+
+    function checkParamType() {
+      if (systemParamId.value && systemParam.type) {
+        if (systemParam.type === "integer") {
+          let message = "";
+          if (isNaN(systemParam.paramValue)) {
+            message = `Tham số ${systemParam.paramName} phải là kiểu số`;
+            $showToast(message, "warning", 3000);
+            return false;
+          } else {
+            if (systemParam.paramValue < 0) {
+              message = `Tham số ${systemParam.paramName} phải là kiểu số lớn hơn 0`;
+              $showToast(message, "warning", 3000);
+              return false;
+            }
+            return true;
+          }
+        }
+        return true;
+      }
+    }
+
     return {
       systemParam,
       systemParamId,
