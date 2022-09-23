@@ -5,7 +5,7 @@
         <h6 class="card-title">Tìm kiếm</h6>
       </div>
       <div class="card-body">
-        <form @submit.prevent="searchCallApi()">
+        <form @submit.prevent="listenerSearchForm()">
           <div class="row">
             <div class="col-md-3">
               <div class="form-floating mb-3">
@@ -111,6 +111,8 @@ export default {
     const header = useHeader();
     const currentRole = useCurrentRole();
 
+    const listenerSearchForm = () => page.value = 0;
+
     //const currentPage = ref(0);
     const tableHeaders = [
       { text: "STT", value: "no" },
@@ -131,6 +133,8 @@ export default {
       totalPages.value = users.totalPages;
       totalElements.value = users.totalElements;
     }
+
+    
 
     function searchCallApi() {
       let criteria = {
@@ -180,6 +184,7 @@ export default {
       currentRole,
       ROLES,
 
+      listenerSearchForm,
       searchCallApi,
       useCurrentsRole,
     };

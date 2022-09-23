@@ -5,7 +5,7 @@
         <h6 class="card-title">Tìm kiếm</h6>
       </div>
       <div class="card-body">
-        <form @submit.prevent="searchCallApi()">
+        <form @submit.prevent="listenerSearchForm()">
           <div class="row">
             <div class="col-md-4">
               <div class="form-floating mb-3">
@@ -114,6 +114,8 @@ export default {
       { text: "Trạng thái", value: "status" },
     ];
 
+    const listenerSearchForm = () => page.value = 0;
+
     function setPagination(news) {
       content.value = news.content;
       page.value = news.page;
@@ -178,6 +180,7 @@ export default {
       searchCallApi,
       changeSortField,
       useCurrentsRole,
+      listenerSearchForm
     };
   },
   created() {
