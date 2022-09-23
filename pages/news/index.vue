@@ -51,7 +51,9 @@
       <div class="table-content mt-3 radius-20">
         <table-news-component :headers="headers" :items="content" :actionEdit="true" :actionDelete="false" :page="page"
           :size="size" :sortField="sortField" :sortDirection="sortDirection"
-          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)" />
+          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)"
+          @search-call-api="listenerSearchForm()"  
+        />
 
         <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
           :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last"
