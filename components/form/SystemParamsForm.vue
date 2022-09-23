@@ -120,7 +120,6 @@ export default {
       };
       // TODO: validate param type
       let isOK = checkParamType();
-      console.log("isOK: " + isOK);
       if (isOK)
         SystemParamService.saveOrUpdate(data).then((response) => {
             let responseData = response.data;

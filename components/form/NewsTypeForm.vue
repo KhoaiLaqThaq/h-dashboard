@@ -5,16 +5,11 @@
       <div class="col-4">
         <!-- title -->
         <div class="form-floating mb-3">
-          <Field
-            type="text"
-            class="form-control box"
-            v-model="newsType.code"
-            name="code"
-            :rules="validateName"
-          />
-
+          <Field type="text" class="form-control box" v-model="newsType.code" name="code" 
+            :rules="validateName" @keyup="checkNewsTypeExistByCode()" />
           <div class="mt-1 p-1">
             <ErrorMessage name="code" class="text-danger" />
+            <p id="codeMessage" class="text-danger"></p>
           </div>
 
           <label for="">Mã loại tin tức <span class="text-danger">*</span></label>
@@ -41,12 +36,7 @@
     </div>
     <div class="row">
       <div class="col-12 ms-auto">
-        <BaseButton
-          class="btn-primary ms-auto"
-          :btnType="'submit'"
-          :name="'Lưu'"
-          :textSize="'text-small'"
-        />
+        <BaseButton class="btn-primary ms-auto" :btnType="'submit'" id="btnSubmit" :name="'Lưu'" :textSize="'text-small'" />
       </div>
     </div>
   </Form>
@@ -79,6 +69,8 @@ export default {
     const typeId = ref(route.params.id);
     const typeExist = ref({});
 
+    const notiCaseError = (message) => $showToast(message, "error", 2000);
+
     // call api getById
     function callApiGetById() {
       if (typeId.value) {
@@ -88,7 +80,7 @@ export default {
             }
           })
           .catch((error) => {
-            $showToast("Tải loại tin tức thất bại", "error", 2000);
+            notiCaseError("Tải loại tin tức không thành công!");
             console.log(error)
           })
       }
@@ -111,6 +103,28 @@ export default {
         return "Trường này phải có hơn 3 ký tự";
       // All is good
       return true;
+    }
+
+    function checkNewsTypeExistByCode() {
+      if (newsType.code && newsType.code.length > 3) {
+        NewsTypeService.checkExistByCode(newsType.code).then((response) => {
+          let responseData = response.data;
+          let codeSelector = document.getElementById("codeMessage");
+          let btnSubmit = document.getElementById("btnSubmit");
+          if (responseData) {
+            codeSelector.innerText = "Mã phòng ban đã tồn tại!";
+            btnSubmit.disabled = true;
+          } else {
+            if (codeSelector && codeSelector.textContent && codeSelector.textContent.length > 0) {
+              btnSubmit.disabled = false;
+              codeSelector.innerText = "";
+            }
+          }
+        }).catch((e) => {
+          notiCaseError("Kiểm tra loại tin tức tồn tại không thành công!");
+          console.log("CHECK ERROR: ", e);
+        });
+      }
     }
 
     //Call post API topic
@@ -137,6 +151,7 @@ export default {
       onSubmit,
       validateName,
       callApiGetById,
+      checkNewsTypeExistByCode
     };
   },
   created() {
