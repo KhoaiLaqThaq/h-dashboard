@@ -2,7 +2,11 @@ import api from "~~/services/api";
 import CONFIG from "~~/config";
 
 class TopicService {
-    getAll(topicId) {
+    getAll() {
+        return api.get(`${CONFIG.NEWS_GATEWAY}/api/topics`)
+    }
+
+    getById(topicId) {
         return api.get(`${CONFIG.NEWS_GATEWAY}/api/topic/${topicId}`);
     }
 

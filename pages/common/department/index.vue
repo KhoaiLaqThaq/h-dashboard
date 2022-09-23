@@ -41,29 +41,12 @@ export default {
       { text: "Tên đơn vị thành viên", value: "name" },
     ];
     const departments = ref([]);
-    const header = useHeader();
-    const currentRole = useCurrentUser();
+    const currentRole = useCurrentRole();
     // call api
     function searchCallApi() {
-      // let tokenHeader = {
-      //   'Authorization': header.value,
-      //   'Content-Type': 'application/json'
-      // };
-      // axios
-      //   .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers: tokenHeader })
-      //   .then((response) => {
-      //     const data = response.data;
-      //     console.log(response);
-      //     departments.value = data;
-      //   })
-      //   .catch((e) => {
-      //     this.errors.push(e);
-      //   });
-
       DepartmentService.getAll()
         .then((response) => {
             const data = response.data;
-            console.log(response);
             departments.value = data;
           })
           .catch((e) => {

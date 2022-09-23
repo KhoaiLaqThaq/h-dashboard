@@ -19,13 +19,12 @@
   </div>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import TableComponent from "~~/components/common/table/TableNewsTypeComponent.vue";
 
-import CONFIG from "~~/config";
-import axios from "axios";
+import NewsTypeService from "~~/services/model/newsType.service";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent },
@@ -37,30 +36,23 @@ export default {
     };
   },
   setup() {
+    const newsTypes = ref([]);
+    const { $showToast } = useNuxtApp();
+
     const tableHeader = [
       { text: "STT", value: "no" },
       { text: "Mã", value: "code" },
       { text: "Tên loại tin tức", value: "name" },
     ];
 
-    const newsTypes = ref([]);
-    const header = useHeader();
-
     // call api
     function searchCallApi() {
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
-      };
-      // TODO: Call api
-      axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsTypes`, {headers: tokenHeader})
-        .then((response) => {
-          //   console.log(response.data);
-          const data = response.data;
-          newsTypes.value = data;
+      NewsTypeService.getAll().then((response) => {
+          const responseData = response.data;
+          if (responseData) newsTypes.value = responseData;
         })
         .catch((e) => {
+          $showToast("Tải loại tin tức thất bại", "error", 2000);
           console.log(e);
         });
     }

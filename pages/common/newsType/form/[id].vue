@@ -7,8 +7,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { ref } from "vue";
 import NewsTypeForm from "~~/components/form/NewsTypeForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
@@ -20,14 +18,7 @@ export default {
     return {
       titleForm: "Chỉnh sửa loại tin tức",
     };
-  },
-  setup() {
-    // define variables
-    return {
-      //   addNews,
-    };
-  },
-  mounted() {},
+  }
 };
 </script>
 <style lang="scss"></style>

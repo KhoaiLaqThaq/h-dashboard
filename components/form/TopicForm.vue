@@ -4,26 +4,11 @@
       <div class="col-8">
         <!-- title -->
         <div class="form-floating mb-3">
-          <Field
-            type="text"
-            class="form-control box"
-            v-model="name"
-            name="name"
-            :rules="validateName"
-          />
-
-          <div class="mt-1 p-1">
-            <ErrorMessage name="name" class="text-danger" />
-          </div>
-
+          <Field type="text" class="form-control box mb-2" v-model="name" name="name" :rules="validateName" />
+          <ErrorMessage name="name" class="text-danger" />
           <label for="">Tên chuyên mục <span class="text-danger">*</span></label>
         </div>
-        <BaseButton
-          class="btn-primary ms-auto"
-          :btnType="'submit'"
-          :name="'Lưu'"
-          :textSize="'text-small'"
-        />
+        <BaseButton class="btn-primary ms-auto" :btnType="'submit'" :name="'Lưu'" :textSize="'text-small'" />
       </div>
     </div>
   </Form>
@@ -44,21 +29,19 @@ export default {
       titleEdit: "Chỉnh sửa chuyên mục",
     };
   },
-  setup(props) {
+  setup() {
     const route = useRoute();
     const name = ref("");
     const topicId = ref(route.params.id);
     const topicExist = ref({});
-    let success = false;
     const { $showToast } = useNuxtApp();
 
     // call api getById
     function callApiGetById() {
       if (topicId.value) {
-        console.log("entering callApiGetById()...", topicId.value);
-        TopicService.getAll(topicId.value)
+        TopicService.getById(topicId.value)
           .then((response) => {
-            if (response) {
+            if (response.data) {
               topicExist.value = response.data;
             }
           })
@@ -97,7 +80,7 @@ export default {
           }
         })
         .catch((error) => {
-          $showToast("Lưu chuyên mục thất bại!", "error", 3000);
+          $showToast("Lưu chuyên mục không thành công!", "error", 3000);
           console.log(error);
         });
     }
@@ -105,7 +88,6 @@ export default {
       name,
       onSubmit,
       validateName,
-      success,
       callApiGetById,
     };
   },

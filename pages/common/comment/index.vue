@@ -57,6 +57,7 @@ import { useCurrentsRole } from "~~/services/common";
 import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js"
 import axios from "axios";
+import CommentService from "~~/services/model/comment.service";
 
 export default {
   components: {
@@ -124,8 +125,7 @@ export default {
         'Content-Type': 'application/json'
       };
       // TODO: Call api
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/comments`, criteria, { headers: tokenHeader })
+      CommentService.search(criteria)
         .then((response) => {
           const data = response.data;
           setPagination(data);

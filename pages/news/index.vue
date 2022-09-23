@@ -69,9 +69,8 @@ import Pagination from "~~/components/common/table/Pagination.vue";
 import { newStatus } from "~~/constants/enum.js";
 import { useCurrentsRole } from "~~/services/common.js"
 
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from "axios";
+import NewsService from "~~/services/model/news.service";
 
 export default {
   components: {
@@ -105,7 +104,6 @@ export default {
     const status = ref("");
     const sortField = ref("id");
     const sortDirection = ref(true);
-    const header = useHeader();
     const currentRole = useCurrentRole();
 
     const headers = [
@@ -137,13 +135,8 @@ export default {
         sortField: sortField.value,
         sortDirection: sortDirection.value,
       };
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json',
-      };
       // TODO: Call api
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/news/list`, criteria, { headers: tokenHeader })
+      NewsService.search(criteria)
         .then((response) => {
           // console.log(response.data);
           const data = response.data;

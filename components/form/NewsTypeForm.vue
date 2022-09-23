@@ -58,8 +58,8 @@ import BaseButton from "~~/components/common/BaseButton.vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRoute } from "vue-router";
 
-import axios from "axios";
-import CONFIG from "~~/config";
+import NewsTypeService from "~~/services/model/newsType.service";
+
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {
@@ -68,8 +68,9 @@ export default {
       titleEdit: "Chỉnh sửa loại tin tức",
     };
   },
-  setup(props) {
+  setup() {
     const route = useRoute();
+    const { $showToast } = useNuxtApp();
     const newsType = reactive({
       code: "",
       name: ""
@@ -77,27 +78,19 @@ export default {
     
     const typeId = ref(route.params.id);
     const typeExist = ref({});
-    let success = false;
-    const header = useHeader();
-
-    let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
 
     // call api getById
     function callApiGetById() {
       if (typeId.value) {
-        console.log("entering callApiGetById()...", typeId.value);
-        
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType/${typeId.value}`, {headers: tokenHeader})
-          .then((response) => {
-            if (response) {
+        NewsTypeService.getById(typeId.value).then((response) => {
+            if (response.data) {
               typeExist.value = response.data;
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            $showToast("Tải loại tin tức thất bại", "error", 2000);
+            console.log(error)
+          })
       }
     }
 
@@ -115,9 +108,7 @@ export default {
       }
       // if the field is not a valid email
       if (value.length < 3)
-        // if (valu < 3) {
         return "Trường này phải có hơn 3 ký tự";
-      // }
       // All is good
       return true;
     }
@@ -129,16 +120,15 @@ export default {
         code: newsType.code,
         name: newsType.name,
       };
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/newsType`, type, { headers: tokenHeader })
-        .then((res) => {
-          console.log(res.data);
+      NewsTypeService.saveOrUpdate(type).then((res) => {
           let responseData = res.data;
           if (responseData) {
+            $showToast("Lưu loại tin tức thành công", "success", 2000);
             navigateTo("/common/newsType");
           }
         })
         .catch((error) => {
+          $showToast("Lưu loại tin tức không thành công", "error", 2000);
           console.log(error);
         });
     }
@@ -146,7 +136,6 @@ export default {
       newsType,
       onSubmit,
       validateName,
-      success,
       callApiGetById,
     };
   },
