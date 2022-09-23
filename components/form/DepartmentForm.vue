@@ -57,6 +57,7 @@ export default {
       name: ""
     });
     const header = useHeader();
+    const { $showToast } = useNuxtApp();
     function validateName(value) {
       if (!value)
         return "Trường này là bắt buộc";
@@ -111,9 +112,11 @@ export default {
       .then(response => {
         let responseData = response.data;
         if (responseData) {
+          $showToast("Lưu đơn vị thành công!", "success", 3000);
           navigateTo("/common/department");
         }
       }).catch(error => {
+        $showToast("Lưu đơn vị không thành công!", "error", 3000);
         console.log('error: ', error);
       });
     }
