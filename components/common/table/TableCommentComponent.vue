@@ -132,13 +132,24 @@ export default {
         };
 
         CommentService.changeMultiCommentStatus(commentDto)
-          .then((res) => {
-            this.reCallApi();
-            let list = document.getElementsByClassName("boxCheck");
-            for (let e of list) {
-              document.getElementById(e.id).checked = false;
+          .then((response) => {
+            let responseData = response.data; 
+            if (responseData) {
+              if (response.status === 200) {
+                $showToast("Phê duyệt thành công!", "success", 3000);
+                this.reCallApi();
+                let list = document.getElementsByClassName("boxCheck");
+                for (let e of list) {
+                  document.getElementById(e.id).checked = false;
+                }
+                listSelected.value = [];
+              } else if(response.status === 500) {
+                caseError("Thay đổi trạng thái bình luận thất bại");
+              } else {
+                caseError("Thay đổi trạng thái bình luận thất bại, Lỗi không xác định -1");
+              }
             }
-            listSelected.value = [];
+            
           })
           .catch((e) => {
             caseError("Thay đổi trạng thái bình luận thất bại");
