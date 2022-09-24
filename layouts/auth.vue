@@ -71,6 +71,7 @@ export default {
     function login(e) {
       console.log("====>Entering login");
       if (currentUser.username != "" && currentUser.password != "") {
+        localStorage.clear();
         let data = {
           username: currentUser.username,
           password: currentUser.password

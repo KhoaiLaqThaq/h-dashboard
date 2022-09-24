@@ -10,6 +10,10 @@ class DepartmentService {
         return api.get(`${CONFIG.NEWS_GATEWAY}/api/department/${departmentId}`);
     }
 
+    checkExistByCode(code) {
+        return api.get(`${CONFIG.NEWS_GATEWAY}/api/department/checkExistByCode/${code}`);
+    }
+
     saveOrUpdate(department, headers) {
         return api.post(`${CONFIG.NEWS_GATEWAY}/api/department`, department, {headers});
     }

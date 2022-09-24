@@ -45,7 +45,10 @@ export default {
               topicExist.value = response.data;
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            $showToast("Tải chuyên mục không thành công!", "error", 3000);
+            console.log(error);
+          });
       }
     }
 

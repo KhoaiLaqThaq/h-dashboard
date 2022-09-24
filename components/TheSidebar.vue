@@ -315,9 +315,6 @@ export default {
   mounted() {
     this.resetRouteNameState();
     this.onLoadRouteNameCurrent();
-  },
-  unmounted() {
-    localStorage.clear();
-  },
+  }
 };
 </script>

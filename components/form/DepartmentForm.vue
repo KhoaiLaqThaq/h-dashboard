@@ -4,8 +4,10 @@
       <div class="col-lg-4 col-md-6 col-sm-12">
         <!-- code -->
         <div class="form-floating mb-3">
-          <Field type="text" class="form-control box mb-2" v-model="department.code" name="code" :rules="validateName" />
+          <Field type="text" class="form-control box mb-2" v-model="department.code" name="code" 
+            :rules="validateName" :disabled="departmentId" @keyup="checkDepartmentExistByCode()" />
           <ErrorMessage name="code" class="text-danger" />
+          <p id="codeMessage" class="text-danger"></p>
           <label for="">Mã đơn vị <span class="text-danger">*</span></label>
         </div>
       </div>
@@ -28,7 +30,7 @@
 
     <div class="row d-flex">
       <div class="col-12 text-right">
-        <BaseButton class="btn-primary" :btnType="'submit'" :name="'Lưu'" :textSize="'text-small'" />
+        <BaseButton class="btn-primary" :btnType="'submit'" id="btnSubmit" :name="'Lưu'" :textSize="'text-small'" />
       </div>
     </div>
   </Form>
@@ -52,6 +54,8 @@ export default {
     const avatar = ref(null);
     const avatarUrl = ref("");
     const isChangedAvatar = ref(false);
+    const { $showToast } = useNuxtApp();
+
     const department = reactive({
       code: "",
       name: ""
@@ -84,39 +88,51 @@ export default {
       }
     }
 
+    // TODO: check department exist by code
+    function checkDepartmentExistByCode() {
+      if (department.code && department.code.length > 3) {
+        DepartmentService.checkExistByCode(department.code).then(response => {
+          let responseData = response.data;
+          let codeSelector = document.getElementById("codeMessage");
+          let btnSubmit = document.getElementById("btnSubmit");
+          if (responseData) {
+            codeSelector.innerText = "Mã phòng ban đã tồn tại!";
+            btnSubmit.disabled = true;
+          } else {
+            if (codeSelector && codeSelector.textContent && codeSelector.textContent.length > 0) {
+              btnSubmit.disabled = false;
+              codeSelector.innerText = "";
+            }
+          }
+        }).catch((error) => {
+          console.log("CHECK DEPARTMENT ERROR: ", error);
+        })
+      }
+    }
+
     // call api save
     function onSubmit() {
-      let data;
-      if(avatar.value){
-        data = {
-          id: departmentId.value,
-          code: department.code,
-          name: department.name,
-          avatar: avatar.value,
-          avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
-        };
-      } else {
-        data = {
-          id: departmentId.value,
-          code: department.code,
-          name: department.name,
-          avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
-        };
-      }
+      let data = {
+        id: departmentId.value,
+        code: department.code,
+        name: department.name,
+        avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
+      };
+      if (avatar.value)
+        data['avatar'] = avatar.value;
       
       const headers = { 
         'Authorization': header.value, 
         "Content-Type": "multipart/form-data" 
       };
-      DepartmentService.saveOrUpdate(data, headers)
-      .then(response => {
+      DepartmentService.saveOrUpdate(data, headers).then(response => {
         let responseData = response.data;
         if (responseData) {
-          $showToast("Lưu đơn vị thành công!", "success", 3000);
+          $showToast("Lưu thông tin đơn vị thành viên thành công!", "success", 2000);
           navigateTo("/common/department");
         }
       }).catch(error => {
-        $showToast("Lưu đơn vị không thành công!", "error", 3000);
+        $showToast("Lưu thông tin đơn vị thành viên không thành công!", "error", 3000);
         console.log('error: ', error);
       });
     }
@@ -131,11 +147,13 @@ export default {
       avatar,
       avatarUrl,
       department,
+      departmentId,
 
       getDepartmentById,
       onSubmit,
       validateName,
-      changeImage
+      changeImage,
+      checkDepartmentExistByCode
     };
   },
   mounted() {

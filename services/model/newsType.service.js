@@ -10,6 +10,10 @@ class NewsTypeService {
         return api.get(`${CONFIG.NEWS_GATEWAY}/api/newsType/${newsTypeId}`);
     }
 
+    checkExistByCode(code) {
+        return api.get(`${CONFIG.NEWS_GATEWAY}/api/newsType/checkForCode/${code}`);
+    }
+
     saveOrUpdate(newsType) {
         return api.post(`${CONFIG.NEWS_GATEWAY}/api/newsType`, newsType);
     }

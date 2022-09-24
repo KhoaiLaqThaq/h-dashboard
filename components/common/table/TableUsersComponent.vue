@@ -27,17 +27,24 @@
               <edit-icon /><span class="ms-1">Sửa</span>
             </NuxtLink>
           </div>
-          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_DELETE])" @click="deleteUser(item.k6kUserId)">
+          <div class="d-flex me-auto cursor-pointer ms-3 text-danger" 
+            v-if="actionDelete && useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_DELETE])"
+            data-bs-toggle="modal" :data-bs-target="'#' + modalSelectorId" @click="setItem(item)"
+          >
             <delete-icon />
             <span class="ms-1">Xóa</span>
           </div>
         </div>
       </div>
     </div>
+    <ConfirmDelete :idModal="modalSelectorId" :objectName="userConfirm.username" :objectType="objectType"
+      :btnTitleConfirm="btnTitleConfirm" :issueText="issueText"
+      :idObject="userConfirm.k6kUserId" @func-delete="deleteUser(userConfirm.k6kUserId)"
+    />
   </div>
 </template>
 <script>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import moment from "moment";
 import { useCurrentsRole } from "~~/services/common.js"
 
@@ -46,19 +53,33 @@ import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
 import axios from 'axios';
+import ConfirmDelete from '~~/components/common/modal/ConfirmDelete.vue';
 
 export default {
   components: {
     EditIcon,
     DeleteIcon,
+    ConfirmDelete
+},
+  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "routerPush", "searchCallApi"],
+  data() {
+    return {
+      modalSelectorId: "userConfirmDelete",
+      objectType: "tài khoản",
+      issueText: "Các vấn đề, nhận xét, bình luận, quy trình làm việc và các liên kết của tài khoản",
+      btnTitleConfirm: "Tôi hiểu hậu quả, xóa tài khoản này"
+    }
   },
-  props: ["headers", "items", "actionEdit", "actionDelete", "page", "size", "routerPush"],
   setup(props, { emit }) {
     const sortField = ref(props.sortField);
     const sortDirection = ref(props.sortDirection);
     const currentRole = useCurrentRole();
     const header = useHeader();
     const { $showToast } = useNuxtApp();
+    const userConfirm = reactive({
+      k6kUserId: "",
+      username: ""
+    });
 
     let headers = {
       'Authorization': header.value,
@@ -74,6 +95,13 @@ export default {
     }
 
     const displayDate = (date) => moment(date).month(date[1] - 1).format("YYYY-MM-DD HH:mm:ss");
+
+    function setItem(user) {
+      if (user) {
+        userConfirm.k6kUserId = user.k6kUserId;
+        userConfirm.username = user.username;
+      }
+    }
 
     function searchCondition(fieldValue) {
       if (sortField.value === fieldValue) {
@@ -107,18 +135,18 @@ export default {
     function deleteUser(k6kUserId) {
       if (k6kUserId) {
         axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
-        .then((response) => {
-          let responseData = response.data;
-          if (responseData) {
-            deleteUserDepartment(k6kUserId);
-          } else {
+          .then((response) => {
+            let responseData = response.data;
+            if (responseData) {
+              deleteUserDepartment(k6kUserId);
+            } else {
+              onLoadUserError("Ops! Xóa người dùng không thành công -1");
+            }
+          })
+          .catch((error) => {
             onLoadUserError("Ops! Xóa người dùng không thành công -1");
-          }
-        })
-        .catch((error) => {
-          onLoadUserError("Ops! Xóa người dùng không thành công -1");
-          console.log("ERROR DELETE USER K6K: ", error);
-        })
+            console.log("ERROR DELETE USER K6K: ", error);
+          })
       }
     }
 
@@ -128,7 +156,11 @@ export default {
         let responseData = response.data;
         if (responseData) {
           $showToast("Xóa người dùng thành công!", "success", 3000);
-          location.reload();
+
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+
         } else {
           onLoadUserError("Ops! Xóa người dùng không thành công -2");
         }
@@ -144,6 +176,7 @@ export default {
     }
 
     return {
+      userConfirm,
       currentRole,
       ROLES,
 
@@ -151,7 +184,8 @@ export default {
       displayDate,
       searchCondition,
       useCurrentsRole,
-      deleteUser
+      deleteUser,
+      setItem
     };
   },
 };
