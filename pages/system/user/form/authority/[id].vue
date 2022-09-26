@@ -37,7 +37,7 @@
                             <hr>
                             <div class="row pb-0">
                                 <div class="col-12 text-right">
-                                    <button class="btn btn-primary ms-auto text-small" type='button' @click="onAuthority()">Phân quyền</button>
+                                    <button class="btn btn-primary ms-auto text-small" type='button' @click="onAuthority()" v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_USER_SET_AUTHORITY])">Phân quyền</button>
                                 </div>
                             </div>
                             </div>
@@ -58,8 +58,6 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
 
-import axios from "axios";
-import CONFIG from "~~/config";
 import {ROLES} from "~~/constants/roles.js";
 import { useCurrentsRole } from '~~/services/common.js'
 import UserDepartService from "~~/services/model/userDepart.service";
@@ -73,7 +71,6 @@ export default {
         MultiCheckboxVue
     ],
     setup() {
-        const header = useHeader();
         const route = useRoute();
         const userId = ref(route.params && route.params.id);
         const { $showToast } = useNuxtApp();
@@ -84,12 +81,8 @@ export default {
         const departmentId = ref("");
         const groupUsers = ref([]);
         const departments = ref([]);
+        const currentRole = useCurrentRole();
         const userDepartment = ref(null);
-
-        const headers = {
-            'Authorization': header.value,
-            'Content-Type': 'application/json'
-        };
 
         // TODO: init loading
         function initLoad() {
@@ -102,9 +95,7 @@ export default {
 
         // TODO: Lấy thông tin đã tồn tại của user theo K6kUserId
         function onLoadUserDepartmentByK6kUserId() {
-            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${userId.value}`, { headers})
-            UserDepartService.getById(userId.value)
-            .then((response) => {
+            UserDepartService.getById(userId.value).then((response) => {
                 let responseData = response.data;
                 if (responseData) {
                     // console.log("responseData: ", responseData);
@@ -122,9 +113,7 @@ export default {
 
         // TODO: Lấy danh sách nhóm quyền trên keycloak
         function onLoadGroupUsers() {
-            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers})
-            UserService.getAllGroup()
-            .then((response) => {
+            UserService.getAllGroup().then((response) => {
                 let responseData = response.data;
                 if (responseData) {
                     groupUsers.value = responseData;
@@ -138,9 +127,7 @@ export default {
 
         // TODO: Lấy danh sách các phòng ban
         function onLoadDepartments() {
-            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers})
-            DepartmentService.getAll()
-            .then((response) => {
+            DepartmentService.getAll().then((response) => {
                 let responseData = response.data;
                 if (responseData) {
                     departments.value = responseData;
@@ -163,8 +150,8 @@ export default {
                 accountEnabled: firstTimeAuthority.value ? true : dataExist.enabled,
                 groupName: k6kGroupName.value
             };
-            axios.put(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, dataGroupUser, {headers})
-            .then((response) => {
+
+            UserService.update(userId.value, dataGroupUser).then((response) => {
                 let responseData = response.data;
                 if (responseData) {
                     console.log("update group user: ", responseData);
@@ -179,7 +166,6 @@ export default {
 
         function updateUserDepartment(responseK6kGroup) {
             let dataUserExist = userDepartment.value;
-            console.log('dataUserExist', dataUserExist);
             let dataUserDepartment = {
                 id: dataUserExist.id,
                 departmentId: departmentId.value,
@@ -193,8 +179,7 @@ export default {
                 k6kGroupId: responseK6kGroup.groupId
             };
 
-            axios.put(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${departmentId.value}`, dataUserDepartment, { headers})
-            .then((response) => {
+            UserDepartService.update(departmentId.value, dataUserDepartment).then((response) => {
                 let responseUserDepartment = response.data;
                 if (responseUserDepartment) {
                     $showToast("Phân quyền người dùng thành công", "success", 3000);
@@ -231,10 +216,13 @@ export default {
             departmentId,
             groupUsers,
             departments,
+            currentRole,
+            ROLES,
 
             onAuthority,
             navigateToUserForm,
-            initLoad
+            initLoad,
+            useCurrentsRole
         }
     },
     created() {

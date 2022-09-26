@@ -355,6 +355,7 @@ export default {
       currentRole,
       user,
       showStatus,
+      groupName,
 
       // function
       onSubmit,

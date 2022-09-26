@@ -18,6 +18,11 @@ class UserDepartService {
     saveOrUpdate(newsDepartmentData, headers) {
         return api.post(`${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, {headers});
     }
+
+    update(departmentId, userDepartment) {
+        return api.put(`${CONFIG.NEWS_GATEWAY}/api/userDepartment/${departmentId}`, userDepartment);
+    }
+
     deleteById(k6kUserId){
         return api.delete(`${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`);
     }

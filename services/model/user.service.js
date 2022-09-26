@@ -22,6 +22,11 @@ class UserService {
     saveOrUpdate(user) {
         return api.post(`${CONFIG.USER_GATEWAY}/api/user`, user);
     }
+
+    update(id, user) {
+        return api.put(`${CONFIG.USER_GATEWAY}/api/user/${id}`, user);
+    }
+
     deleteById(k6kUserId){
         return api.delete(`${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`);
     }
