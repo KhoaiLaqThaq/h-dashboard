@@ -53,7 +53,7 @@ export default {
     return {
       modalSelectorId: "topicConfirmDelete",
       objectType: "chuyên mục",
-      issueText: "Các chuyên mục có bài viết sẽ không thể xóa",
+      issueText: "Các bài viết thuộc chuyên mục bị xóa sẽ phải chọn chuyên mục khác trước khi lưu chỉnh sửa",
       btnTitleConfirm: "Tôi hiểu hậu quả, xóa chuyên mục này"
     }
   },
