@@ -32,6 +32,11 @@ export default {
   ],
   components: true,
   buildModules: [],
+  build: {
+    transpile: [
+      "chartjs"
+    ]
+  },
   modules: [],
   module: {
     rules: [

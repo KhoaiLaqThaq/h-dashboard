@@ -1,33 +1,38 @@
 <template>
     <div class="d-grid grid-cols-12 grap-6 mt-3">
-        <div class="report-box zoom-in" v-for="(item, index) in reports" :key="index">
-            <div class="box p-3">
+        <div class="report-box zoom-in">
+            <div class="box p-3 bgc-template text-white">
                 <div class="d-flex">
-                    <template v-if="item.type === 1">
-                        <ComputerIcon />
-                    </template>
-                    <template v-if="item.type === 2">
-                        <PostIcon />
-                    </template>
-                    <template v-if="item.type === 3">
-                        <UserIcon />
-                    </template>
-                    <template v-if="item.type === 4">
-                        <IconCommunity />
-                    </template>
-                    <div class="ms-auto">
-                        <div class="report-box__indicator cursor-pointer"
-                            :class="item.percent > 0 ? 'bgc-success':'bgc-danger'">{{Math.abs(item.percent) + '%'}}
-                        </div>
-                    </div>
+                    <ComputerIcon />
                 </div>
-                <div class="text-3xl font-medium leading-8 mt-6">{{item.amount}}</div>
-                <div class="text-base text-slate-500 mt-1">{{item.name}}</div>
+                <div class="text-3xl font-medium leading-8 mt-6">{{reports.viewTotal}}</div>
+                <div class="text-base text-slate-500 mt-1">Lượt xem tin tức</div>
+            </div>
+        </div>
+
+        <div class="report-box zoom-in">
+            <div class="box p-3 bg-success text-white">
+                <div class="d-flex">
+                    <PostIcon />
+                </div>
+                <div class="text-3xl font-medium leading-8 mt-6">{{reports.newsTotal}}</div>
+                <div class="text-base text-slate-500 mt-1">Số lượng bài viết</div>
+            </div>
+        </div>
+
+        <div class="report-box zoom-in">
+            <div class="box p-3  bg-warning text-white">
+                <div class="d-flex">
+                    <UserIcon />
+                </div>
+                <div class="text-3xl font-medium leading-8 mt-6">{{reports.userTotal}}</div>
+                <div class="text-base text-slate-500 mt-1">Số lượng người dùng</div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import {ref, reactive} from 'vue';
 import ComputerIcon from '~~/assets/images/icons/ComputerIcon.vue';
 import PostIcon from '~~/assets/images/icons/PostIcon.vue';
 import UserIcon from '~~/assets/images/icons/UserIcon.vue';
@@ -39,36 +44,29 @@ export default {
         ComputerIcon, PostIcon, UserIcon, IconCommunity
     },
     setup() {
-        const header = useHeader();
-        const reports = ref([
-            { percent: 133, amount: 1225, name: 'Views', type: 1 },
-            { percent: 25, amount: 5, name: 'News ', type: 2 },
-            { percent: -4, amount: 4, name: 'Users', type: 3 },
-            { percent: '30', amount: 42, name: 'Events', type: 4 }
-        ]);
+        const { $showToast } = useNuxtApp();
+        const reports = reactive({
+            userTotal: 0,
+            viewTotal: 0,
+            newsTotal: 0,
+        });
 
         function setData(reportData) {
-            reports.value.forEach(function (item) {
-                if (item.type == 1) {
-                    item.amount = reportData.viewTotal;
-                    item.percent = reportData.viewPercent;
-                } else if (item.type == 2) {
-                    item.amount = reportData.newsTotal;
-                    item.percent = reportData.newsPercent;
-                }
-            });
+            reports.userTotal = reportData.userTotal;
+            reports.viewTotal = reportData.viewTotal;
+            reports.newsTotal = reportData.newsTotal
         };
 
-        // call api
+        // TODO: this api will be get statistic common
         function searchCallApi() {
-            DashboardService.showReportPreview()
-                .then((response) => {
-                    const data = response.data;
-                    setData(data);
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+            DashboardService.showReportPreview().then((response) => {
+                const responseData = response.data;
+                if (responseData) setData(responseData);
+            })
+            .catch((e) => {
+                $showToast("Tải thống kê chung không thành công!", "error", 2000);
+                console.log(e);
+            });
         }
 
         return {
@@ -77,7 +75,6 @@ export default {
         }
     },
     created() {
-        // console.log("enter created()...");
         this.searchCallApi();
     },
 }

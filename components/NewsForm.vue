@@ -249,11 +249,6 @@ export default {
     const tagsOption = ref(false);
     let listTagsForSelect = ref([]);
 
-    let headers = {
-      "Authorization": header.value,
-      "Content-Type": "application/json"
-    };
-
     // call api getById
     function callApiGetById() {
       if (newsId.value) {
