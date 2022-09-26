@@ -452,7 +452,7 @@ export default {
         NewsService.saveOrUpdate(news, tokenHeaders)
           .then((res) => {
             let responseData = res.data;
-            console.log(responseData.code + " " + responseData.message);
+            console.log("check date" + responseData.createdDate + responseData.createdDateString)
             $showToast("Thêm/Sửa Tin tức thành công", "success", 2000);
             navigateTo("/news");
           })
