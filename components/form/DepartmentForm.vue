@@ -61,7 +61,6 @@ export default {
       name: ""
     });
     const header = useHeader();
-
     function validateName(value) {
       if (!value)
         return "Trường này là bắt buộc";

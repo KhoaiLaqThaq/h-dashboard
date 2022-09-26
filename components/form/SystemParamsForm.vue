@@ -59,6 +59,9 @@ import { systemParamTypes } from "~~/constants/enum";
 
 import SystemParamService from "~~/services/model/systemParam.service";
 
+import axios from "axios";
+import CONFIG from "~~/config";
+import SystemParamsService from "~~/services/model/systemparams.service";
 export default {
   components: { TitleHeader, BaseButton, Form, Field, ErrorMessage },
   data() {

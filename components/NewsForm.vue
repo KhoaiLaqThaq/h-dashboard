@@ -421,47 +421,51 @@ export default {
 
     function onSubmit() {
       console.log("entering onSubmit()...");
-      let departmentCodes = "";
-      destination.value.forEach((item) => {
-        departmentCodes += "," + item.code;
-      });
-      tags.value.forEach((item) => {
-        tagNames.value += "," + item;
-      });
-      const news = {
-        id: newsId.value ? newsId.value : null,
-        avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
-        newsTypeId: optionType.value,
-        title: title.value,
-        brief: brief.value,
-        content: content.value,
-        status: status.value,
-        topicId: topic.value,
-        tagNames: tagNames.value,
-        commentTotal: commentTotal.value,
-        likeTotal: likeTotal.value,
-        viewTotal: viewTotal.value,
-        createdBy: createdBy.value,
-        createdDateString: newsId.value ? createdDateString.value : null,
-        departmentCodes: departmentCodes,
-      };
-      if (avatar.value)
-        news["avatar"] = avatar.value;
-      let tokenHeaders = {
-        "Authorization": header.value,
-        "Content-Type": "multipart/form-data"
-      };
-      NewsService.saveOrUpdate(news, tokenHeaders)
-        .then((res) => {
-          let responseData = res.data;
-          console.log(responseData.code + " " + responseData.message);
-          $showToast("Thêm/Sửa Tin tức thành công", "success", 2000);
-          navigateTo("/news");
-        })
-        .catch((error) => {
-          $showToast("Thêm/Sửa Tin tức thất bại", "error", 2000);
-          console.log(error);
+      if(destination.value.length == 0) {
+        $showToast("Hãy phân phối phòng ban!", "error", 2000);
+      } else {
+        let departmentCodes = "";
+        destination.value.forEach((item) => {
+          departmentCodes += "," + item.code;
         });
+        tags.value.forEach((item) => {
+          tagNames.value += "," + item;
+        });
+        const news = {
+          id: newsId.value ? newsId.value : null,
+          avatarUrl: isChangedAvatar.value ? "" : avatarUrl.value,
+          newsTypeId: optionType.value,
+          title: title.value,
+          brief: brief.value,
+          content: content.value,
+          status: status.value,
+          topicId: topic.value,
+          tagNames: tagNames.value,
+          commentTotal: commentTotal.value,
+          likeTotal: likeTotal.value,
+          viewTotal: viewTotal.value,
+          createdBy: createdBy.value,
+          createdDateString: newsId.value ? createdDateString.value : null,
+          departmentCodes: departmentCodes,
+        };
+        if (avatar.value)
+          news["avatar"] = avatar.value;
+        let tokenHeaders = {
+          "Authorization": header.value,
+          "Content-Type": "multipart/form-data"
+        };
+        NewsService.saveOrUpdate(news, tokenHeaders)
+          .then((res) => {
+            let responseData = res.data;
+            console.log(responseData.code + " " + responseData.message);
+            $showToast("Thêm/Sửa Tin tức thành công", "success", 2000);
+            navigateTo("/news");
+          })
+          .catch((error) => {
+            $showToast("Thêm/Sửa Tin tức thất bại", "error", 2000);
+            console.log(error);
+          });
+      }
     }
 
     function selectTagSuggestion(event) {
