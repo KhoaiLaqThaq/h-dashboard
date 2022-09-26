@@ -51,13 +51,9 @@ import { useCurrentsRole } from "~~/services/common.js"
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 import { ROLES } from "~~/constants/roles.js";
-<<<<<<< HEAD
 import UserService from "~~/services/model/user.service";
 import UserDepartService from "~~/services/model/userDepart.service";
-=======
-import axios from 'axios';
 import ConfirmDelete from '~~/components/common/modal/ConfirmDelete.vue';
->>>>>>> 8aa34d3189f57bbd1ca419292af257458aebc3a5
 
 export default {
   components: {

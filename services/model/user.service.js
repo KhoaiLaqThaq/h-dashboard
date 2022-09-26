@@ -19,8 +19,8 @@ class UserService {
         return api.get(`${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${username}`)
     }
 
-    saveOrUpdate(user, headers) {
-        return api.post(`${CONFIG.USER_GATEWAY}/api/user`, user, {headers});
+    saveOrUpdate(user) {
+        return api.post(`${CONFIG.USER_GATEWAY}/api/user`, user);
     }
     deleteById(k6kUserId){
         return api.delete(`${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`);
