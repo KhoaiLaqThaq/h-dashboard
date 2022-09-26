@@ -116,7 +116,10 @@ export default {
       { text: "Trạng thái", value: "status" },
     ];
 
-    const listenerSearchForm = () => page.value = 0;
+    const listenerSearchForm = () => {
+      if (page.value == 0) searchCallApi();
+      else page.value = 0;
+    };
 
     function setPagination(news) {
       content.value = news.content;
@@ -140,21 +143,15 @@ export default {
         sortDirection: sortDirection.value,
       };
       // TODO: Call api
-      NewsService.search(criteria)
-        .then((response) => {
-          // console.log(response.data);
-          const data = response.data;
-          setPagination(data);
-        })
-        .catch((e) => {
+      NewsService.search(criteria).then((response) => {
+          const responseData = response.data;
+          if (responseData) setPagination(responseData);
+        }).catch((e) => {
           this.errors.push(e);
         });
     }
 
-    const changeSortField = (fieldValue) => {
-      console.log("change sort field", fieldValue);
-      sortField.value = fieldValue;
-    };
+    const changeSortField = (fieldValue) => sortField.value = fieldValue;
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
