@@ -17,3 +17,8 @@ export const options = [
   { name: "Loại tin hành chính", value: "administrative" },
   { name: "Tin Hot", value: "hot_news" },
 ];
+
+export const systemParamTypes = [
+  { name: "Số", value: "integer" },
+  { name: "Chữ", value: "string" },
+];

@@ -13,6 +13,8 @@ import "bootstrap";
 import VueJwtDecode from 'vue-jwt-decode';
 import camelcaseKeys from 'camelcase-keys';
 
+import TokenService from "~~/services/model/token.service";
+
 export default {
   setup() {
     const layout = useLayoutActive();
@@ -94,6 +96,9 @@ export default {
   mounted() {
     this.setLayoutDefault();
     this.checkAuthentication();
+  },
+  unmounted() {
+    TokenService.logout();
   }
 }
 </script>

@@ -5,7 +5,7 @@
         <h6 class="card-title">Tìm kiếm</h6>
       </div>
       <div class="card-body">
-        <form @submit.prevent="searchCallApi()">
+        <form @submit.prevent="listenerSearchForm()">
           <div class="row">
             <div class="col-md-4">
               <div class="form-floating mb-3">
@@ -51,7 +51,9 @@
       <div class="table-content mt-3 radius-20">
         <table-news-component :headers="headers" :items="content" :actionEdit="true" :actionDelete="false" :page="page"
           :size="size" :sortField="sortField" :sortDirection="sortDirection"
-          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)" />
+          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)"
+          @search-call-api="listenerSearchForm()"  
+        />
 
         <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
           :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last"
@@ -114,6 +116,11 @@ export default {
       { text: "Trạng thái", value: "status" },
     ];
 
+    const listenerSearchForm = () => {
+      if (page.value == 0) searchCallApi();
+      else page.value = 0;
+    };
+
     function setPagination(news) {
       content.value = news.content;
       page.value = news.page;
@@ -136,21 +143,15 @@ export default {
         sortDirection: sortDirection.value,
       };
       // TODO: Call api
-      NewsService.search(criteria)
-        .then((response) => {
-          // console.log(response.data);
-          const data = response.data;
-          setPagination(data);
-        })
-        .catch((e) => {
+      NewsService.search(criteria).then((response) => {
+          const responseData = response.data;
+          if (responseData) setPagination(responseData);
+        }).catch((e) => {
           this.errors.push(e);
         });
     }
 
-    const changeSortField = (fieldValue) => {
-      console.log("change sort field", fieldValue);
-      sortField.value = fieldValue;
-    };
+    const changeSortField = (fieldValue) => sortField.value = fieldValue;
 
     watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
@@ -178,6 +179,7 @@ export default {
       searchCallApi,
       changeSortField,
       useCurrentsRole,
+      listenerSearchForm
     };
   },
   created() {

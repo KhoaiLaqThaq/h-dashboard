@@ -42,9 +42,12 @@
                 </div>
 
                 <div class="row mb-0">
+                  <div class="col-12 mb-2" v-if="!groupName">
+                    <strong class="text-danger"><span class="text-warning">* </span>Phân quyền tài khoản để kích hoạt sử dụng tài khoản trong hệ thống</strong>
+                  </div>
                   <div class="col-12">
                     <div class="mb-2">
-                      <span class="float-check-suggest">Kiểm tra</span> <b class="text-warning">Hỗ trợ người tạo kiểm tra thông tin người dùng đã tồn tại hay chưa.</b>
+                      <span class="text-warning">* </span><span class="float-check-suggest">Kiểm tra</span> <b class="text-warning">Hỗ trợ người tạo kiểm tra thông tin người dùng đã tồn tại hay chưa.</b>
                     </div>
                     <strong class="text-warning">* Địa chỉ mail người tạo cần đảm bảo chính xác tiện cho hệ thống tự động gửi mật khẩu tài khoản đến hòm thư.</strong>
                     <p class="text-small text-secondary mb-0">(Chưa phát triển trong giai đoạn POC)</p>

@@ -21,7 +21,7 @@
         </div>
         <div class="row text-right">
           <div class="col-md-12">
-            <button type="button" class="btn btn-secondary" @click="searchCallApi()">
+            <button type="button" class="btn btn-secondary" @click="listenerSearchForm()">
               Tìm kiếm
             </button>
           </div>
@@ -111,6 +111,8 @@ export default {
       totalElements.value = comment.totalElements;
     }
 
+    const listenerSearchForm = () => page.value = 0;
+
     // call api
     function searchCallApi() {
       let criteria = {
@@ -160,6 +162,7 @@ export default {
 
       useCurrentsRole,
       searchCallApi,
+      listenerSearchForm
     };
   },
   created() {
