@@ -249,11 +249,6 @@ export default {
     const tagsOption = ref(false);
     let listTagsForSelect = ref([]);
 
-    let headers = {
-      "Authorization": header.value,
-      "Content-Type": "application/json"
-    };
-
     // call api getById
     function callApiGetById() {
       if (newsId.value) {
@@ -457,7 +452,7 @@ export default {
         NewsService.saveOrUpdate(news, tokenHeaders)
           .then((res) => {
             let responseData = res.data;
-            console.log(responseData.code + " " + responseData.message);
+            console.log("check date" + responseData.createdDate + responseData.createdDateString)
             $showToast("Thêm/Sửa Tin tức thành công", "success", 2000);
             navigateTo("/news");
           })
