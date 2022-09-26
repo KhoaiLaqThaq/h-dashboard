@@ -43,9 +43,9 @@ import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from 'axios';
+import UserService from "~~/services/model/user.service";
+import UserDepartService from "~~/services/model/userDepart.service";
 
 export default {
   components: {
@@ -106,7 +106,8 @@ export default {
 
     function deleteUser(k6kUserId) {
       if (k6kUserId) {
-        axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
+        // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
+        UserService.delete(k6kUserId)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
@@ -123,7 +124,8 @@ export default {
     }
 
     function deleteUserDepartment(k6kUserId) {
-      axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
+      // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
+      UserDepartService.delete(k6kUserId)
       .then((response) => {
         let responseData = response.data;
         if (responseData) {

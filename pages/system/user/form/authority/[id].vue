@@ -62,6 +62,9 @@ import axios from "axios";
 import CONFIG from "~~/config";
 import {ROLES} from "~~/constants/roles.js";
 import { useCurrentsRole } from '~~/services/common.js'
+import UserDepartService from "~~/services/model/userDepart.service";
+import UserService from "~~/services/model/user.service";
+import DepartmentService from "~~/services/model/department.service";
 export default {
     components: [
         TitleHeader,
@@ -99,7 +102,8 @@ export default {
 
         // TODO: Lấy thông tin đã tồn tại của user theo K6kUserId
         function onLoadUserDepartmentByK6kUserId() {
-            axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${userId.value}`, { headers})
+            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${userId.value}`, { headers})
+            UserDepartService.getById(userId.value)
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
@@ -118,7 +122,8 @@ export default {
 
         // TODO: Lấy danh sách nhóm quyền trên keycloak
         function onLoadGroupUsers() {
-            axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers})
+            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers})
+            UserService.getAllGroup()
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {
@@ -133,7 +138,8 @@ export default {
 
         // TODO: Lấy danh sách các phòng ban
         function onLoadDepartments() {
-            axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers})
+            // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/departments`, { headers})
+            DepartmentService.getAll()
             .then((response) => {
                 let responseData = response.data;
                 if (responseData) {

@@ -27,6 +27,7 @@ import { useCurrentsRole } from "~~/services/common.js";
 import {ROLES} from "~~/constants/roles.js";
 import CONFIG from "~~/config";
 import axios from "axios";
+import UserService from "~~/services/model/user.service";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
@@ -55,7 +56,8 @@ export default {
         'Content-Type': 'application/json'
       };
       axios
-        .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers: tokenHeader })
+        // .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers: tokenHeader })
+        UserService.getAllGroup()
         .then((response) => {
           const data = response.data;
           console.log(data);

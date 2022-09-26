@@ -71,9 +71,9 @@ import TableComponent from "~~/components/common/table/TableUsersComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 import { userStatus } from "~~/constants/enum.js";
 import { useCurrentsRole } from "~~/services/common.js";
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
 import axios from "axios";
+import NewsDepartService from "~~/services/model/userDepart.service";
 
 export default {
   components: {
@@ -148,7 +148,8 @@ export default {
       };
       // TODO: Call api
       axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartments`, criteria, { headers: tokenHeader })
+        // .post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartments`, criteria, { headers: tokenHeader })
+        NewsDepartService.search(criteria, { headers: tokenHeader })
         .then((response) => {
           const data = response.data;
           setPagination(data);
