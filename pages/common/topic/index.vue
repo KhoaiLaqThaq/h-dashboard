@@ -20,7 +20,7 @@ import Pagination from "~~/components/common/table/Pagination.vue";
 import { useCurrentsRole } from "~~/services/common.js"
 
 import { ROLES } from "~~/constants/roles.js";
-import NewsTypeService from "~~/services/model/newsType.service";
+import TopicService from "~~/services/model/topic.service";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
@@ -47,7 +47,7 @@ export default {
     }
     // call api
     function searchCallApi() {
-      NewsTypeService.getAll().then((response) => {
+      TopicService.getAll().then((response) => {
           const responseData = response.data;
           if (responseData)
             setPagination(responseData);
