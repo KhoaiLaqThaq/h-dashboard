@@ -48,7 +48,7 @@ export default {
     const { $showToast } = useNuxtApp();
 
     function deleteTopic(topicId) {
-      TopicService.deleteById(topicId.value)
+      TopicService.deleteById(topicId)
         .then(response => {
           let data = response.data;
           if (data) {
