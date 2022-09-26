@@ -50,9 +50,9 @@ import { useCurrentsRole } from "~~/services/common.js"
 
 import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
-import CONFIG from "~~/config";
 import { ROLES } from "~~/constants/roles.js";
-import axios from 'axios';
+import UserService from "~~/services/model/user.service";
+import UserDepartService from "~~/services/model/userDepart.service";
 import ConfirmDelete from '~~/components/common/modal/ConfirmDelete.vue';
 
 export default {
@@ -134,24 +134,26 @@ export default {
 
     function deleteUser(k6kUserId) {
       if (k6kUserId) {
-        axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
-          .then((response) => {
-            let responseData = response.data;
-            if (responseData) {
-              deleteUserDepartment(k6kUserId);
-            } else {
-              onLoadUserError("Ops! Xóa người dùng không thành công -1");
-            }
-          })
-          .catch((error) => {
+        // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
+        UserService.delete(k6kUserId)
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData) {
+            deleteUserDepartment(k6kUserId);
+          } else {
             onLoadUserError("Ops! Xóa người dùng không thành công -1");
-            console.log("ERROR DELETE USER K6K: ", error);
-          })
+          }
+        })
+        .catch((error) => {
+          onLoadUserError("Ops! Xóa người dùng không thành công -1");
+          console.log("ERROR DELETE USER K6K: ", error);
+        })
       }
     }
 
     function deleteUserDepartment(k6kUserId) {
-      axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
+      // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
+      UserDepartService.delete(k6kUserId)
       .then((response) => {
         let responseData = response.data;
         if (responseData) {

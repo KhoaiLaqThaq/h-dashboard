@@ -78,11 +78,10 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import FloatSelect from "~~/components/common/FloatSelect.vue";
 import MultiCheckboxVue from "~~/components/common/MultiCheckbox.vue";
 import BaseButton from "~~/components/common/BaseButton.vue";
-
-import axios from "axios";
-import CONFIG from "~~/config";
 import {ROLES} from "~~/constants/roles.js";
 import { useCurrentsRole } from '~~/services/common.js'
+import UserService from "~~/services/model/user.service";
+import UserDepartService from "~~/services/model/userDepart.service";
 
 export default {
   components: {
@@ -173,7 +172,8 @@ export default {
 
     function onLoadUserK6K() {
       if (userId.value) {
-        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, { headers})
+        // axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/${userId.value}`, { headers})
+        UserService.getById(userId.value)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
@@ -190,7 +190,8 @@ export default {
 
     function onLoadUserDepartment(k6kUserId) {
       if (k6kUserId) {
-        axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${k6kUserId}`, { headers})
+        // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${k6kUserId}`, { headers})
+        UserDepartService.getById(k6kUserId)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
@@ -219,7 +220,8 @@ export default {
         accountEnabled: user.accountEnabled,
         groupName: groupName.value
       };
-      axios.post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user`, userData, {headers})
+      // axios.post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user`, userData, {headers})
+      UserService.saveOrUpdate(userData)
       .then((response) => {
         let responseData = response.data;
         if (responseData) {
@@ -247,7 +249,8 @@ export default {
           groupName: groupName.value,
           departmentId: departmentId.value
         };
-        axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
+        // axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
+        UserDepartService.saveOrUpdate(newsDepartmentData)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
@@ -295,7 +298,8 @@ export default {
       const regex = /[^a-z\d$&+,:;=?@#|'<>.-^*()%!]/gi;
       if (!regex.test(user.username)) {
         if (user.username.length >= 3) {
-          axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
+          // axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByUsername/${user.username}`, { headers })
+          UserService.checkExistUser(user.username)
           .then(response => {
             let isExist = response.data;
             let usernameMessageSelector = document.getElementById("usernameMessage");
@@ -322,7 +326,8 @@ export default {
     function checkExistByEmail() {
       const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
       if (regex.test(user.email)) {
-        axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
+        // axios.get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/checkExistByEmail/${user.email}`, { headers })
+        UserService.checkEmail(user.email)
         .then(response => {
           let isExist = response.data;
           let usernameMessageSelector = document.getElementById("emailMessage");
