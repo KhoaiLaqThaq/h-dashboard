@@ -9,14 +9,33 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-4">
-            <input type="text" v-model="newsTitle" class="form-control pr-5" placeholder="Bài viết" />
+          <div class="col-md-3">
+            <div class="form-floating mb-3">
+              <input type="text" v-model="newsTitle" class="form-control pr-5" />
+              <label for="newsTitle">Tìm kiếm tiêu đề bài viết...</label>
+            </div>
           </div>
-          <div class="col-md-4">
-            <input type="text" v-model="commentContent" class="form-control pr-5" placeholder="Nội dung" />
+          <div class="col-md-3">
+            <div class="form-floating mb-3">
+              <input type="text" v-model="commentContent" class="form-control pr-5" />
+              <label for="commentContent">Tìm kiếm nội dung bình luận...</label>
+            </div>
           </div>
-          <div class="col-md-4">
-            <input type="text" v-model="createdBy" class="form-control pr-5" placeholder="Người tạo" />
+          <div class="col-md-3">
+            <div class="form-floating mb-3">
+              <input type="text" v-model="createdBy" class="form-control pr-5" />
+              <label for="createdBy">Tìm kiếm người bình luận...</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-floating">
+              <select v-model="enabled" class="form-select">
+                <option v-for="(enabled, index) in commentEnableds" :key="index" :value="enabled.value">
+                  {{ enabled.name }}
+                </option>
+              </select>
+              <label for="floatingSelect">Tìm kiếm theo trạng thái...</label>
+            </div>
           </div>
         </div>
         <div class="row text-right">
@@ -54,10 +73,9 @@ import TableCommentComponent from "~~/components/common/table/TableCommentCompon
 import Pagination from "~~/components/common/table/Pagination.vue";
 
 import { useCurrentsRole } from "~~/services/common";
-import CONFIG from "~~/config";
-import { ROLES } from "~~/constants/roles.js"
-import axios from "axios";
+import { ROLES } from "~~/constants/roles.js";
 import CommentService from "~~/services/model/comment.service";
+import {commentEnabledEnum} from '~~/constants/enum'
 
 export default {
   components: {
@@ -71,6 +89,7 @@ export default {
       title: "Danh sách các bình luận",
       textSize: "text-small",
       routerPush: "/common/comment/form",
+      commentEnableds: commentEnabledEnum
     };
   },
   setup() {
@@ -86,9 +105,8 @@ export default {
     const newsTitle = ref("");
     const createdBy = ref("");
     const commentContent = ref("");
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
     const currentRole = useCurrentRole();
+    const enabled = ref(null);
 
     const headers = [
       { text: "STT", value: "no" },
@@ -98,8 +116,6 @@ export default {
       { text: "Ngày tạo", value: "created_date" },
       { text: "Trạng thái", value: "status" },
     ];
-
-    const header = useHeader();
 
     function setPagination(comment) {
       content.value = comment.content;
@@ -111,7 +127,10 @@ export default {
       totalElements.value = comment.totalElements;
     }
 
-    const listenerSearchForm = () => page.value = 0;
+    const listenerSearchForm = () => {
+      if (page.value == 0) searchCallApi();
+      else page.value = 0;
+    }
 
     // call api
     function searchCallApi() {
@@ -121,18 +140,13 @@ export default {
         newsTitle: newsTitle.value,
         createdBy: createdBy.value,
         content: commentContent.value,
-      };
-      let tokenHeader = {
-        'Authorization': header.value,
-        'Content-Type': 'application/json'
+        enabled: enabled.value,
       };
       // TODO: Call api
-      CommentService.search(criteria)
-        .then((response) => {
+      CommentService.search(criteria).then((response) => {
           const data = response.data;
           setPagination(data);
-        })
-        .catch((e) => {
+        }).catch((e) => {
           console.log(e);
         });
     }
@@ -143,8 +157,6 @@ export default {
 
     return {
       headers,
-      itemsSelected,
-      themeColor,
       page,
       size,
       number,
@@ -159,6 +171,7 @@ export default {
       commentContent,
       currentRole,
       ROLES,
+      enabled,
 
       useCurrentsRole,
       searchCallApi,

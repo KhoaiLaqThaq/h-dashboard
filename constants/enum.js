@@ -22,3 +22,8 @@ export const systemParamTypes = [
   { name: "Số", value: "integer" },
   { name: "Chữ", value: "string" },
 ];
+
+export const commentEnabledEnum = [
+  { name: "Đã phê duyệt", value: 1},
+  { name: "Chưa phê duyệt", value: 0}
+];
