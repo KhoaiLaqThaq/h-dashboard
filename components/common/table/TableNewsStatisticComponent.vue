@@ -1,5 +1,5 @@
 <template>
-    <div class="table-container">
+    <div class="table-container bg-white">
         <div class="tr">
             <div class="th">STT</div>
             <div class="th">Chuyên mục</div>
