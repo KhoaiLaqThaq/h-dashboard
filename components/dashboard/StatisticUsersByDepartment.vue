@@ -41,7 +41,6 @@ export default {
     },
     setup() {
         const { $showToast } = useNuxtApp();
-        const headers = ref([]);
         const items = ref([]);
         const page = ref(0);
         const size = ref(10);

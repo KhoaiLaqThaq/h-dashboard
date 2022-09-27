@@ -121,6 +121,26 @@
           <span class="side-menu__title pl-1"> Quản lý tin tức</span>
         </NuxtLink>
       </li>
+      <li class="nav-item has-submenu d-none" aria-label="has-submenu">
+        <a class="nav-link side-menu cursor-pointer" title="Mavin Analytics" @click="toggleSubmenu('analytics')" id="analytics"
+          ref="analytics" v-if="checkSidebarAuthority([ROLES.ROLE_ADMIN, ROLES.ROLE_MNG_COMMON])">
+          <div class="side-menu__icon"><BarChartIcon /></div>
+          <span class="side-menu__title pl-1">Mavin Analytics</span>
+        </a>
+        <ul class="submenu collapse">
+          <li>
+            <NuxtLink to="/analytics/user" class="side-menu" aria-label="user"
+              :class="{ active: routeNameActive == 'analytics' }" title="Mavin Analytics"
+              v-if="checkSidebarAuthority([ROLES.ROLE_ADMIN])">
+              <div class="side-menu__icon">
+                <UserChartIcon />
+              </div>
+              <span class="side-menu__title pl-1"> User Analytics</span>
+            </NuxtLink>
+            <ul class="side-menu__sub-open"></ul>
+          </li>
+        </ul>
+      </li>
 
       <li class="mt-5"></li>
       <li class="logo-sidebar__bottom"></li>
@@ -142,6 +162,8 @@ import IconTooling from "~~/assets/images/icons/IconTooling.vue";
 import IconComment from "~~/assets/images/icons/IconComment.vue";
 import ComputerIcon from "~~/assets/images/icons/ComputerIcon.vue";
 import IconDocumentation from "~~/assets/images/icons/IconDocumentation.vue";
+import BarChartIcon from "~~/assets/images/icons/charts/BarChartIcon.vue";
+import UserChartIcon from "~~/assets/images/icons/charts/UserChartIcon.vue";
 
 import VueJwtDecode from 'vue-jwt-decode';
 import camelcaseKeys from 'camelcase-keys';
@@ -160,6 +182,8 @@ export default {
     IconComment,
     ComputerIcon,
     IconDocumentation,
+    BarChartIcon,
+    UserChartIcon
   },
 
   setup() {
@@ -168,8 +192,9 @@ export default {
     const routeNameState = useRouteActive();
     const common = ref(null);
     const system = ref(null);
+    const analytics = ref(null);
     // TODO: define submenu
-    const routeSubMenu = ref("common, system"); // common, system
+    const routeSubMenu = ref("common, system, analytics"); // common, system
 
     // TODO: to call state global
     const token = useToken();
@@ -290,8 +315,7 @@ export default {
 
     return {
       routeNameActive,
-      common,
-      system,
+      common, system, analytics,
       ROLES,
 
       toggleSubmenu,

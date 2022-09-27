@@ -23,25 +23,38 @@
         <div class="report-box zoom-in">
             <div class="box p-3  bg-warning text-white">
                 <div class="d-flex">
-                    <UserIcon />
+                    <UserChartIcon />
                 </div>
                 <div class="text-3xl font-medium leading-8 mt-6">{{reports.userTotal}}</div>
-                <div class="text-base text-slate-500 mt-1">Số lượng người dùng</div>
+                <div class="text-base text-slate-500 mt-1">SL tài khoản kích hoạt</div>
+            </div>
+        </div>
+
+        <div class="report-box zoom-in">
+            <div class="box p-3  bg-secondary text-white">
+                <div class="d-flex text-left">
+                    <UserInactiveIcon />
+                </div>
+                <div class="text-3xl font-medium leading-8 mt-6">{{reports.userInactiveTotal}}</div>
+                <div class="text-base text-slate-500 mt-1">SL tài khoản chưa được kích hoạt</div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import {ref, reactive} from 'vue';
+import {reactive} from 'vue';
 import ComputerIcon from '~~/assets/images/icons/ComputerIcon.vue';
 import PostIcon from '~~/assets/images/icons/PostIcon.vue';
 import UserIcon from '~~/assets/images/icons/UserIcon.vue';
+import UserInactiveIcon from '~~/assets/images/icons/charts/UserInactiveIcon.vue';
+import UserChartIcon from '~~/assets/images/icons/charts/UserChartIcon.vue';
 import IconCommunity from '~~/assets/images/icons/IconCommunity.vue';
 import DashboardService from "~~/services/model/dashboard.service";
 
 export default {
     components: {
-        ComputerIcon, PostIcon, UserIcon, IconCommunity
+        ComputerIcon, PostIcon, UserIcon, IconCommunity, UserInactiveIcon, UserChartIcon, 
+        UserChartIcon
     },
     setup() {
         const { $showToast } = useNuxtApp();
@@ -49,12 +62,14 @@ export default {
             userTotal: 0,
             viewTotal: 0,
             newsTotal: 0,
+            userInactiveTotal: 0
         });
 
         function setData(reportData) {
             reports.userTotal = reportData.userTotal;
             reports.viewTotal = reportData.viewTotal;
-            reports.newsTotal = reportData.newsTotal
+            reports.newsTotal = reportData.newsTotal;
+            reports.userInactiveTotal = reportData.userInactiveTotal;
         };
 
         // TODO: this api will be get statistic common

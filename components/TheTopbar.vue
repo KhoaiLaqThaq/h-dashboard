@@ -6,9 +6,7 @@
           <NuxtLink to="/">MyMavin</NuxtLink>
         </li>
         <li class="breadcrumb-item active">
-          <NuxtLink :to="routeNameState">{{
-          routeNameState == "index" ? "Trang chủ" : routeNameState
-          }}</NuxtLink>
+          <span>{{routeNameState == "index" ? "Trang chủ" : routeNameState}}</span>
         </li>
       </ol>
     </nav>
