@@ -15,3 +15,4 @@ yarn.lock
 .vite/deps/ufo.js.map
 .vite/deps/vue.js
 .vite/deps/vue.js.map
+config/index.js
