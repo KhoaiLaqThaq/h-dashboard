@@ -54,6 +54,8 @@ import DualListBox from "~~/components/DualListBox.vue";
 import axios from "axios";
 import CONFIG from "~~/config";
 
+import GroupService from "~~/services/model/group.service";
+
 export default {
   components: {
     TitleHeader,
@@ -76,7 +78,7 @@ export default {
       this.destination = destination;
     },
   },
-  setup(props) {
+  setup() {
     const route = useRoute();
     const priority = ref([]);
     const header = useHeader();
@@ -87,24 +89,22 @@ export default {
      //source and destination of roles dual-listbox
     const source = ref([]);
     const destination = ref([]);
+    const {$showToast} = useNuxtApp();
     // TODO: Call api to get a group have id
     const getGroupById = () => {
       if (groupId.value) {
-        let tokenHeader = {
-          'Authorization': header.value,
-          'Content-Type': 'application/json'
-        };
-        axios
-          .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/group/${groupId.value}`, {headers: tokenHeader})
-          .then((response) => {
+        GroupService.getById(groupId.value).then((response) => {
             let responseData = response.data;
-            group.name = responseData.name;
-            if (responseData.roles?.length > 0) {
-              destination.value = responseData.roles;
-              resetRoleSource();
+            if (responseData) {
+              group.name = responseData.name;
+              if (responseData.roles?.length > 0) {
+                destination.value = responseData.roles;
+                resetRoleSource();
+              }
             }
           })
           .catch((error) => {
+            $showToast("ERROR: Tải dữ liệu nhóm quyền không thành công", "error", 2000);
             console.log("error: " + error);
           });
       }
@@ -122,20 +122,15 @@ export default {
         enabled: true,
         roles: roles.value,
       };
-      console.log(groupData);
-      const headers = { 
-        'Authorization': header.value, 
-        "Content-Type": "application/json" 
-      };
-      axios
-        .post(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/group`, groupData, { headers })
-        .then((response) => {
+      GroupService.saveOrUpdate(groupData).then((response) => {
           let responseData = response.data;
           if (responseData) {
+            $showToast("Lưu nhóm quyền thành công", "success", 2000);
             navigateTo("/system/group");
           }
         })
         .catch((error) => {
+          $showToast("ERROR: Lưu nhóm quyền không thành công", "error", 2000);
           console.log("error: ", error);
         });
     }
@@ -151,13 +146,7 @@ export default {
     }
 
     function getListRoles() {
-      let headers = {
-      "Authorization": header.value,
-      "Content-Type": "application/json"
-      };
-      axios
-      .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/roles`, { headers })
-      .then((response) => {
+      GroupService.getAllRoles().then((response) => {
         const data = response.data;
         if (data) {
           source.value = data;
