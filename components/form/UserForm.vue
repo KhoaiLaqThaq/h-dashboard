@@ -36,7 +36,7 @@
                   <div class="col-6" v-if="showStatus">
                     <label for="">Kích hoạt tài khoản</label>
                     <div class="form-check form-switch">
-                    <input type="checkbox" class="form-check-input cursor-pointer" :checked="user.accountEnabled" role="switch"/>
+                    <input type="checkbox" class="form-check-input cursor-pointer" v-model="user.accountEnabled" role="switch"/>
                     </div>
                   </div>
                 </div>
@@ -259,7 +259,7 @@ export default {
               $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
               navigateTo("/system/user/form/" + responseUserDepartment.id);
             } else {
-              location.reload();
+              // location.reload();
             }
           }
         })
