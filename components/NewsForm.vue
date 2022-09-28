@@ -124,7 +124,7 @@
     </div>
     <hr />
 
-    <div v-if="showStatus && useCurrentsRole(currentRole,[ROLES.ROLE_NEWS_APPROVE])" class="col-lg-3 col-sm-12">
+    <div v-if="showStatus && useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_NEWS_APPROVE])" class="col-lg-3 col-sm-12">
       <div class="form-floating">
         <div>
           <label>Trạng thái <span class="text-danger">*</span></label>
