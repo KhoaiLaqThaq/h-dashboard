@@ -135,7 +135,7 @@ export default {
     function deleteUser(k6kUserId) {
       if (k6kUserId) {
         // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
-        UserService.delete(k6kUserId)
+        UserService.deleteById(k6kUserId)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
@@ -153,7 +153,7 @@ export default {
 
     function deleteUserDepartment(k6kUserId) {
       // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
-      UserDepartService.delete(k6kUserId)
+      UserDepartService.deleteById(k6kUserId)
       .then((response) => {
         let responseData = response.data;
         if (responseData) {
