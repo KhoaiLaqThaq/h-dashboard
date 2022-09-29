@@ -55,6 +55,8 @@ import UserService from "~~/services/model/user.service";
 import UserDepartService from "~~/services/model/userDepart.service";
 import ConfirmDelete from '~~/components/common/modal/ConfirmDelete.vue';
 
+import { HttpStatus } from "~~/constants/http-status";
+
 export default {
   components: {
     EditIcon,
@@ -134,15 +136,16 @@ export default {
 
     function deleteUser(k6kUserId) {
       if (k6kUserId) {
-        // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/user/delete/${k6kUserId}`, { headers })
         UserService.deleteById(k6kUserId)
         .then((response) => {
           let responseData = response.data;
           if (responseData) {
-            deleteUserDepartment(k6kUserId);
-          } else {
-            onLoadUserError("Ops! Xóa người dùng không thành công -1");
-          }
+            if (responseData.code == HttpStatus.ACCEPTED || responseData.code == HttpStatus.NOT_FOUND) {
+              deleteUserDepartment(k6kUserId);
+            } else {
+              onLoadUserError("Ops! Xóa người dùng không thành công -1");
+            }
+          } 
         })
         .catch((error) => {
           onLoadUserError("Ops! Xóa người dùng không thành công -1");
@@ -152,7 +155,6 @@ export default {
     }
 
     function deleteUserDepartment(k6kUserId) {
-      // axios.delete(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/delete/${k6kUserId}`, { headers })
       UserDepartService.deleteById(k6kUserId)
       .then((response) => {
         let responseData = response.data;
