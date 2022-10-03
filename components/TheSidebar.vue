@@ -313,6 +313,8 @@ export default {
     }
     const camelCaseTokenKeys = (decode) => camelcaseKeys(decode);
 
+    const toggleSidebar = () => document.getElementById('sidebar').classList.toggle('show-xs');
+
     return {
       routeNameActive,
       common, system, analytics,
@@ -323,7 +325,8 @@ export default {
       setRouteNameActive,
       onLoadRouteNameCurrent,
       checkAuthentication,
-      checkSidebarAuthority
+      checkSidebarAuthority,
+      toggleSidebar
     };
   },
   watch: {
@@ -333,6 +336,7 @@ export default {
         this.resetRouteNameState();
         this.setRouteNameActive(to.name);
         this.checkAuthentication(to);
+        this.toggleSidebar();
       },
     },
   },

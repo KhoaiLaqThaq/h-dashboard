@@ -1,6 +1,6 @@
 <template>
   <div class="top-bar">
-    <nav class="me-auto hidden">
+    <nav class="me-auto hidden-xs">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <NuxtLink to="/">MyMavin</NuxtLink>
@@ -10,6 +10,10 @@
         </li>
       </ol>
     </nav>
+
+    <div class="me-auto d-none show-xs">
+      <span @click="toggleSidebar()"><AlignJustifyIcon /></span>
+    </div>
 
     <div class="dropdown me-4">
       <div class="dropdown-toggle notification notification--bullet cursor-pointer">
@@ -44,11 +48,12 @@
   </div>
 </template>
 <script>
-import { ref, watch } from "vue";
 import RingIcon from "~~/assets/images/icons/RingIcon.vue";
 import UserIcon from "~~/assets/images/icons/UserIcon.vue";
 import IconLock from "~~/assets/images/icons/IconLock.vue";
 import IconSwitch from "~~/assets/images/icons/IconSwitch.vue";
+import AlignJustifyIcon from "~~/assets/images/icons/actions/AlignJustifyIcon.vue";
+
 export default {
   components: {
     RingIcon,
@@ -56,8 +61,9 @@ export default {
     UserIcon,
     IconLock,
     IconSwitch,
-  },
-  setup() {
+    AlignJustifyIcon
+},
+  setup(props, {emit}) {
     const routeNameState = useRouteActive();
     const token = useToken();
     const currentUser = useCurrentUser();
@@ -68,11 +74,14 @@ export default {
       localStorage.clear();
     }
 
+    const toggleSidebar = () => emit('toggle-sidebar');
+
     return {
       routeNameState,
       currentUser,
 
-      logout
+      logout,
+      toggleSidebar
     };
   },
 };
