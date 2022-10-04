@@ -313,7 +313,7 @@ export default {
     }
     const camelCaseTokenKeys = (decode) => camelcaseKeys(decode);
 
-    const toggleSidebar = () => document.getElementById('sidebar').classList.toggle('show-xs');
+    const toggleSidebar = () => document.getElementById('sidebar').classList.remove('show-xs');
 
     return {
       routeNameActive,
