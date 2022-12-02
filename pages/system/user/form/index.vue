@@ -2,7 +2,7 @@
   <UserForm class="mt-3" />
 </template>
 <script>
-import UserForm from "~~/components/UserForm.vue";
+import UserForm from "~~/components/form/UserForm.vue";
 
 export default {
   components: {
@@ -10,4 +10,6 @@ export default {
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>

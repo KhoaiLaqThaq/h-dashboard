@@ -6,7 +6,7 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
-import GroupForm from "~~/components/GroupForm.vue";
+import GroupForm from "~~/components/form/GroupForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      titleForm: "Chỉnh sửa chủ đề bài viết",
+      titleForm: "Chỉnh sửa nhóm quyền",
     };
   },
   setup() {

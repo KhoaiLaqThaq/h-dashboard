@@ -128,9 +128,6 @@ export default {
     destination: Array,
     label: String,
   },
-  mounted: function () {
-    console.log(this);
-  },
   data() {
     return {
       searchSource: "",
@@ -265,102 +262,4 @@ export default {
 </script>
 
 <style lang="scss">
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-.bulk-action {
-  display: flex;
-  .select-all {
-    margin-right: 0.5rem;
-  }
-  .deselect-all {
-    margin-left: 0.5rem;
-  }
-}
-.list-box-wrapper .search-box {
-  border-bottom: solid 1px #cccccc;
-  position: relative;
-}
-.list-box-wrapper .search-box input {
-  border: none;
-  width: 100%;
-  padding: 0.5rem 1rem;
-}
-.list-box-wrapper .search-box .clear-search {
-  position: absolute;
-  padding: 0.5rem;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-  font-weight: bold;
-  color: #e74c3c;
-}
-.list-box-wrapper {
-  margin-top: 10px;
-  font-family: sans-serif;
-  width: 1000px;
-  display: flex;
-  align-items: center;
-  & > div {
-    flex: 1;
-  }
-  .actions {
-    flex-grow: 0;
-    padding: 0 1rem;
-    .btn-action {
-      margin-bottom: 0.5rem;
-    }
-  }
-  .list-box {
-    background-color: #fff;
-    height: 250px;
-    overflow: auto;
-    list-style: none;
-    padding: 0;
-    border: solid 1px #cccccc !important;
-    border-radius: 3px !important;
-    .list-item {
-      padding: 0.5rem 1rem;
-      border-bottom: solid 1px #cccccc;
-      cursor: pointer;
-      &:last-child {
-        border: none;
-      }
-    }
-  }
-}
-.btn-action {
-  display: inline-block;
-  font-weight: 400;
-  color: #212529;
-  text-align: center;
-  vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  display: block;
-  width: 100%;
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
-  cursor: pointer;
-  img {
-    vertical-align: middle;
-  }
-}
-.deselect-all {
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
 </style>

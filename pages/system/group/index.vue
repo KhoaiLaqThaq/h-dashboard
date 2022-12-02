@@ -3,21 +3,15 @@
     <div class="d-flex">
       <TitleHeader :title="titleForm" />
     </div>
-    <AddButton class="mb-4" :title="btnTitle" :routerPush="routerPush" />
+    <AddButton v-if="useCurrentsRole(currentRole, [ROLES.ROLE_ADMIN, ROLES.ROLE_GROUP_USER_CREATE])" class="mb-4" :title="btnTitle" :routerPush="routerPush" />
     <div class="col-12 table-content">
       <TableComponent
         :headers="tableHeader"
-        :items="topics"
+        :items="groups"
         :actionEdit="true"
         :page="page"
         :size="size"
         :routerPush="routerPush"
-      />
-      <pagination
-        :page="page"
-        :size="size"
-        @change-page="page = $event"
-        @change-size="size = $event"
       />
     </div>
   </div>
@@ -29,8 +23,11 @@ import AddButton from "~~/components/common/AddButton.vue";
 import TableComponent from "~~/components/common/table/TableGroupsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
 
+import { useCurrentsRole } from "~~/services/common.js";
+import {ROLES} from "~~/constants/roles.js";
 import CONFIG from "~~/config";
 import axios from "axios";
+import UserService from "~~/services/model/user.service";
 
 export default {
   components: { TitleHeader, AddButton, TableComponent, Pagination },
@@ -42,42 +39,50 @@ export default {
     };
   },
   setup() {
+    const header = useHeader();
+    const currentRole = useCurrentRole();
     const tableHeader = [
-      { text: "No", value: "no" },
-      { text: "Name", value: "name" },
+      { text: "STT", value: "no" },
+      { text: "Tên nhóm quyền", value: "name" },
     ];
 
-    const topics = ref([
-      {
-        no: 1,
-        name: "Nhóm quyền Admin",
-      },
-      {
-        no: 2,
-        name: "Nhóm quyền duyệt tin",
-      },
-      {
-        no: 2,
-        name: "Nhóm quyền thêm nội dung",
-      },
-    ]);
+    const groups = ref([]);
     const page = ref(0);
     const size = ref(10);
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
+
+    function searchCallApi() {
+      let tokenHeader = {
+        'Authorization': header.value,
+        'Content-Type': 'application/json'
+      };
+      axios
+        // .get(`${CONFIG.BASE_URL}/${CONFIG.USER_GATEWAY}/api/groups`, { headers: tokenHeader })
+        UserService.getAllGroup()
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          groups.value = data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    }
 
     return {
       tableHeader,
-      topics,
-      itemsSelected,
-      themeColor,
+      groups,
       page,
       size,
+      ROLES,
+
+      currentRole,
+      useCurrentsRole,
+      searchCallApi,
     };
   },
-  //   created() {
-  //     this.searchCallApi();
-  //   },
+    created() {
+      this.searchCallApi();
+    },
 };
 </script>
 <style lang=""></style>

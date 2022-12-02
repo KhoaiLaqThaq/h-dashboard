@@ -19,15 +19,15 @@ import TheTopbar from '~~/components/TheTopbar.vue'
 import TheSidebar from '~~/components/TheSidebar.vue'
 
 export default {
-    components: [
+    components: {
         TheTopbar,
         TheSidebar,
         TheFooter
-    ],
+    },
     data() {
         return {
-            colorTheme: 'primary_theme'
-        }
+            colorTheme: "primary_theme"
+        };
     }
 }
 </script>

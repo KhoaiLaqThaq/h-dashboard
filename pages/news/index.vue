@@ -1,42 +1,64 @@
 <template>
-  <div class="content-news mt-3">
-    <div class="d-flex">
-      <TitleHeader :title="title" />
-      <!-- <AddButton class="ms-auto" :title="btnTitle" :routerPush="routerPush" /> -->
-    </div>
-    <div class="d-flex mt-3">
-      <AddButton
-        :textSize="'text-small'"
-        :title="btnTitle"
-        :routerPush="routerPush"
-      />
-      <div class="ms-auto input-suggest__event">
-        <input type="text" v-model="keyword" class="form-control pr-5" placeholder="Tìm kiếm..." @keyup.enter="searchCallApi()" />
-        <span class="btn-suggest">Enter</span>
+  <div class="mt-3">
+    <div class="card">
+      <div class="card-header search-header">
+        <h6 class="card-title">Tìm kiếm</h6>
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="listenerSearchForm()">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <input type="text" v-model="keyword" id="keyword" class="form-control pr-5" />
+                <label for="keyword">Tìm kiếm từ khóa...</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <input type="text" v-model="departmentName" id="departmentName" class="form-control pr-5" />
+                <label for="departmentName">Tìm kiếm đơn vị thành viên...</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <select v-model="status" class="form-select">
+                  <option v-for="(status, index) in newStatus" :key="index" :value="status.value">
+                    {{ status.name }}
+                  </option>
+                </select>
+                <label for="floatingSelect">Tìm kiếm theo trạng thái...</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ms-auto">
+            <div class="col-12 text-right">
+              <button type="submit" class="btn btn-secondary text-small">
+                Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="table-content mt-3 radius-20">
-      <table-news-component
-        :headers="headers"
-        :items="content"
-        :actionEdit="true"
-        :actionDelete="false"
-        :page="page"
-        :size="size"
-      />
 
-      <pagination
-        :page="page"
-        :size="size"
-        :number="number"
-        :numberOfElements="numberOfElements"
-        :totalElements="totalElements"
-        :totalPages="totalPages"
-        :first="first"
-        :last="last"
-        @change-page="page = $event"
-        @change-size="size = $event"
-      />
+    <div class="content-news">
+      <div class="d-flex">
+        <TitleHeader :title="title" />
+        <AddButton v-if="useCurrentsRole(currentRole,[ROLES.ROLE_ADMIN, ROLES.ROLE_NEWS_CREATE])"
+          :textSize="'text-small'" :title="btnTitle" :routerPush="routerPush" class="ms-auto" />
+      </div>
+      <div class="table-content mt-3 radius-20">
+        <table-news-component :headers="headers" :items="content" :actionEdit="true" :actionDelete="false" :page="page"
+          :size="size" :sortField="sortField" :sortDirection="sortDirection"
+          @change-sort-direction="sortDirection = $event" @change-sort-field="changeSortField($event)"
+          @search-call-api="listenerSearchForm()"  
+        />
+
+        <pagination :page="page" :size="size" :number="number" :numberOfElements="numberOfElements"
+          :totalElements="totalElements" :totalPages="totalPages" :first="first" :last="last"
+          @change-page="page = $event" @change-size="size = $event" />
+      </div>
     </div>
   </div>
 </template>
@@ -46,9 +68,11 @@ import TitleHeader from "~~/components/common/TitleHeader.vue";
 import AddButton from "~~/components/common/AddButton.vue";
 import TableNewsComponent from "~~/components/common/table/TableNewsComponent.vue";
 import Pagination from "~~/components/common/table/Pagination.vue";
+import { newStatus } from "~~/constants/enum.js";
+import { useCurrentsRole } from "~~/services/common.js"
 
-import CONFIG from "~~/config";
-import axios from "axios";
+import { ROLES } from "~~/constants/roles.js";
+import NewsService from "~~/services/model/news.service";
 
 export default {
   components: {
@@ -64,6 +88,7 @@ export default {
       routerPush: "/news/form",
       title: "Danh sách tin tức",
       btnTitle: "Thêm mới",
+      newStatus: newStatus,
     };
   },
   setup() {
@@ -76,18 +101,25 @@ export default {
     const first = ref(false);
     const last = ref(false);
     const content = ref([]);
-    const keyword = ref('');
-
-    const itemsSelected = ref([]);
-    const themeColor = ref("#1e40af");
+    const keyword = ref("");
+    const departmentName = ref("");
+    const status = ref("");
+    const sortField = ref("id");
+    const sortDirection = ref(true);
+    const currentRole = useCurrentRole();
 
     const headers = [
-      { text: "STT", value: "no" },
+      { text: "STT", value: "id" },
       { text: "Tiêu đề", value: "title" },
-      { text: "Mô tả ngắn", value: "sub_desc" },
-      { text: "Ngày tạo", value: "created_date" },
+      { text: "Mô tả ngắn", value: "brief" },
+      { text: "Ngày tạo", value: "createdDate" },
       { text: "Trạng thái", value: "status" },
     ];
+
+    const listenerSearchForm = () => {
+      if (page.value == 0) searchCallApi();
+      else page.value = 0;
+    };
 
     function setPagination(news) {
       content.value = news.content;
@@ -104,30 +136,29 @@ export default {
       let criteria = {
         page: page.value,
         size: size.value,
-        keyword: keyword.value
+        keyword: keyword.value,
+        departmentName: departmentName.value,
+        status: status.value,
+        sortField: sortField.value,
+        sortDirection: sortDirection.value,
       };
-
       // TODO: Call api
-      axios
-        .post(`${CONFIG.BASE_URL}/api/news/list`, criteria)
-        .then((response) => {
-          // console.log(response.data);
-          const data = response.data;
-          setPagination(data);
-        })
-        .catch((e) => {
+      NewsService.search(criteria).then((response) => {
+          const responseData = response.data;
+          if (responseData) setPagination(responseData);
+        }).catch((e) => {
           this.errors.push(e);
         });
     }
 
-    watch([page, size], () => {
+    const changeSortField = (fieldValue) => sortField.value = fieldValue;
+
+    watch([page, size, sortField, sortDirection], () => {
       searchCallApi();
     });
 
     return {
       headers,
-      itemsSelected,
-      themeColor,
       page,
       size,
       number,
@@ -138,8 +169,17 @@ export default {
       last,
       content,
       keyword,
+      sortField,
+      sortDirection,
+      departmentName,
+      status,
+      currentRole,
+      ROLES,
 
-      searchCallApi
+      searchCallApi,
+      changeSortField,
+      useCurrentsRole,
+      listenerSearchForm
     };
   },
   created() {
@@ -151,7 +191,7 @@ export default {
 <style lang="scss">
 .input-suggest__event {
   position: relative;
-  
+
   .btn-suggest {
     position: absolute;
     top: 0.25rem;
@@ -160,10 +200,8 @@ export default {
     padding: 2px 4px;
     border-radius: 4px;
     background-color: rgb(168, 167, 167);
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: bold;
   }
-
 }
-
 </style>

@@ -1,55 +1,36 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-sm-8 col-md-6 col-lg-6 col-xl-5">
+  <div class="row justify-content-center mt-5" id="authLayout">
+    <div class="col-sm-8 col-md-4 col-lg-4 col-xl-3 mt-5">
       <div class="card box">
         <div class="card-body p-4">
           <div class="text-center m-auto">
             <div class="auth-logo">
               <nuxt-link to="/" class="text-center">
                 <span class="logo-lg">
-                  <img
-                    src="~/assets/images/logo-mavin2.jpeg"
-                    alt=""
-                    height="200"
-                  />
+                  <img src="~/assets/images/logo-mavin2.jpeg" alt="" height="200" />
                 </span>
               </nuxt-link>
             </div>
           </div>
 
-          <div class="text-secondary">
-              <p>Email: <strong>{{ mockAccount.email }}</strong></p>
-              <p>Password: <strong>{{ mockAccount.password }}</strong></p>
-          </div>
-
           <form @submit.prevent="login()">
-            <div class="form-group mb-3">
-              <label for="emailaddress">Địa chỉ Email</label>
-              <input class="form-control" type="email" id="emailaddress" placeholder="Nhập địa chỉ email" v-model="email" />
-              <div class="invalid-feedback"></div>
+            <!-- email -->
+            <div class="form-floating mb-3">
+              <input class="form-control" type="text" id="emailaddress" v-model="currentUser.username" />
+              <label for="emailaddress">Nhập tên đăng nhập <span class="text-danger">*</span></label>
             </div>
-
-            <div class="form-group mb-3">
-              <label for="password">Mật khẩu</label>
-              <div class="input-group input-group-merge">
-                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" v-model="password"/>
-
-                <div class="input-group-append" data-password="false">
-                  <div class="input-group-text" style="height: 100%">
-                    <font-awesome-icon :icon="['fas', 'eye']" />
-                  </div>
-                </div>
-                <div class="invalid-feedback">Password is required.</div>
-              </div>
+            <!-- /email -->
+            <!-- password -->
+            <div class="form-floating mb-3">
+              <input type="password" id="password" class="form-control" v-model="currentUser.password" />
+              <label for="password">Mật khẩu <span class="text-danger">*</span></label>
             </div>
+            <!-- /password -->
 
-            <div class="form-group mb-3">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked />
-                <label class="custom-control-label" for="checkbox-signin">Ghi nhớ tài khoản</label>
-              </div>
+            <div class="form-group">
+              <strong><span class="text-danger">{{errorMessage}}</span></strong>
             </div>
-
+            <hr />
             <div class="form-group mb-0 text-center">
               <button class="btn btn-login btn-block" type="submit">
                 Đăng nhập
@@ -68,36 +49,88 @@
 </template>
 <script>
 import { ref, reactive } from 'vue';
+import AuthService from "~~/services/model/auth.service";
+
+import VueJwtDecode from 'vue-jwt-decode';
+
 export default {
   setup() {
-    const email = ref('');
-    const password = ref('');
-    const mockAccount = reactive({
-      email: "admin@gmail.com",
-      password: "123456"
+    const currentUser = reactive({
+      username: '',
+      password: ''
     });
+    const errorMessage = ref('');
+    // state global
     const token = useToken();
+    const header = useHeader();
+    const client = useKeycloakClient();
+    const currentRole = useCurrentRole();
+    const currUser = useCurrentUser();
+    const { $showToast } = useNuxtApp();
 
     function login(e) {
-      if (email.value != "" && password.value != "") {
-        if (email.value == mockAccount.email && password.value == mockAccount.password) {
-          // this.$router.push({ path: "/" });
-          token.value = "Bearer " + email.value + "_" + password.value;
-          localStorage.setItem("token", token.value);
-          localStorage.setItem("expired", new Date().getTime());
-        }
+      console.log("====>Entering login");
+      if (currentUser.username != "" && currentUser.password != "") {
+        localStorage.clear();
+        let data = {
+          username: currentUser.username,
+          password: currentUser.password
+        };
+
+        AuthService.login(data)
+          .then((response) => {
+            let responseData = response.data;
+            if (responseData){
+              if( responseData.code === 200) {
+                saveInforLogin(responseData);
+                $showToast("Đăng nhập thành công", "success", 2000);
+              } else if (responseData.code === 404) {
+                errorMessage.value = responseData.message;
+              } else if (responseData.code === 500) {
+                errorMessage.value = responseData.message;
+              } else {
+                errorMessage.value = "Ops! Lỗi không xác định.";
+              }
+            }
+          }).catch(error => {
+            errorMessage.value = "Vui lòng kiểm tra lại thông tin tài khoản!";
+            console.log("LOGIN ERROR: " + error);
+          });
+
+      }
+    }
+
+    function saveInforLogin(responseData) {
+      let accessToken = responseData.data;
+      let decode = VueJwtDecode.decode(accessToken);
+      if (decode) {
+        let k6kClient = decode.azp;
+        let roles = decode.resource_access[k6kClient].roles;
+        let expiresIn = decode.exp - decode.iat;
+
+        // set global state
+        client.value = k6kClient;
+        token.value = accessToken;
+        header.value = `Bearer ${accessToken}`;
+        currentRole.value = roles;
+        currUser.value = decode.email;
+        // set localStorage
+        localStorage.setItem("kclient", k6kClient);
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("exp", expiresIn);
+        localStorage.setItem("time", new Date().getTime());
       }
     }
 
     return {
-      email, password,
-      mockAccount,
+      currentUser,
+      errorMessage,
 
-      login
-    }
+      login,
+    };
   },
-  mounted(){
-    this.tokenState = '';
-  }
+  mounted() {
+    this.tokenState = "";
+  },
 };
 </script>

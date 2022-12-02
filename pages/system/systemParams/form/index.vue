@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import SystemParamsForm from "~~/components/SystemParamsForm.vue";
+import SystemParamsForm from "~~/components/form/SystemParamsForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {

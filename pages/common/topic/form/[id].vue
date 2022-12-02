@@ -7,9 +7,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { ref } from "vue";
-import TopicForm from "~~/components/TopicForm.vue";
+import TopicForm from "~~/components/form/TopicForm.vue";
 import TitleHeader from "~~/components/common/TitleHeader.vue";
 export default {
   components: {
@@ -18,7 +16,7 @@ export default {
   },
   data() {
     return {
-      titleForm: "Chỉnh sửa chủ đề bài viết",
+      titleForm: "Chỉnh sửa chuyên mục",
     };
   },
   setup() {
