@@ -1,0 +1,18 @@
+{
+  "label": {
+    "sidebar": {
+      "home": "Home",
+      "system": "System Management",
+      "userGroup": "Group User Management",
+      "user": "User Management",
+      "parameter": "Parameter Management",
+      "common": "Common Management",
+      "department": "Department Management",
+      "topic": "Topic Management",
+      "newsType": "News Type Management",
+      "comment": "Comment Management",
+      "news": "News Management",
+      "others": "Others"
+    }
+  }
+}

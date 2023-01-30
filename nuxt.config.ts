@@ -28,7 +28,8 @@ export default {
   plugins: [
     { src: "~/plugins/editor-vue.js" },
     { src: "~/plugins/fort-awesome.js" },
-    { src: "~/plugins/i-fetch.js" }
+    { src: "~/plugins/i-fetch.js" },
+    { src: "~/plugins/i18n.ts"}
   ],
   components: true,
   buildModules: [],

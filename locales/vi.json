@@ -1,0 +1,18 @@
+{
+  "label": {
+    "sidebar": {
+      "home": "Trang chủ",
+      "system": "Quản lý hệ thống",
+      "userGroup": "Nhóm người dùng",
+      "user": "Người dùng",
+      "parameter": "Tham số hệ thống",
+      "common": "Quản lý chung",
+      "department": "Đơn vị thành viên",
+      "topic": "Chuyên mục",
+      "newsType": "Loại tin tức",
+      "comment": "Bình luận",
+      "news": "Quản lý tin tức",
+      "others": "Khác"
+    }
+  }
+}

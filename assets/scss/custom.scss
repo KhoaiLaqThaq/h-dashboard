@@ -71,7 +71,7 @@ $textTheme: #fbba16;
     }
 
     .has-submenu {
-      > a.side-menu {
+      > div.side-menu {
         &::after {
           display: inline-block;
           margin-left: 0.255em;

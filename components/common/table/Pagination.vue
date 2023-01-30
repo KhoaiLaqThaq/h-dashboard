@@ -1,7 +1,7 @@
 <template>
   <div class="table-footer px-3 pb-3">
     <span class="table-pagination">
-      <label class="mb-0">Page Size</label>
+      <label class="mb-0 hidden-xs">Page Size</label>
       <select class="pagination-size" :value="size" @change="setSize($event)">
         <option
           v-for="(item, index) in pigeSizeOptions"
@@ -11,7 +11,7 @@
           {{ item }}
         </option>
       </select>
-      <p class="mx-auto mb-0">
+      <p class="mx-auto mb-0 hidden-xs">
         Showing {{ defaultSize * (currentPage - 1) + 1 }} to
         {{ defaultSize * (currentPage - 1) + numberOfElements }} of
         {{ totalElements }} entries

@@ -10,8 +10,9 @@
     "@popperjs/core": "^2.11.5",
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "node-sass": "^7.0.1",
-    "nuxt": "3.0.0-rc.6",
-    "sass-loader": "^13.0.2"
+    "nuxt": "3.0.0",
+    "sass-loader": "^13.0.2",
+    "vue-i18n": "^9.2.2"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.0.1",
