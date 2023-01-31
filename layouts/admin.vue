@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid d-flex pt-2" :id="colorTheme">
+    <div class="container-fluid d-flex pt-0 pe-0" :id="colorTheme">
         <!-- <div class="sidebar hidden-xs"> -->
         <div class="sidebar" id="sidebar">
             <TheSidebar />
@@ -18,9 +18,9 @@
 </template> 
 
 <script>
-import TheFooter from '~~/components/TheFooter.vue'
-import TheTopbar from '~~/components/TheTopbar.vue'
-import TheSidebar from '~~/components/TheSidebar.vue'
+import TheFooter from '~~/components/decorators/TheFooter.vue'
+import TheTopbar from '~~/components/decorators/TheTopbar.vue'
+import TheSidebar from '~~/components/decorators/TheSidebar.vue'
 
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 

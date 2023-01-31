@@ -1,18 +1,49 @@
 {
   "label": {
     "sidebar": {
+      "dashboard": "Dashboard",
       "home": "Home",
-      "system": "System Management",
+      "sell": "Sell Management",
+      "product": "Product Management",
+      "customer": "Customer Management",
+      "content": "Content Management",
+      "system": "System",
+      "authorization": "Authorization",
       "userGroup": "Group User Management",
       "user": "User Management",
       "parameter": "Parameter Management",
       "common": "Common Management",
-      "department": "Department Management",
-      "topic": "Topic Management",
-      "newsType": "News Type Management",
-      "comment": "Comment Management",
-      "news": "News Management",
       "others": "Others"
+    },
+    "search": {
+      "common": "Search by code, by product"
+    },
+    "button": {
+      "search": "Search",
+      "approve": "Approve",
+      "edit": "Edit",
+      "reject": "Reject"
+    },
+    "title": {
+      "order": "Orders"
+    },
+    "table": {
+      "th": {
+        "orderCode": "Order Code",
+        "time": "Time",
+        "customer": "Customer",
+        "status": "Status",
+        "action": "Action"
+      }
+    },
+    "sell": {
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "exported": "Exported",
+        "rejected": "Rejected",
+        "invoiced": "Invoiced"
+      }
     }
   }
 }

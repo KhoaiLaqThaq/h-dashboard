@@ -1,18 +1,70 @@
 {
   "label": {
+    "amount": "Số lượng",
+    "button": {
+      "search": "Tìm kiếm",
+      "approve": "Duyệt",
+      "edit": "Sửa",
+      "reject": "Hủy" 
+    },
+    "customer": {
+      "name": "Tên khách hàng",
+      "merchant": {
+        "name": "Đại lý",
+        "staff": "Nhân viên kinh doanh"
+      }
+    },
+    "createdBy": "Người tạo",
     "sidebar": {
+      "dashboard": "Dashboard",
       "home": "Trang chủ",
-      "system": "Quản lý hệ thống",
+      "sell": "Quản lý bán hàng",
+      "product": "Quản lý sản phẩm",
+      "customer": "Quản lý khách hàng",
+      "content": "Quản lý nội dung",
+      "system": "Hệ thống",
+      "authorization": "Phân quyền",
       "userGroup": "Nhóm người dùng",
       "user": "Người dùng",
       "parameter": "Tham số hệ thống",
       "common": "Quản lý chung",
-      "department": "Đơn vị thành viên",
-      "topic": "Chuyên mục",
-      "newsType": "Loại tin tức",
-      "comment": "Bình luận",
-      "news": "Quản lý tin tức",
       "others": "Khác"
-    }
+    },
+    "note": "Ghi chú",
+    "order": {
+      "history": "Lịch sử thanh toán"
+    },
+    "search": {
+      "common": "Tìm kiếm theo mã, tên hàng"
+    },
+    "title": {
+      "order": "Đơn đặt hàng"
+    },
+    "table": {
+      "th": {
+        "orderCode": "Mã đặt hàng",
+        "time": "Thời gian",
+        "customer": "Khách hàng",
+        "status": "Trạng thái",
+        "action": "Thao tác"
+      }
+    },
+    "sell": {
+      "status": {
+        "pending": "Chờ xử lý",
+        "approved": "Đã duyệt",
+        "exported": "Đã xuất kho",
+        "rejected": "Đã hủy",
+        "invoiced": "Đã xuất hóa đơn"
+      }
+    },
+    "product": {
+      "code": "Mã sản phẩm",
+      "name": "Tên sản phẩm",
+      "amount":"Số lượng",
+      "price": "Đơn giá",
+      "finalPrice": "Thành tiền"
+    },
+    "price": "Đơn giá"
   }
 }
