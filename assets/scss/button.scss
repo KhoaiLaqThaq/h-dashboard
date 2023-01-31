@@ -1,0 +1,13 @@
+@import "./variables.scss";
+
+//################### button style ###############
+.btn-theme {
+  background-color: $primaryTheme !important;
+}
+.btn-submit {
+  background-color: #fbba16 !important;
+
+  &:hover {
+    background-color: #fbba16b7 !important;
+  }
+}

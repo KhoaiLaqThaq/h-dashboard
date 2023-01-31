@@ -1,0 +1,9 @@
+@import './variables.scss';
+
+.border-theme {
+  border: 1px solid $secondaryTheme;
+}
+
+.border-end-2px-theme {
+  border-right: 2px solid $secondaryTheme;
+}

@@ -52,7 +52,6 @@ import EditIcon from "~~/assets/images/icons/actions/EditIcon.vue";
 import DeleteIcon from "~~/assets/images/icons/actions/DeleteIcon.vue";
 import { ROLES } from "~~/constants/roles.js";
 import UserService from "~~/services/model/user.service";
-import UserDepartService from "~~/services/model/userDepart.service";
 import ConfirmDelete from '~~/components/common/modal/ConfirmDelete.vue';
 
 import { HttpStatus } from "~~/constants/http-status";
@@ -155,24 +154,24 @@ export default {
     }
 
     function deleteUserDepartment(k6kUserId) {
-      UserDepartService.deleteById(k6kUserId)
-      .then((response) => {
-        let responseData = response.data;
-        if (responseData) {
-          $showToast("Xóa người dùng thành công!", "success", 3000);
+      // UserDepartService.deleteById(k6kUserId)
+      // .then((response) => {
+      //   let responseData = response.data;
+      //   if (responseData) {
+      //     $showToast("Xóa người dùng thành công!", "success", 3000);
 
-          setTimeout(() => {
-            location.reload();
-          }, 2000);
+      //     setTimeout(() => {
+      //       location.reload();
+      //     }, 2000);
 
-        } else {
-          onLoadUserError("Ops! Xóa người dùng không thành công -2");
-        }
-      })
-      .catch((error) => {
-        onLoadUserError("Ops! Xóa người dùng không thành công -2");
-        console.log("ERROR DELETE USER K6K: ", error);
-      })
+      //   } else {
+      //     onLoadUserError("Ops! Xóa người dùng không thành công -2");
+      //   }
+      // })
+      // .catch((error) => {
+      //   onLoadUserError("Ops! Xóa người dùng không thành công -2");
+      //   console.log("ERROR DELETE USER K6K: ", error);
+      // })
     }
 
     function onLoadUserError(message) {

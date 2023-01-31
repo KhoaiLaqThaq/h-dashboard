@@ -1,14 +1,33 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "vue3-carousel/dist/carousel.css";
+@import "./variables.scss";
+// $primaryTheme: #014683;
+// $bgc-content: rgb(241 245 249);
+// $textTheme: #fbba16;
 
-$primaryTheme: #014683;
-$bgc-content: rgb(241 245 249);
-$textTheme: #fbba16;
+// ----------------transition page and layout change
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.5s;
+}
+.layout-enter,
+.layout-leave-active {
+  opacity: 0;
+}
 
 #main {
   height: 100vh;
   overflow-x: hidden;
-  padding: 0.75rem 1rem 0.75rem 1rem;
+  padding: 0 0 0 1rem;
   font-family: "Roboto", sans-serif;
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -107,54 +126,11 @@ $textTheme: #fbba16;
       padding-right: 30px;
       &.router-link-exact-active,
       &.active {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        background-color: $bgc-content;
         svg {
-          color: $primaryTheme;
-        }
-        // .side-menu__icon {
-        //   &::before {
-        //     content: "";
-        //     z-index: 90;
-        //     position: absolute;
-        //     top: 0;
-        //     right: 0;
-        //     margin-right: -1.25rem;
-        //     height: 100%;
-        //     width: 3rem;
-        //     background-color: $bgc-content;
-        //   }
-        // }
-
-        .side-menu__title {
           color: $textTheme;
         }
-        &::before {
-          content: "";
-          width: 30px;
-          height: 30px;
-          margin-top: -30px;
-          transform: rotate(90deg) scale(1.04);
-          background-size: 100%;
-          background-image: url("@/assets/images/sidebar_extend.svg");
-          position: absolute;
-          top: 0;
-          right: 20px;
-          margin-right: -1.25rem;
-        }
-        &::after {
-          content: "";
-          width: 30px;
-          height: 30px;
-          margin-top: 50px;
-          transform: scale(1.04);
-          background-size: 100%;
-          background-image: url("@/assets/images/sidebar_extend.svg");
-          position: absolute;
-          top: 0px;
-          right: 20px;
-          margin-right: -1.25rem;
+        .side-menu__title {
+          color: $textTheme;
         }
       }
       .side-menu__title {
@@ -170,7 +146,7 @@ $textTheme: #fbba16;
   // content
   .content {
     background-color: $bgc-content;
-    border-radius: 30px;
+    // border-radius: 30px;
     padding: 0 22px;
     min-height: 100vh;
     min-width: 0px;
@@ -178,73 +154,40 @@ $textTheme: #fbba16;
     padding-bottom: 4rem;
 
     .top-bar {
-      height: 60px;
-      width: 100%;
-      z-index: 51;
-      position: relative;
-      display: flex;
-      align-items: center;
-      border-bottom-width: 1px;
-      border-bottom: 1px solid rgb(0 0 0 / 8%);
-      padding: 15px 0;
-
-      .breadcrumb {
-        display: flex;
-        align-items: center;
-        color: $primaryTheme;
-        margin: auto;
-
-        .breadcrumb-item {
-          a {
-            color: inherit;
-          }
-          &.active {
-            cursor: text;
-            margin-left: 15px;
-            a {
-              --tw-text-opacity: 1;
-              color: rgb(var(--color-slate-800) / var(--tw-text-opacity));
-            }
-          }
-
-          &:not(:first-child)::before {
-            content: "";
-            width: 14px;
-            height: 14px;
-            background-image: url("@/assets/images/greater.svg");
-            background-size: 100%;
-            margin-left: -1.125rem;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin-top: auto;
-            margin-bottom: auto;
-          }
-        }
+      .input-search {
+        height: 56px;
       }
-      // notification
+      .search-common {
+        position: absolute;
+        padding: .5rem 1rem;
+        top: 20%;
+        right: 20px;
+      }
+
       .dropdown-toggle::after {
         content: none;
       }
+
       .notification {
-        position: relative;
-        --tw-text-opacity: 1;
-        color: rgb(var(--color-slate-600) / var(--tw-text-opacity));
+        height: 56px;
+        width: 56px;
+        background-color: white;
+        cursor: pointer;
 
-        &.notification--bullet::before {
-          content: "";
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          top: -2px;
-          right: 0px;
-          border-radius: 9999px;
-          background-color: #dc2727;
-        }
-
-        .notification-icon {
-          width: 1.25rem;
-          height: 1.25rem;
+        .notification--bullet {
+          position: relative;
+          color: $primaryTheme;
+          display: contents;
+          &::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            border-radius: 100%;
+            background-color: red;
+          }
         }
       }
 
@@ -255,17 +198,17 @@ $textTheme: #fbba16;
           width: 100%;
           height: 100%;
           object-fit: cover;
-          border-radius: inherit;
+          border-radius: 10px;
         }
       }
 
       .dropdown-acc__customize {
         background-color: $primaryTheme;
         min-width: 240px;
-
+        
         .dropdown-acc-item {
           align-items: center;
-          color: #ffffff;
+          color: white;
           padding-top: 10px;
           padding-bottom: 10px;
           border-radius: 5px;
@@ -275,26 +218,15 @@ $textTheme: #fbba16;
             border-radius: unset;
             padding-top: 15px;
             padding-bottom: 15px;
-
             &:hover {
               background-color: unset;
             }
-            .name {
-              font-weight: bold;
-            }
-            .description {
-              font-size: 13px;
-            }
-          }
-
-          &:not(:first-child):hover {
-            background-color: #244ac7;
-          }
-
-          &:last-child {
-            border-top: 1px solid #ffffff14;
+            .name {font-weight: bold;}
+            .description {font-size: 13px;}
           }
         }
+        &:not(:first-child):hover {background-color: #244ac7;}
+        &:last-child {border-top: 1px solid #ffffff14;}
       }
     }
 
@@ -674,24 +606,12 @@ a {
   border-bottom-right-radius: 5px;
 }
 
-.w-4 {
-  width: 1rem;
+.rounded-10 {
+  border-radius: 10px !important;
 }
 
-.w100 {
-  width: 100%;
-}
-
-.h-4 {
-  height: 1rem;
-}
-
-.w-8 {
-  width: 2rem;
-}
-
-.h-8 {
-  height: 2rem;
+.rounded-20 {
+  border-radius: 20px !important;
 }
 
 .minW-100 {
@@ -821,6 +741,10 @@ a {
   border: none !important;
 }
 
+.border-unset {
+  border: unset;
+}
+
 .miniForm {
   width: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
@@ -838,13 +762,6 @@ a {
   .dropdown-toggle::after {
     content: none;
   }
-}
-
-//################### button style ###############
-.btn-primary {
-  background-color: $textTheme;
-  color: $primaryTheme;
-  border: unset;
 }
 
 //################### login page ###############
@@ -970,12 +887,14 @@ label {
   display: table;
   width: 100%;
   background-color: $bgc-content;
+  
 
   .tr {
     display: table-row;
     padding: 5px;
     width: 100%;
     background-color: $bgc-content;
+    position: relative;
 
     .th {
       height: 56px;
@@ -1162,13 +1081,14 @@ label {
 }
 
 .text-yl {
-  color: #fbba16;
-  font-weight: 500;
+  color: $textTheme;
 }
 
-.w50 {
-  width: 50px;
+.text-theme {
+  color: $primaryTheme;
 }
+
+
 
 *,
 *::before,
@@ -1417,4 +1337,11 @@ label {
   .sidebar {
     min-width: 270px;
   }
+}
+
+// Stylesheet for position
+.flex-center-vertical {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }

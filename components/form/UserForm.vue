@@ -81,7 +81,6 @@ import BaseButton from "~~/components/common/BaseButton.vue";
 import {ROLES} from "~~/constants/roles.js";
 import { useCurrentsRole } from '~~/services/common.js'
 import UserService from "~~/services/model/user.service";
-import UserDepartService from "~~/services/model/userDepart.service";
 
 export default {
   components: {
@@ -191,20 +190,20 @@ export default {
     function onLoadUserDepartment(k6kUserId) {
       if (k6kUserId) {
         // axios.get(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment/${k6kUserId}`, { headers})
-        UserDepartService.getById(k6kUserId)
-        .then((response) => {
-          let responseData = response.data;
-          if (responseData) {
-            userDepartmentId.value = responseData.id
-            departmentId.value = responseData.departmentId;
-            k6kGroupId.value = responseData.k6kGroupId;
-            groupName.value = responseData.groupName;
-            showStatus.value = responseData.groupName ? true : false;
-          }
-        })
-        .catch((error) => {
-          onLoadUserError("Tải thông tin người dùng không thành công -2");
-        })
+        // UserDepartService.getById(k6kUserId)
+        // .then((response) => {
+        //   let responseData = response.data;
+        //   if (responseData) {
+        //     userDepartmentId.value = responseData.id
+        //     departmentId.value = responseData.departmentId;
+        //     k6kGroupId.value = responseData.k6kGroupId;
+        //     groupName.value = responseData.groupName;
+        //     showStatus.value = responseData.groupName ? true : false;
+        //   }
+        // })
+        // .catch((error) => {
+        //   onLoadUserError("Tải thông tin người dùng không thành công -2");
+        // })
       }
     }
 
@@ -250,23 +249,23 @@ export default {
           departmentId: departmentId.value
         };
         // axios.post(`${CONFIG.BASE_URL}/${CONFIG.NEWS_GATEWAY}/api/userDepartment`, newsDepartmentData, { headers})
-        UserDepartService.saveOrUpdate(newsDepartmentData)
-        .then((response) => {
-          let responseData = response.data;
-          if (responseData) {
-            $showToast("Lưu người dùng thành công", "success", 2000);
-            if (!responseData.groupName) {
-              $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
-              navigateTo("/system/user/form/" + responseUserDepartment.id);
-            } else {
-              // location.reload();
-            }
-          }
-        })
-        .catch((error) => {
-          $showToast("Lưu người dùng thất bại -2", "error", 2000);
-          console.log("SAVE USER ERROR -2: ", error);
-        })
+        // UserDepartService.saveOrUpdate(newsDepartmentData)
+        // .then((response) => {
+        //   let responseData = response.data;
+        //   if (responseData) {
+        //     $showToast("Lưu người dùng thành công", "success", 2000);
+        //     if (!responseData.groupName) {
+        //       $showToast("Mật khẩu mặc định là: 1234567a@", "warning", 5000);
+        //       navigateTo("/system/user/form/" + responseUserDepartment.id);
+        //     } else {
+        //       // location.reload();
+        //     }
+        //   }
+        // })
+        // .catch((error) => {
+        //   $showToast("Lưu người dùng thất bại -2", "error", 2000);
+        //   console.log("SAVE USER ERROR -2: ", error);
+        // })
       }
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="item-content">
-    <h2 class="text-lg font-medium text-yl">{{ title }}</h2>
+    <h2 class="text-lg font-medium text-theme">{{ title }}</h2>
   </div>
 </template>
 <script>

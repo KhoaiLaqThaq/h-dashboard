@@ -22,6 +22,9 @@ export default {
     script: [],
   },
   css: [
+    "@/assets/scss/border.scss",
+    "@/assets/scss/button.scss",
+    "@/assets/scss/sizing.scss",
     "@/assets/scss/custom.scss",
     "@fortawesome/fontawesome-svg-core/styles.css",
   ],
@@ -47,4 +50,12 @@ export default {
       },
     ],
   },
+  pageTransition: {
+    name: 'page',
+    mode: 'out-in'
+  },
+  layoutTransition: {
+    name: 'layout',
+    mode: 'out-in'
+  }
 };
