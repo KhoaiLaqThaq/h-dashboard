@@ -2,10 +2,15 @@
   "label": {
     "amount": "Số lượng",
     "button": {
-      "search": "Tìm kiếm",
       "approve": "Duyệt",
       "edit": "Sửa",
-      "reject": "Hủy" 
+      "export": {
+        "file": "Xuất file",
+        "bill": "Xuất hóa đơn"
+      },
+      "save": "Lưu",
+      "search": "Tìm kiếm",
+      "reject": "Hủy"
     },
     "customer": {
       "name": "Tên khách hàng",
@@ -32,14 +37,30 @@
     },
     "note": "Ghi chú",
     "order": {
-      "history": "Lịch sử thanh toán"
+      "discount": "Chiết khấu",
+      "payment": {
+        "history": "Lịch sử thanh toán",
+        "method": {
+          "title": "Phương thức thanh toán",
+          "1": "Tiền mặt",
+          "2": "Chuyển khoản",
+          "3": "Visa/Mastercard"
+        },
+        "paid": "Đã thanh toán",
+        "unpaid": "Chưa thanh toán"
+      },
+      "tax": "Thuế suất",
+      "totalPricePayment": "Tổng thanh toán",
+      "totalPriceProduct": "Tổng tiền hàng"
     },
     "search": {
       "common": "Tìm kiếm theo mã, tên hàng"
     },
+    "status": "Trạng thái",
     "title": {
       "order": "Đơn đặt hàng"
     },
+    "time":"Thời gian",
     "table": {
       "th": {
         "orderCode": "Mã đặt hàng",

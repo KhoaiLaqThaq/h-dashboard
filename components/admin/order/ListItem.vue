@@ -1,7 +1,9 @@
 <template>
-  <div class="row border-theme rounded-10 py-3 px-2 bg-white">
+  <div class="row mx-0 border-theme rounded-10 py-3 px-2 bg-white">
     <div class="col-1 m-auto text-yl cursor-pointer flex-center-vertical">
-      <a :href="`#collapse__${item.code}`" data-bs-toggle="collapse" role="button" aria-expanded="false" :aria-controls="`collapse__${item.code}`"><font-awesome-icon icon="fa-solid fa-angles-down" /></a>
+      <a :href="`#collapse__${item.code}`" data-bs-toggle="collapse" role="button" aria-expanded="false" :aria-controls="`collapse__${item.code}`" @click="arrowExpanding(item.code)">
+        <font-awesome-icon icon="fa-solid fa-angles-down" class="arrow-expanding text-yl" :id="`arrow__${item.code}`" />
+      </a>
     </div>
     <div class="col-2 flex-center-vertical">{{ item.code }}</div>
     <div class="col-2 flex-center-vertical">{{ $d(item.createdDate, 'long') }}</div>
@@ -17,11 +19,12 @@
       <order-expand-item></order-expand-item>
     </div>
   </div>
-  
-  
-  
 </template>
 <script>
+import {
+  displayStatus,
+  displayColorStatus
+} from '~~/constants/order/status.enum';
 import OrderExpandItem from '~~/components/admin/order/OrderExpandItem.vue';
 export default {
   components: {OrderExpandItem},
@@ -31,42 +34,26 @@ export default {
       required: true
     }
   },
-  setup(props) {
-    function displayColorStatus(status) {
-      switch(status) {
-        case 1:
-          return 'text-danger';
-        case 99:
-          return 'text-success';
-        default:
-          return 'text-primary';
-      }
-    }
-
-    /*
-      1: pending, 2: approved, 3: exported, 4: rejected, 99: invoice
-    */
-    function displayStatus(status) {
-      switch (status) {
-        case 1:
-          return 'pending';
-        case 2:
-          return 'approved';
-        case 3:
-          return 'exported';
-        case 4:
-          return 'rejected';
-        case 99:
-          return 'invoiced';
-        default: 
-          return 'unknown';
-      }
-    }
-
+  data() {
     return {
       displayStatus,
       displayColorStatus
     }
+  },
+  setup(props) {
+    const arrowExpanding = (code) => document.getElementById('arrow__'.concat(code)).classList.toggle('expanded');
+
+    return {
+      arrowExpanding
+    }
   }
 }
 </script>
+<style lang="scss" scoped>
+.arrow-expanding {
+  transition: transform 0.25s;
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}
+</style>

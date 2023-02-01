@@ -3,83 +3,67 @@
     <span class="table-pagination">
       <label class="mb-0 hidden-xs">Page Size</label>
       <select class="pagination-size" :value="size" @change="setSize($event)">
-        <option
-          v-for="(item, index) in pigeSizeOptions"
-          :value="item"
-          :key="index"
-        >
-          {{ item }}
-        </option>
+        <option v-for="(item, index) in pageSizeOptions" :value="item" :key="index">{{ item }}</option>
       </select>
       <p class="mx-auto mb-0 hidden-xs">
         Showing {{ defaultSize * (currentPage - 1) + 1 }} to
         {{ defaultSize * (currentPage - 1) + numberOfElements }} of
         {{ totalElements }} entries
       </p>
-      <button
-        class="pagination-page first"
-        data-page="first"
-        @click="setPagination(0)"
-        :disabled="currentPage == 1"
-      >
+      <button class="pagination-page first" data-page="first" @click="setPagination(0)" :disabled="currentPage == 1" >
         First
       </button>
-      <button
-        class="pagination-page prev"
-        data-page="prev"
-        @click="setPagination(currentPage - 2)"
-        :disabled="currentPage == 1"
-      >
+      <button class="pagination-page prev" data-page="prev" @click="setPagination(currentPage - 2)" :disabled="currentPage == 1" >
         Prev
       </button>
       <span class="pagination-pages">
-        <button
-          class="pagination-page"
-          v-for="(item, index) in totalPages"
-          :key="index"
-          :class="{ active: currentPage == item }"
-          @click="setPagination(index)"
-        >
+        <button class="pagination-page" v-for="(item, index) in totalPages" :key="index" :class="{ active: currentPage == item }" @click="setPagination(index)">
           {{ item }}
         </button>
       </span>
-      <button
-        class="pagination-page next"
-        data-page="next"
-        @click="setPagination(currentPage++)"
-        :disabled="currentPage == totalPages"
-      >
+      <button class="pagination-page next" data-page="next" @click="setPagination(currentPage++)" :disabled="currentPage == totalPages">
         Next
       </button>
-      <button
-        class="pagination-page last"
-        data-page="last"
-        @click="setPagination(totalPages - 1)"
-        :disabled="currentPage == totalPages"
-      >
+      <button class="pagination-page last" data-page="last" @click="setPagination(totalPages - 1)" :disabled="currentPage == totalPages">
         Last
       </button>
     </span>
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export default {
-  props: [
-    "page",
-    "size",
-    "number",
-    "numberOfElements",
-    "totalPages",
-    "totalElements",
-    "first",
-    "last",
-  ],
+  props: {
+    page: {
+      type: Number      
+    },
+    size: {
+      type: Number
+    },
+    number: {
+      type: Number
+    },
+    numberOfElements: {
+      type: Number
+    },
+    totalPages: {
+      type: Number
+    },
+    totalElements: {
+      type: Number
+    },
+    first: {
+      type: Boolean
+    },
+    last: {
+      type: Boolean
+    }
+  },
   setup(props, { emit }) {
-    const page = ref(props.page);
-    const defaultSize = ref(props.size ? props.size : "10");
-    const currentPage = ref(props.page + 1);
+    // const page = computed(() => props.page);
+    const defaultSize = computed(() => props.size ? props.size : 10);
+    const currentPage = computed(() => props.page + 1);
 
     // click page
     function setPagination(numPage) {
@@ -91,8 +75,8 @@ export default {
     }
 
     return {
-      pigeSizeOptions: ["10", "50", "100"],
-      defaultSize: defaultSize, // default
+      pageSizeOptions: [10, 50, 100],
+      defaultSize,
       currentPage,
 
       setPagination,
@@ -104,7 +88,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .table-footer {
   margin-top: 0.5rem;
   border-top-width: 0px;
