@@ -7,7 +7,7 @@ class ProductService {
   }
 
   getByCode(code) {
-    return api.get(`${CONFIG.DIGITAL_GATEWAY}/api/product/getByCode`, code);
+    return api.get(`${CONFIG.DIGITAL_GATEWAY}/api/product/getByCode/${code}`);
   }
 }
 

@@ -16,22 +16,73 @@
     </div>
     <!-- expand -->
     <div class="col-12 collapse" :id="`collapse__${item.code}`">
-      <order-expand-item></order-expand-item>
+      <order-expand-item v-if="isExpanded"></order-expand-item>
+      <f-loading v-else></f-loading>
     </div>
   </div>
 </template>
 <script setup>
+import { ref } from 'vue';
 import {
   displayStatus,
   displayColorStatus
 } from '~~/constants/order/status.enum';
 import OrderExpandItem from '~~/components/admin/order/OrderExpandItem.vue';
+import FLoading from '~~/components/common/FLoading/index.vue'
+import OrderService from '~~/services/model/order.service';
 
 const props = defineProps({
   item: Object
 });
 
-const arrowExpanding = (code) => document.getElementById('arrow__'.concat(code)).classList.toggle('expanded');
+// define state
+const order = ref(null);
+const isExpanded = ref(false);
+
+// mock data detail
+const orderDetail = {
+
+};
+
+function loadingOrderDetail(code) {
+  OrderService.getByCode(code)
+    .then(res => {
+      if (res.data) {
+        order.value = Object.assign({}, res.data);
+      }
+    })
+    .catch(err => console.log(err))
+    .finally(() => {
+      order.value = Object.assign({}, orderDetail);
+      isExpanded.value = true;
+    });
+}
+
+function arrowExpanding(code) {
+  document.getElementById('arrow__'.concat(code)).classList.toggle('expanded');
+  const selectorExpandeds = document.getElementsByClassName('expanded');
+
+  const selectorShowings = document.getElementsByClassName('show');
+  for (let i = 0; i < selectorShowings.length; i++) {
+    const element = selectorShowings[i];
+    if ("collapse__".concat(code) !== element.id) {
+      element.classList.remove("show");
+    }
+  }
+
+  for (let i = 0; i < selectorExpandeds.length; i++) {
+    const element = selectorExpandeds[i];
+    if ("arrow__".concat(code) !== element.id) {
+      element.classList.remove("expanded")
+    }
+  }
+
+  if (selectorExpandeds && selectorExpandeds.length > 0) {
+    nextTick();
+    loadingOrderDetail(code);
+  }
+  else isExpanded.value = false;
+}
 </script>
 <style lang="scss" scoped>
 .arrow-expanding {

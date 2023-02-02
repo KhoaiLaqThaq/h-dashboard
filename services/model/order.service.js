@@ -5,6 +5,10 @@ class OrderService {
   getAllOrSearch(criteria) {
     return api.post(`${CONFIG.DIGITAL_GATEWAY}/api/order/getAll`, criteria)
   }
+
+  getByCode(code) {
+    return api.get(`${CONFIG.DIGITAL_GATEWAY}/api/order/getByCode/${code}`);
+  }
 }
 
 export default new OrderService();

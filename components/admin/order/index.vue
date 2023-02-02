@@ -25,10 +25,10 @@ import Pagination from '~~/components/common/table/Pagination.vue';
 const pagination = reactive({
   page: 0,
   size: 10,
-  number: 0,
-  numberOfElements: 0,
-  totalPages: 0,
-  totalElements: 0,
+  number: 1,
+  numberOfElements: 2,
+  totalPages: 1,
+  totalElements: 2,
   first: false,
   last: false
 });
