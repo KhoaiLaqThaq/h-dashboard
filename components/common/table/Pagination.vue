@@ -1,14 +1,14 @@
 <template>
   <div class="table-footer px-3 pb-3">
     <span class="table-pagination">
-      <label class="mb-0 hidden-xs">Page Size</label>
+      <label class="mb-0 hidden-xs">{{ $t('label.page.size') }}</label>
       <select class="pagination-size" :value="size" @change="setSize($event)">
         <option v-for="(item, index) in pageSizeOptions" :value="item" :key="index">{{ item }}</option>
       </select>
       <p class="mx-auto mb-0 hidden-xs">
-        Showing {{ defaultSize * (currentPage - 1) + 1 }} to
-        {{ defaultSize * (currentPage - 1) + numberOfElements }} of
-        {{ totalElements }} entries
+        {{ $t('label.page.showing') }} {{ defaultSize * (currentPage - 1) + 1 }} {{ $t('label.page.to') }}
+        {{ defaultSize * (currentPage - 1) + numberOfElements }} {{ $t('label.page.of') }}
+        {{ totalElements }} {{ $t('label.page.entries') }}
       </p>
       <button class="pagination-page first" data-page="first" @click="setPagination(0)" :disabled="currentPage == 1" >
         First

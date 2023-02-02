@@ -20,34 +20,18 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import {
   displayStatus,
   displayColorStatus
 } from '~~/constants/order/status.enum';
 import OrderExpandItem from '~~/components/admin/order/OrderExpandItem.vue';
-export default {
-  components: {OrderExpandItem},
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      displayStatus,
-      displayColorStatus
-    }
-  },
-  setup(props) {
-    const arrowExpanding = (code) => document.getElementById('arrow__'.concat(code)).classList.toggle('expanded');
 
-    return {
-      arrowExpanding
-    }
-  }
-}
+const props = defineProps({
+  item: Object
+});
+
+const arrowExpanding = (code) => document.getElementById('arrow__'.concat(code)).classList.toggle('expanded');
 </script>
 <style lang="scss" scoped>
 .arrow-expanding {

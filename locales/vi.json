@@ -3,6 +3,7 @@
     "amount": "Số lượng",
     "button": {
       "approve": "Duyệt",
+      "delete": "Xóa",
       "edit": "Sửa",
       "export": {
         "file": "Xuất file",
@@ -20,6 +21,10 @@
       }
     },
     "createdBy": "Người tạo",
+    "description": "Mô tả",
+    "filter": {
+      "title": "Bộ lọc"
+    },
     "sidebar": {
       "dashboard": "Dashboard",
       "home": "Trang chủ",
@@ -58,7 +63,8 @@
     },
     "status": "Trạng thái",
     "title": {
-      "order": "Đơn đặt hàng"
+      "order": "Đơn đặt hàng",
+      "product": "Danh mục sản phẩm"
     },
     "time":"Thời gian",
     "table": {
@@ -67,7 +73,14 @@
         "time": "Thời gian",
         "customer": "Khách hàng",
         "status": "Trạng thái",
-        "action": "Thao tác"
+        "action": "Thao tác",
+        "product": {
+          "code": "Mã sản phẩm",
+          "name": "Tên sản phẩm",
+          "type": "Dòng sản phẩm",
+          "size": "Kích thước",
+          "spec": "Quy cách"
+        }
       }
     },
     "sell": {
@@ -79,12 +92,25 @@
         "invoiced": "Đã xuất hóa đơn"
       }
     },
+    "page": {
+      "size": "Số lượng mục",
+      "showing": "Hiển thị từ",
+      "to": "đến",
+      "of": "của tổng số",
+      "entries": "mục"
+    },
     "product": {
       "code": "Mã sản phẩm",
       "name": "Tên sản phẩm",
       "amount":"Số lượng",
       "price": "Đơn giá",
-      "finalPrice": "Thành tiền"
+      "finalPrice": "Thành tiền",
+      "type":"Dòng sản phẩm",
+      "producer": "Xuất xứ",
+      "weight": "Trọng lượng",
+      "cost": "Giá vốn",
+      "sale": "Giá bán",
+      "inventory": "Tồn kho"
     },
     "price": "Đơn giá"
   }
