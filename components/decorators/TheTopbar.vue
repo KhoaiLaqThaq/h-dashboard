@@ -3,7 +3,7 @@
     <div class="col-9">
       <div class="form-group col-8 position-relative m-auto">
         <input type="text" class="form-control rounded-20 input-search p-3" :placeholder="$t('label.search.common')"/>
-        <button type="button" class="btn-theme border-unset rounded-20 search-common text-white">{{ $t('label.button.search') }}</button>
+        <button type="button" class="bgc-primary border-unset rounded-20 search-common text-white">{{ $t('label.button.search') }}</button>
       </div>
     </div>
     <div class="col-3 d-flex justify-content-end">

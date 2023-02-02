@@ -1,5 +1,6 @@
 {
   "label": {
+    "address": "Địa chỉ",
     "amount": "Số lượng",
     "button": {
       "approve": "Duyệt",
@@ -9,19 +10,33 @@
         "file": "Xuất file",
         "bill": "Xuất hóa đơn"
       },
+      "create": "Thêm mới",
       "save": "Lưu",
       "search": "Tìm kiếm",
       "reject": "Hủy"
     },
     "customer": {
+      "businessCode": "Số ĐKKD",
+      "businessStaffName": "Nhân viên kinh doanh",
+      "businessPlace": "Vùng kinh doanh",
+      "title": {
+        "list": "Danh sách khách hàng"
+      },
       "name": "Tên khách hàng",
       "merchant": {
         "name": "Đại lý",
         "staff": "Nhân viên kinh doanh"
-      }
+      },
+      "identityCard": "Căn cước công dân",
+      "status": {
+        "1": "Active",
+        "0": "Inactive"
+      },
+      "phone": "Số điện thoại"
     },
     "createdBy": "Người tạo",
     "description": "Mô tả",
+    "email": "Email",
     "filter": {
       "title": "Bộ lọc"
     },
@@ -39,6 +54,11 @@
       "parameter": "Tham số hệ thống",
       "common": "Quản lý chung",
       "others": "Khác"
+    },
+    "news": {
+      "title": {
+        "list": "Danh sách bài viết"
+      }
     },
     "note": "Ghi chú",
     "order": {
@@ -69,11 +89,14 @@
     "time":"Thời gian",
     "table": {
       "th": {
+        "action": "Thao tác",
+        "customer": "Khách hàng",
+        "customerCode": "Mã khách hàng",
+        "customerName": "Tên khách hàng",
         "orderCode": "Mã đặt hàng",
         "time": "Thời gian",
-        "customer": "Khách hàng",
         "status": "Trạng thái",
-        "action": "Thao tác",
+        "recentLogin": "Lần cuối hoạt động",
         "product": {
           "code": "Mã sản phẩm",
           "name": "Tên sản phẩm",

@@ -1,7 +1,7 @@
 <template>
     <div class="d-grid grid-cols-12 grap-6 mt-3">
         <div class="report-box zoom-in">
-            <div class="box p-3 bgc-template text-white">
+            <div class="box p-3 bgc-primary text-white">
                 <div class="d-flex">
                     <ComputerIcon />
                 </div>

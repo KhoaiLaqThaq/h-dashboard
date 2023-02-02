@@ -47,9 +47,9 @@
 
       <div class="row">
         <div class="col-12">
-          <button type="button" class="btn btn-theme w150px me-1 rounded-10 text-white">{{ $t('label.button.export.file') }}</button>
-          <button type="button" class="btn btn-theme w150px me-1 rounded-10 text-white">{{ $t('label.button.export.bill') }}</button>
-          <button type="button" class="btn btn-theme w150px me-1 rounded-10 text-yl">{{ $t('label.button.save') }}</button>
+          <button type="button" class="btn bgc-primary w150px me-1 rounded-10 text-white">{{ $t('label.button.export.file') }}</button>
+          <button type="button" class="btn bgc-primary w150px me-1 rounded-10 text-white">{{ $t('label.button.export.bill') }}</button>
+          <button type="button" class="btn bgc-primary w150px me-1 rounded-10 text-yl">{{ $t('label.button.save') }}</button>
         </div>
       </div>
     </div>

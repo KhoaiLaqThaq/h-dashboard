@@ -1,0 +1,41 @@
+@import "./variables.scss";
+
+.text-yl {color: $textTheme !important;}
+
+.text-theme {color: $primaryTheme;}
+
+.text-success {color: #21D104 !important;}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-slate-400) / var(--tw-text-opacity));
+}
+
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-slate-500) / var(--tw-text-opacity));
+}
+
+.text-justify {text-align: justify;}
+
+.text-right {text-align: right;}

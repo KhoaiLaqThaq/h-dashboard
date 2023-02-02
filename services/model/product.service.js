@@ -3,11 +3,11 @@ import CONFIG from '~~/config';
 
 class ProductService {
   getAllOrSearch(criteria) {
-    return api.post(`${CONFIG.DIGITAL_GATEWAY}/api/product/getAllOrSearch`, criteria);
+    return api.post(`${CONFIG.DIGITAL_GATEWAY}/api/v1/product/getAllOrSearch`, criteria);
   }
 
   getByCode(code) {
-    return api.get(`${CONFIG.DIGITAL_GATEWAY}/api/product/getByCode/${code}`);
+    return api.get(`${CONFIG.DIGITAL_GATEWAY}/api/v1/product/getByCode/${code}`);
   }
 }
 

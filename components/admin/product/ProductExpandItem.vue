@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="col-6 text-end pe-5">
-      <button type="button" class="me-3 py-2 px-4 btn-submit text-white text-uppercase border-unset rounded-10">{{ $t('label.button.edit') }}</button>
-      <button type="button" class="me-3 py-2 px-4 btn-submit text-white text-uppercase border-unset rounded-10">{{ $t('label.button.delete') }}</button>
+      <button type="button" class="me-3 py-2 px-4 bgc-warning text-white text-uppercase border-unset rounded-10">{{ $t('label.button.edit') }}</button>
+      <button type="button" class="me-3 py-2 px-4 bgc-warning text-white text-uppercase border-unset rounded-10">{{ $t('label.button.delete') }}</button>
     </div>
     <div class="col-12">
       <p class="text-theme mb-0">{{ $t('label.description') }}</p>

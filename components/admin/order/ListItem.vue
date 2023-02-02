@@ -10,14 +10,14 @@
     <div class="col-2 flex-center-vertical">{{ item.code }} {{ item.customerName }}</div>
     <div :class="`col-2 flex-center-vertical text-center ${displayColorStatus(item.status)}`">{{ $t(`label.sell.status.${displayStatus(item.status)}`) }}</div>
     <div class="col-3 text-end">
-      <button type="button" class="btn btn-submit text-uppercase minW-80 text-white me-2">{{ $t('label.button.approve') }}</button>
-      <button type="button" class="btn btn-theme text-uppercase minW-80 text-yl me-2">{{ $t('label.button.edit') }}</button>
-      <button type="button" class="btn btn-theme text-uppercase minW-80 text-yl">{{ $t('label.button.reject') }}</button>
+      <button type="button" class="btn bgc-warning text-uppercase minW-80 text-white me-2">{{ $t('label.button.approve') }}</button>
+      <button type="button" class="btn bgc-primary text-uppercase minW-80 text-yl me-2">{{ $t('label.button.edit') }}</button>
+      <button type="button" class="btn bgc-primary text-uppercase minW-80 text-yl">{{ $t('label.button.reject') }}</button>
     </div>
     <!-- expand -->
     <div class="col-12 collapse" :id="`collapse__${item.code}`">
       <order-expand-item v-if="isExpanded"></order-expand-item>
-      <f-loading v-else></f-loading>
+      <f-loading class="py-5" v-else></f-loading>
     </div>
   </div>
 </template>

@@ -1,13 +1,26 @@
 @import "./variables.scss";
 
 //################### button style ###############
-.btn-theme {
-  background-color: $primaryTheme !important;
-}
-.btn-submit {
+.bgc-warning {
   background-color: #fbba16 !important;
 
   &:hover {
     background-color: #fbba16b7 !important;
   }
+}
+
+.bgc-success {
+  background-color: #84cc16;
+}
+
+.bgc-danger {
+  background-color: #dc2626;
+}
+
+.bgc-primary {
+  background-color: $primaryTheme !important;
+}
+
+.bgc-none {
+  background-color: none !important;
 }

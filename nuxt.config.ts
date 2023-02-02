@@ -22,6 +22,7 @@ export default {
     script: [],
   },
   css: [
+    "@/assets/scss/texting.scss",
     "@/assets/scss/border.scss",
     "@/assets/scss/button.scss",
     "@/assets/scss/sizing.scss",
