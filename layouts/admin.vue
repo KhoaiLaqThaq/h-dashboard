@@ -1,6 +1,5 @@
 <template>
     <div class="container-fluid d-flex pt-0 pe-0" :id="colorTheme">
-        <!-- <div class="sidebar hidden-xs"> -->
         <div class="sidebar" id="sidebar">
             <TheSidebar />
             <div class="toggle-sidebar">
@@ -12,40 +11,16 @@
             <div class="row pb-4">
                 <NuxtPage />
             </div>
-            <!-- <TheFooter /> -->
         </div>
     </div>
 </template> 
 
-<script>
+<script setup>
 import TheFooter from '~~/components/decorators/TheFooter.vue'
 import TheTopbar from '~~/components/decorators/TheTopbar.vue'
 import TheSidebar from '~~/components/decorators/TheSidebar.vue'
-
 import XIcon from "~~/assets/images/icons/XIcon.vue";
 
-export default {
-    components: {
-        TheTopbar,
-        TheSidebar,
-        TheFooter,
-        XIcon
-    },
-    data() {
-        return {
-            colorTheme: "primary_theme"
-        };
-    },
-    setup() {
-
-        const toggleSidebar = () => document.getElementById('sidebar').classList.toggle('show-xs');
-
-        return {
-            toggleSidebar
-        };
-    }
-}
+const colorTheme = "primary_theme";
+const toggleSidebar = () => document.getElementById('sidebar').classList.toggle('show-xs');
 </script>
-<style lang="scss">
-    
-</style>

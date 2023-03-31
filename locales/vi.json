@@ -11,9 +11,14 @@
         "bill": "Xuất hóa đơn"
       },
       "create": "Thêm mới",
+      "news": {
+        "published": "Đăng bài",
+        "preview": "Xem trước"
+      },
       "save": "Lưu",
       "search": "Tìm kiếm",
-      "reject": "Hủy"
+      "reject": "Hủy",
+      "view": "Xem"
     },
     "customer": {
       "businessCode": "Số ĐKKD",
@@ -57,7 +62,13 @@
     },
     "news": {
       "title": {
-        "list": "Danh sách bài viết"
+        "list": "Danh sách bài viết",
+        "create": "Thêm mới bài viết",
+        "update": "Cập nhật bài viết"
+      },
+      "form": {
+        "title": "Tiêu đề",
+        "avatar": "Ảnh đại diện"
       }
     },
     "note": "Ghi chú",
@@ -90,10 +101,13 @@
     "table": {
       "th": {
         "action": "Thao tác",
+        "content": "Nội dung",
         "customer": "Khách hàng",
         "customerCode": "Mã khách hàng",
         "customerName": "Tên khách hàng",
         "orderCode": "Mã đặt hàng",
+        "no": "STT",
+        "newsTitle": "Tên bài viết",
         "time": "Thời gian",
         "status": "Trạng thái",
         "recentLogin": "Lần cuối hoạt động",
@@ -103,7 +117,8 @@
           "type": "Dòng sản phẩm",
           "size": "Kích thước",
           "spec": "Quy cách"
-        }
+        },
+        "publishDate": "Ngày đăng"
       }
     },
     "sell": {
@@ -113,6 +128,11 @@
         "exported": "Đã xuất kho",
         "rejected": "Đã hủy",
         "invoiced": "Đã xuất hóa đơn"
+      }
+    },
+    "user": {
+      "title": {
+        "list": "Danh sách người dùng"
       }
     },
     "page": {

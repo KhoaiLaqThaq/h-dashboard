@@ -38,7 +38,7 @@ const tableHeaders = [
   {text: "recentLogin", value: "recentLogin", style: "col-2"},
   {text: "customerName", value: "name", style: "col-2"},
   {text: "status", value: "status", style: "col-2 text-center"},
-  {text: "action", style: "col-3 text-end pe-5"}
+  {text: "action", style: "col-3 text-end pe-10"}
 ];
 
 // mock customers data

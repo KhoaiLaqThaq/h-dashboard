@@ -1,25 +1,27 @@
 <template>
   <div class="top-bar row py-3">
+    <div class="col-md-0 col-1 d-md-none">
+      <div class="text-start flex-center-vertical d-none show-xs">
+        <span @click="toggleSidebar()"><AlignJustifyIcon /></span>
+      </div>
+    </div>
     <div class="col-9">
       <div class="form-group col-8 position-relative m-auto">
         <input type="text" class="form-control rounded-20 input-search p-3" :placeholder="$t('label.search.common')"/>
         <button type="button" class="bgc-primary border-unset rounded-20 search-common text-white">{{ $t('label.button.search') }}</button>
       </div>
     </div>
-    <div class="col-3 d-flex justify-content-end">
-      <div class="me-auto d-none show-xs">
-        <span @click="toggleSidebar()"><AlignJustifyIcon /></span>
-      </div>
-      <div class="dropdown notification rounded-10 flex-center-vertical me-4">
+    <div class="col-md-3 col-2 d-flex justify-content-end">
+      <div class="dropdown notification hidden-xs d-sm-none d-md-flex rounded-10 flex-center-vertical me-4">
         <div class="dropdown-toggle notification--bullet cursor-pointer">
           <font-awesome-icon icon="fa-solid fa-bell" size="lg"/>
         </div>
       </div>
-      <div class="user-actions h-auto flex-center-vertical me-4">
+      <div class="user-actions hidden-xs h-auto flex-center-vertical me-4">
         <div class="name">{{currentUser}}</div>
       </div>
 
-      <div class="dropdown me-3">
+      <div class="dropdown zoom-in me-3">
         <div class="dropdown-toggle rounded-full size56x56 img-fit cursor-pointer" id="dropdownMenuAccountInfo"
           data-bs-toggle="dropdown" aria-expanded="false">
           <img src="@/assets/images/avatar/avatar1.jpg" alt="..." />
@@ -45,7 +47,9 @@
   </div>
 </template>
 <script>
+import AlignJustifyIcon from '~~/assets/images/icons/actions/AlignJustifyIcon.vue';
 export default {
+  components: { AlignJustifyIcon },
   setup(props, {emit}) {
     const routeNameState = useRouteActive();
     const token = useToken();

@@ -25,13 +25,13 @@ export const sidebarItems = {
         iconData: "fa-solid fa-calendar"
       },
       {
-        to: "/management/content",
+        to: "/management/news",
         title: "label.sidebar.content",
         label: "label.sidebar.content",
         iconData: "fa-solid fa-id-card-clip"
       },
       {
-        to: "/management/system",
+        to: "/management/system/user",
         title: "label.sidebar.system",
         label: "label.sidebar.system",
         iconData: "fa-solid fa-microchip"
