@@ -16,11 +16,10 @@ export default {
     const token = useToken();
 
     const setLayoutDefault = () => {
-      if (token.value) {
+      if (token.value)
         layout.value = 'admin';
-      } else {
+      else
         layout.value = 'auth';
-      }
     }
 
     watch([token], () => {
